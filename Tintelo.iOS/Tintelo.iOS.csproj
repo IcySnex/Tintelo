@@ -6,6 +6,8 @@
 		<ImplicitUsings>true</ImplicitUsings>
 
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
+		
+		<ComposerIconName>AppIcon</ComposerIconName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -20,8 +22,9 @@
 	<ItemGroup>
 		<PackageReference Include="SkeleKit.iOS" Version="0.1.4"/>
 	</ItemGroup>
-
 	<ItemGroup>
 	  <ProjectReference Include="..\Tintelo\Tintelo.csproj" />
 	</ItemGroup>
+
+	<Import Project="Resources\IconComposer.targets" />
 </Project>

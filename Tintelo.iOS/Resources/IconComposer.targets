@@ -1,0 +1,52 @@
+<Project>
+	<PropertyGroup>
+		<ComposerIconName Condition="'$(ComposerIconName)' == ''">AppIcon</ComposerIconName>
+		<ComposerIconPath Condition="'$(ComposerIconPath)' == ''">$(MSBuildProjectDirectory)/Resources/$(ComposerIconName).icon</ComposerIconPath>
+		<ComposerAssetCatalogPath Condition="'$(ComposerAssetCatalogPath)' == ''">$(MSBuildProjectDirectory)/Assets.xcassets</ComposerAssetCatalogPath>
+		<CollectAppManifestsDependsOn>_RegisterComposerAssets;$(CollectAppManifestsDependsOn)</CollectAppManifestsDependsOn>
+		<CollectBundleResourcesDependsOn>_RegisterComposerAssets;$(CollectBundleResourcesDependsOn)</CollectBundleResourcesDependsOn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<_ComposerAssetInput Include="$(ComposerIconPath)/**/*.*" />
+		<_ComposerAssetInput Include="$(ComposerAssetCatalogPath)/**/*.*" Condition="Exists('$(ComposerAssetCatalogPath)')" />
+
+		<!-- A single actool invocation must own Assets.car. -->
+		<ImageAsset Remove="Assets.xcassets/**/*.*" />
+		<BundleResource Remove="Resources/$(ComposerIconName).icon/**/*.*" />
+	</ItemGroup>
+
+	<Target Name="_CompileComposerAssets"
+		Condition="'$(TargetPlatformIdentifier)' == 'iOS'"
+		DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures"
+		Inputs="@(_ComposerAssetInput)"
+		Outputs="$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle/Assets.car;$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle/partial-info.plist">
+		<PropertyGroup>
+			<_ComposerPlatform Condition="'$(SdkIsSimulator)' == 'true'">iphonesimulator</_ComposerPlatform>
+			<_ComposerPlatform Condition="'$(SdkIsSimulator)' != 'true'">iphoneos</_ComposerPlatform>
+			<_ComposerOutputPath>$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle</_ComposerOutputPath>
+			<_ComposerAssetCatalogArgument Condition="Exists('$(ComposerAssetCatalogPath)')">&quot;$(ComposerAssetCatalogPath)&quot;</_ComposerAssetCatalogArgument>
+		</PropertyGroup>
+
+		<Error Condition="!Exists('$(ComposerIconPath)')" Text="The Icon Composer package '$(ComposerIconPath)' does not exist." />
+		<RemoveDir Directories="$(_ComposerOutputPath)" />
+		<MakeDir Directories="$(_ComposerOutputPath)" />
+		<Exec Command="/usr/bin/xcrun --sdk $(_ComposerPlatform) actool $(_ComposerAssetCatalogArgument) &quot;$(ComposerIconPath)&quot; --app-icon &quot;$(ComposerIconName)&quot; --compile &quot;$(_ComposerOutputPath)&quot; --output-partial-info-plist &quot;$(_ComposerOutputPath)/partial-info.plist&quot; --target-device iphone --target-device ipad --minimum-deployment-target &quot;$(SupportedOSPlatformVersion)&quot; --platform $(_ComposerPlatform) --errors --warnings --notices --output-format human-readable-text" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_ComposerOutputPath)/*" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_RegisterComposerAssets"
+		Condition="'$(TargetPlatformIdentifier)' == 'iOS'"
+		DependsOnTargets="_CompileComposerAssets">
+		<ItemGroup>
+			<PartialAppManifest Include="$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle/partial-info.plist" />
+			<_ComposerBundleResource Include="$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle/Assets.car;$(DeviceSpecificIntermediateOutputPath)composer-actool/bundle/*.png" />
+			<BundleResource Include="@(_ComposerBundleResource)">
+				<LogicalName>%(_ComposerBundleResource.Filename)%(_ComposerBundleResource.Extension)</LogicalName>
+			</BundleResource>
+		</ItemGroup>
+	</Target>
+</Project>

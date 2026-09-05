@@ -24,12 +24,6 @@
                                 <rect key="frame" x="135" y="296" width="144" height="144"/>
                             </imageView>
                             
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A little color, every day." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="launch-tagline">
-                                <rect key="frame" x="134" y="676" width="146" height="16"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         
                         <viewLayoutGuide key="safeArea" id="launch-safe-area"/>
@@ -40,8 +34,6 @@
                             <constraint firstItem="launch-mark" firstAttribute="centerY" secondItem="223" secondAttribute="centerY" id="mark-center-y"/>
                             <constraint firstItem="launch-mark" firstAttribute="width" constant="144" id="mark-width"/>
                             <constraint firstItem="launch-mark" firstAttribute="height" secondItem="launch-mark" secondAttribute="width" id="mark-aspect"/>
-                            <constraint firstItem="launch-tagline" firstAttribute="centerX" secondItem="223" secondAttribute="centerX" id="tagline-center-x"/>
-                            <constraint firstItem="launch-safe-area" firstAttribute="bottom" secondItem="launch-tagline" secondAttribute="bottom" constant="24" id="tagline-bottom"/>
                         </constraints>
                     </view>
                 </viewController>

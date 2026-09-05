@@ -22,9 +22,6 @@
 	<ItemGroup>
 		<PackageReference Include="SkeleKit.iOS" Version="0.1.4"/>
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\Tintelo\Tintelo.csproj" />
-	</ItemGroup>
 
 	<Import Project="Resources\IconComposer.targets" />
 </Project>

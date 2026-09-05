@@ -6,5 +6,4 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="Tintelo.iOS/Tintelo.iOS.csproj" />
-  <Project Path="Tintelo/Tintelo.csproj" />
 </Solution>

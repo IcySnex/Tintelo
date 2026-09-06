@@ -1,4 +1,5 @@
 using SkeleKit;
+using Tintelo.iOS.Localization;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -8,6 +9,6 @@ public class CalendarView : ContentView<CalendarViewModel>
 {
 	public CalendarView(CalendarViewModel viewModel) : base(viewModel)
 	{
-		Title = "Calendar";
+		Title = Texts.Calendar_Title;
 	}
 }

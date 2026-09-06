@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SkeleKit;
+using Tintelo.iOS.Localization;
 using Tintelo.iOS.Logging;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
@@ -22,9 +23,9 @@ SkeleApplication.CreateBuilder()
 		services.AddSingleton<AddViewModel>();
 	})
 	.Tabs(configure => configure
-		.Tab<CalendarView>("Calendar", ImageSource.Symbol($"{DateTime.Now.Day}.calendar"))
-		.Tab<AnalyticsView>("Analytics", ImageSource.Symbol("chart.bar.xaxis"))
-		.Bubble<AddViewModel>("Add Entry", ImageSource.Symbol("plus"), vm => vm.ShowCommand)
+		.Tab<CalendarView>(Texts.Calendar_Title, ImageSource.Symbol($"{DateTime.Now.Day}.calendar"))
+		.Tab<AnalyticsView>(Texts.Analytics_Title, ImageSource.Symbol("chart.bar.xaxis"))
+		.Bubble<AddViewModel>(Texts.AddEntry_Title, ImageSource.Symbol("plus"), vm => vm.ShowCommand)
 		.LargeTitles())
 	.UseTint(Color.Dynamic(
 		Color.FromHex(0x658631),

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<data name="AddEntry_Title">
+		<value>Add Entry</value>
+	</data>
+	<data name="Analytics_Title">
+		<value>Analytics</value>
+	</data>
+	<data name="Calendar_Title">
+		<value>Calendar</value>
+	</data>
+</root>

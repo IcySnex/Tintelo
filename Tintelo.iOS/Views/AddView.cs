@@ -1,4 +1,5 @@
 using SkeleKit;
+using Tintelo.iOS.Localization;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -8,6 +9,6 @@ public class AddView : ContentView<AddViewModel>
 {
 	public AddView(AddViewModel viewModel) : base(viewModel)
 	{
-		Title = "Add Entry";
+		Title = Texts.AddEntry_Title;
 	}
 }

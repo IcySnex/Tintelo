@@ -5,6 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>true</ImplicitUsings>
 
+		<NeutralLanguage>en</NeutralLanguage>
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
 		
 		<ComposerIconName>AppIcon</ComposerIconName>
@@ -20,9 +21,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Aigamo.ResXGenerator" Version="4.4.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="SkeleKit.iOS" Version="0.1.5"/>
 	</ItemGroup>
+
+	<PropertyGroup>
+		<ResXGenerator_NullForgivingOperators>true</ResXGenerator_NullForgivingOperators>
+	</PropertyGroup>
 
 	<Import Project="Resources\IconComposer.targets" />
 </Project>

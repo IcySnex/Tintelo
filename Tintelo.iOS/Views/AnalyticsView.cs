@@ -1,4 +1,5 @@
 using SkeleKit;
+using Tintelo.iOS.Localization;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -8,6 +9,6 @@ public class AnalyticsView : ContentView<AnalyticsViewModel>
 {
 	public AnalyticsView(AnalyticsViewModel viewModel) : base(viewModel)
 	{
-		Title = "Analytics";
+		Title = Texts.Analytics_Title;
 	}
 }

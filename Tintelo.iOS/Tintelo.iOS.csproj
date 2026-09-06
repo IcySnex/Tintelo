@@ -6,7 +6,7 @@
 		<ImplicitUsings>true</ImplicitUsings>
 
 		<NeutralLanguage>en</NeutralLanguage>
-		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
 		
 		<ComposerIconName>AppIcon</ComposerIconName>
 	</PropertyGroup>

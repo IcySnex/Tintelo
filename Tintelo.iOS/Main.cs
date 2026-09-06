@@ -1,9 +1,19 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SkeleKit;
+using Tintelo.iOS.Logging;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.Views;
 
 SkeleApplication.CreateBuilder()
+	.ConfigureLogging(logging =>
+	{
+		logging.SetMinimumLevel(LogLevel.Information);
+
+		logging.AddConsole();
+		logging.AddFile(Paths.Logs);
+	})
 	.UseServices(services =>
 	{
 		services.AddSingleton<CalendarViewModel>();

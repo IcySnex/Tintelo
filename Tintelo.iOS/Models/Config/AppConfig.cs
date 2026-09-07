@@ -3,25 +3,20 @@ using Tintelo.iOS.Services;
 
 namespace Tintelo.iOS.Models.Config;
 
-public sealed partial class AppConfig(
-	SimpleStorage storage) : ObservableObject
+public sealed partial class AppConfig : ObservableObject
 {
-    [ObservableProperty]
-    public partial bool BoolValue { get; set; } = storage.GetValue("configuration.boolValue", false);
+	public AppConfig(SimpleStorage storage) =>
+		InitializeStoredProperties(storage);
 
-    [ObservableProperty]
-    public partial string StringValue { get; set; } = storage.GetValue("configuration.stringValue", string.Empty);
+	[ObservableProperty]
+	[StoreAs("configuration.boolValue", false)]
+	public partial bool BoolValue { get; set; }
 
-    [ObservableProperty]
-    public partial int IntValue { get; set; } = storage.GetValue("configuration.intValue", 0);
+	[ObservableProperty]
+	[StoreAs("configuration.stringValue", "")]
+	public partial string StringValue { get; set; }
 
-    
-	partial void OnBoolValueChanged(bool value) =>
-		storage.SetValue("configuration.boolValue", value);
-
-	partial void OnStringValueChanged(string value) =>
-		storage.SetValue("configuration.stringValue", value);
-
-	partial void OnIntValueChanged(int value) =>
-		storage.SetValue("configuration.intValue", value);
+	[ObservableProperty]
+	[StoreAs("configuration.intValue", 0)]
+	public partial int IntValue { get; set; }
 }

@@ -28,14 +28,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
 	<ItemGroup>
-	  <Folder Include="Models\" />
+		<ProjectReference Include="..\Tintelo.Generators\Tintelo.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
+	<Import Project="Resources\IconComposer.targets" />
+	
 	<PropertyGroup>
 		<ResXGenerator_NullForgivingOperators>true</ResXGenerator_NullForgivingOperators>
 	</PropertyGroup>
-
-	<Import Project="Resources\IconComposer.targets" />
 </Project>

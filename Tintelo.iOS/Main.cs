@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Logging;
+using Tintelo.iOS.Models.Config;
+using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.Views;
@@ -17,9 +19,12 @@ SkeleApplication.CreateBuilder()
 	})
 	.UseServices(services =>
 	{
+		services.AddSingleton<SimpleStorage>();
+		
+		services.AddSingleton<AppConfig>();
+
 		services.AddSingleton<CalendarViewModel>();
 		services.AddSingleton<AnalyticsViewModel>();
-		
 		services.AddSingleton<AddViewModel>();
 	})
 	.Tabs(configure => configure

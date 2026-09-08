@@ -11,6 +11,13 @@ public class CalendarView : ContentView<CalendarViewModel>
 	{
 		Title = Texts.Calendar_Title;
 
+		ToolbarItems.Add(new()
+		{
+			Icon = "switch.2",
+			Text = Texts.Settings_Title,
+			Command = viewModel.OpenSettingsCommand
+		});
+
 		Content = new StackPanel()
 		{
 			VerticalAlignment = VerticalAlignment.Center,

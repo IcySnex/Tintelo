@@ -4,6 +4,7 @@ using SkeleKit;
 using Tintelo.iOS.Models;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.ViewModels.Settings;
 
 namespace Tintelo.iOS.ViewModels;
 
@@ -12,6 +13,11 @@ public partial class CalendarViewModel(
 	DatabaseService databaseService,
 	BackupService backupService) : ObservableObject
 {
+	[RelayCommand]
+	Task OpenSettingsAsync() =>
+		navigator.PresentAsync<SettingsViewModel>(ModalStyle.FormSheet);
+	
+	
 	[RelayCommand]
 	async Task ShowDbInfoAsync()
 	{

@@ -20,6 +20,8 @@ SkeleApplication.CreateBuilder()
 	.UseServices(services =>
 	{
 		services.AddSingleton<SimpleStorage>();
+		services.AddSingleton<DatabaseService>();
+		services.AddSingleton<BackupService>();
 		
 		services.AddSingleton<AppConfig>();
 

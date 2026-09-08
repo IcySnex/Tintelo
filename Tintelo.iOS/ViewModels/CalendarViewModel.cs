@@ -1,10 +1,24 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Tintelo.iOS.Models.Config;
+using CommunityToolkit.Mvvm.Input;
+using SkeleKit;
+using Tintelo.iOS.Models;
+using Tintelo.iOS.Services;
+using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.ViewModels;
 
-public class CalendarViewModel(
-	AppConfig appConfig) : ObservableObject
+public partial class CalendarViewModel(
+	INavigator navigator,
+	DatabaseService databaseService,
+	BackupService backupService) : ObservableObject
 {
-	public AppConfig AppConfig => appConfig;
+	[RelayCommand]
+	async Task ShowDbInfoAsync()
+	{
+		await databaseService.InitializeAsync();
+		
+		LibraryMetadata info = await backupService.ReadMetadataAsync(Paths.Database);
+		await navigator.AlertAsync(info.LibraryId.ToString(), info.Revision.ToString());
+	}
+	
 }

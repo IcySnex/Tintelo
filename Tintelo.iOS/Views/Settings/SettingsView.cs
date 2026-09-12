@@ -14,16 +14,21 @@ public class SettingsView : ContentView<SettingsViewModel>
 		TitleStyle = TitleStyle.Inline;
 
 		Background = Colors.GroupedBackground;
-
-		Content = new CollectionView<SettingsEntry, SettingsSection>
+		
+		Content = new CollectionView<SettingsEntry>
 		{
-			GroupedItemsSource = Bind(vm => vm.Sections),
+			Layout = CollectionLayout.List(true), 
+			ShowsSeparators = true,
+			SeparatorInsets = new(56, 0, 12, 0),
+			RetainsSelection = false,
 			
-			ItemTemplate = static () => new SettingsEntryCell(),
-			HeaderTemplate = static () => new SettingsHeaderView(),
+			Header = new SettingsHeaderView()
+			{
+				TapCommand = viewModel.ShowAboutCommand
+			},
 			
-			Layout = CollectionLayout.List(true),
-			ShowsSeparators = true
+			ItemsSource = Bind(vm => vm.Items),
+			ItemTemplate = static () => new SettingsEntryCell()
 		};
 	}
 }

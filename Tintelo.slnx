@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/SkeleKit/">
+    <Project Path="../SkeleKit/Source/Framework/SkeleKit.Generators/SkeleKit.Generators.csproj" />
+    <Project Path="../SkeleKit/Source/Framework/SkeleKit.iOS/SkeleKit.iOS.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitattributes" />
     <File Path=".gitignore" />

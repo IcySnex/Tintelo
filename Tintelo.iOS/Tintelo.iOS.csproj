@@ -21,7 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SkeleKit.iOS" Version="0.1.13" />
+		<!--<PackageReference Include="SkeleKit.iOS" Version="0.1.14" />-->
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
 		<PackageReference Include="Aigamo.ResXGenerator" Version="4.4.0">
@@ -30,9 +30,13 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\SkeleKit\Source\Framework\SkeleKit.Generators\SkeleKit.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\SkeleKit\Source\Framework\SkeleKit.iOS\SkeleKit.iOS.csproj" />
+		
 		<ProjectReference Include="..\Tintelo.Generators\Tintelo.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
+	<Import Project="..\..\SkeleKit\Source\Framework\SkeleKit.iOS\build\SkeleKit.iOS.targets" />
 	<Import Project="Resources\IconComposer.targets" />
 	
 	<PropertyGroup>

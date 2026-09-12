@@ -33,7 +33,7 @@ SkeleApplication.CreateBuilder()
 	})
 	.Tabs(configure => configure
 		.LargeTitles()
-		.Tab<CalendarView>(Texts.Calendar_Title, ImageSource.Symbol($"{DateTime.Now.Day}.calendar"))
+		.Tab<CalendarView>(Texts.Calendar_Title, ImageSource.Symbol(OperatingSystem.IsIOSVersionAtLeast(26) ? $"{DateTime.Now.Day}.calendar" : "calendar"))
 		.Tab<AnalyticsView>(Texts.Analytics_Title, ImageSource.Symbol("chart.bar.xaxis"))
 		.Bubble<AddViewModel>(Texts.AddEntry_Title, ImageSource.Symbol("plus"), vm => vm.ShowCommand))
 	.UseTint(Color.Dynamic(

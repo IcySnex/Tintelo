@@ -2,6 +2,7 @@ using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.ViewModels.Settings;
+using Tintelo.iOS.Views.Settings.Cells;
 
 namespace Tintelo.iOS.Views.Settings;
 
@@ -15,7 +16,7 @@ public class SettingsView : ContentView<SettingsViewModel>
 
 		Background = Colors.GroupedBackground;
 		
-		Content = new CollectionView<SettingsEntry>
+		Content = new CollectionView<SettingsEntry, SettingsSection>
 		{
 			Layout = CollectionLayout.List(true), 
 			ShowsSeparators = true,
@@ -24,11 +25,20 @@ public class SettingsView : ContentView<SettingsViewModel>
 			
 			Header = new SettingsHeaderView()
 			{
+				Margin = new(0, 0, 0, 20),
+				
 				TapCommand = viewModel.ShowAboutCommand
 			},
 			
-			ItemsSource = Bind(vm => vm.Items),
-			ItemTemplate = static () => new SettingsEntryCell()
+			GroupedItemsSource = Bind(vm => vm.Sections),
+			ItemTemplateSelector = new ItemTemplateSelector<SettingsEntry>()
+				.Add(static () => new SettingsActionEntryCell())
+				.Add(static () => new SettingsDisplayEntryCell())
+				.Add(static () => new SettingsNavigationEntryCell())
+				.Add(static () => new SettingsToggleEntryCell())
+				.Add(static () => new SettingsPickerEntryCell()),
+			SectionHeaderTemplate = static () => new SettingsSectionHeaderCell(),
+			ItemCommand = viewModel.ActivateCommand
 		};
 	}
 }

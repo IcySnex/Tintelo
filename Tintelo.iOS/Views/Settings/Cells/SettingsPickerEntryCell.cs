@@ -15,10 +15,10 @@ public sealed class SettingsPickerEntryCell : SettingsEntryCell<SettingsPickerEn
 		ContainerView.Children.Add((picker = new Picker<string>
 		{
 			VerticalAlignment = VerticalAlignment.Center,
-			Padding = Thickness.Zero,
+			Padding = OperatingSystem.IsIOSVersionAtLeast(26) ? null : Thickness.Zero,
 			
-			Tint = Colors.SecondaryLabel,
-			Kind = ButtonStyle.Plain,
+			Tint = Bind(item => item.Color),
+			Kind = OperatingSystem.IsIOSVersionAtLeast(26) ? ButtonStyle.Tinted : ButtonStyle.Plain,
 			
 			ItemsSource = Bind(item => item.Options)
 		}).Column(2));

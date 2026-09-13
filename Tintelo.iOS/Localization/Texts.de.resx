@@ -18,4 +18,49 @@
 	<data name="App_Description" xml:space="preserve">
 		<value>Ein bisschen Farbe, jeden Tag.</value>
 	</data>
+	<data name="Settings_Theme_Accent_Default" xml:space="preserve">
+		<value>Standard</value>
+	</data>
+	<data name="Settings_Theme_Accent_Red" xml:space="preserve">
+		<value>Ketchup</value>
+	</data>
+	<data name="Settings_Theme_Accent_Orange" xml:space="preserve">
+		<value>Dorito</value>
+	</data>
+	<data name="Settings_Theme_Accent_Yellow" xml:space="preserve">
+		<value>Banane</value>
+	</data>
+	<data name="Settings_Theme_Accent_Green" xml:space="preserve">
+		<value>Matcha</value>
+	</data>
+	<data name="Settings_Theme_Accent_Blue" xml:space="preserve">
+		<value> Blaubeere</value>
+	</data>
+	<data name="Settings_Theme_Accent_Purple" xml:space="preserve">
+		<value>Aubergine</value>
+	</data>
+	<data name="Settings_Theme_Accent_Pink" xml:space="preserve">
+		<value>Kaugummi</value>
+	</data>
+	<data name="Settings_Theme_Accent_Gray" xml:space="preserve">
+		<value>Pilze</value>
+	</data>
+	<data name="Settings_Theme_Appearance_System" xml:space="preserve">
+		<value>System</value>
+	</data>
+	<data name="Settings_Theme_Appearance_Light" xml:space="preserve">
+		<value>Hell</value>
+	</data>
+	<data name="Settings_Theme_Appearance_Dark" xml:space="preserve">
+		<value>Dunkel</value>
+	</data>
+	<data name="Settings_Theme_Appearance" xml:space="preserve">
+		<value>Darstellung</value>
+	</data>
+	<data name="Settings_Theme_Accent" xml:space="preserve">
+		<value>Akzentfarbe</value>
+	</data>
+	<data name="Settings_Theme" xml:space="preserve">
+		<value>Design &amp; Anpassung</value>
+	</data>
 </root>

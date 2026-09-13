@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
+using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
 using Tintelo.iOS.Models.Settings;
 
@@ -19,17 +20,42 @@ public partial class SettingsViewModel : ObservableObject
 
 		Sections =
 		[
-			new("Theme",
+			new(Texts.Settings_Theme,
 			[
-				new SettingsPickerEntry(
-					"Appearance",
+				SettingsPickerEntry.Enum(
+					Texts.Settings_Theme_Appearance,
 					"moon",
-					["System", "Light", "Dark"],
 					BindingFactory.Bind(config, config => config.Theme)
 						.Path(theme => theme.Appearance)
-						.TwoWay((theme, index) => theme.Appearance = index)),
+						.TwoWay((theme, appearance) => theme.Appearance = appearance),
+					appearance => appearance switch
+					{
+						Appearance.System => Texts.Settings_Theme_Appearance_System,
+						Appearance.Light => Texts.Settings_Theme_Appearance_Light,
+						Appearance.Dark => Texts.Settings_Theme_Appearance_Dark,
+						_ => throw new ArgumentOutOfRangeException(nameof(appearance))
+					}),
 				
-				new SettingsDisplayEntry("Accent Color", "paintbrush", "Default")
+				SettingsPickerEntry.Enum(
+					Texts.Settings_Theme_Accent,
+					"paintbrush",
+					BindingFactory.Bind(config, config => config.Theme)
+						.Path(theme => theme.Accent)
+						.TwoWay((theme, accent) => theme.Accent = accent),
+					accent => accent switch
+					{
+						Accent.Default => Texts.Settings_Theme_Accent_Default,
+						Accent.Red => Texts.Settings_Theme_Accent_Red,
+						Accent.Orange => Texts.Settings_Theme_Accent_Orange,
+						Accent.Yellow => Texts.Settings_Theme_Accent_Yellow,
+						Accent.Green =>  Texts.Settings_Theme_Accent_Green,
+						Accent.Blue => Texts.Settings_Theme_Accent_Blue,
+						Accent.Purple => Texts.Settings_Theme_Accent_Purple,
+						Accent.Pink => Texts.Settings_Theme_Accent_Pink,
+						Accent.Gray => Texts.Settings_Theme_Accent_Gray,
+						_ => throw new ArgumentOutOfRangeException(nameof(accent))
+					},
+					true)
 			]),
 		];
 	}

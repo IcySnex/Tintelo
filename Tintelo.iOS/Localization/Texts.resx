@@ -18,4 +18,49 @@
 	<data name="App_Description" xml:space="preserve">
 		<value>A little color, every day.</value>
 	</data>
+	<data name="Settings_Theme_Accent_Default" xml:space="preserve">
+		<value>Default</value>
+	</data>
+	<data name="Settings_Theme_Accent_Red" xml:space="preserve">
+		<value>Ketchup</value>
+	</data>
+	<data name="Settings_Theme_Accent_Orange" xml:space="preserve">
+		<value>Dorito</value>
+	</data>
+	<data name="Settings_Theme_Accent_Yellow" xml:space="preserve">
+		<value>Banana</value>
+	</data>
+	<data name="Settings_Theme_Accent_Green" xml:space="preserve">
+		<value>Matcha</value>
+	</data>
+	<data name="Settings_Theme_Accent_Blue" xml:space="preserve">
+		<value>Blueberry</value>
+	</data>
+	<data name="Settings_Theme_Accent_Purple" xml:space="preserve">
+		<value>Eggplant</value>
+	</data>
+	<data name="Settings_Theme_Accent_Pink" xml:space="preserve">
+		<value>Bubblegum</value>
+	</data>
+	<data name="Settings_Theme_Accent_Gray" xml:space="preserve">
+		<value>Mushroom</value>
+	</data>
+	<data name="Settings_Theme_Appearance_System" xml:space="preserve">
+		<value>System</value>
+	</data>
+	<data name="Settings_Theme_Appearance_Light" xml:space="preserve">
+		<value>Light</value>
+	</data>
+	<data name="Settings_Theme_Appearance_Dark" xml:space="preserve">
+		<value>Dark</value>
+	</data>
+	<data name="Settings_Theme_Appearance" xml:space="preserve">
+		<value>Appearance</value>
+	</data>
+	<data name="Settings_Theme_Accent" xml:space="preserve">
+		<value>Accent Color</value>
+	</data>
+	<data name="Settings_Theme" xml:space="preserve">
+		<value>Theme &amp; Customization</value>
+	</data>
 </root>

@@ -8,8 +8,10 @@ using Tintelo.iOS.Models.Config;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
+using Tintelo.iOS.ViewModels.About;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
+using AboutViewModel = Tintelo.iOS.ViewModels.About.AboutViewModel;
 
 SkeleApplication.CreateBuilder()
 	.ConfigureLogging(logging =>
@@ -21,16 +23,24 @@ SkeleApplication.CreateBuilder()
 	})
 	.UseServices(services =>
 	{
+		// Config
+		services.AddSingleton<AppConfig>();
+
+		// Services
 		services.AddSingleton<SimpleStorage>();
 		services.AddSingleton<DatabaseService>();
 		services.AddSingleton<BackupService>();
 		
-		services.AddSingleton<AppConfig>();
-
-		services.AddSingleton<SettingsViewModel>();
+		// ViewModels
 		services.AddSingleton<CalendarViewModel>();
 		services.AddSingleton<AnalyticsViewModel>();
 		services.AddSingleton<AddViewModel>();
+		
+		services.AddSingleton<SettingsViewModel>();
+		
+		services.AddSingleton<AboutViewModel>();
+		services.AddSingleton<AboutTermsViewModel>();
+		services.AddSingleton<AboutDependenciesViewModel>();
 	})
 	.UseLifecycle<AppLifecycle>()
 	.Tabs(configure => configure

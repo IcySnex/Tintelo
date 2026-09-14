@@ -63,4 +63,94 @@
 	<data name="Settings_Theme" xml:space="preserve">
 		<value>Design &amp; Anpassung</value>
 	</data>
+	<data name="About" xml:space="preserve">
+		<value>Über</value>
+	</data>
+	<data name="About_Terms" xml:space="preserve">
+		<value>AGB &amp; Datenschutz</value>
+	</data>
+	<data name="About_Dependencies" xml:space="preserve">
+		<value>Abhängigkeiten</value>
+	</data>
+	<data name="About_Version" xml:space="preserve">
+		<value>Version {0}</value>
+	</data>
+	<data name="About_Contact" xml:space="preserve">
+		<value>Kontakt</value>
+	</data>
+	<data name="About_Dependencies_Thanks" xml:space="preserve">
+		<value>Tintelo wäre nicht das, was es heute ist, ohne diese tollen Open-Source-Bibliotheken &amp; -Werkzeuge:</value>
+	</data>
+	<data name="About_Dependencies_Dependency_Description" xml:space="preserve">
+		<value>v{0}, {1}</value>
+	</data>
+	<data name="About_Terms_0_Intoduction" xml:space="preserve">
+	<value>Gültig ab: {0}&#xD;&#xD;Diese Nutzungsbedingungen und Datenschutzbestimmungen („Bedingungen“) regeln deinen Zugriff auf und deine Nutzung von Tintelo, ein simpler Stimmungstracker für iOS mit Notizen und Funktionen zur Gewohnheitsverfolgung.&#xD;&#xD;Bitte lies diese Bedingungen sorgfältig durch. Durch die Nutzung von Tintelo stimmst du den nachfolgend aufgeführten Bedingungen zu.</value>
+	</data>
+		<data name="About_Terms_1_Use" xml:space="preserve">
+		<value>1. Nutzung von Tintelo</value>
+	</data>
+		<data name="About_Terms_1_Use_Content" xml:space="preserve">
+		<value>Tintelo ist für die persönliche Erfassung von Stimmungen, das Führen eines Tagebuchs und die Selbstreflexion gedacht.&#xD;&#xD;Tintelo richtet sich an ein allgemeines Publikum und ist nicht speziell für Kinder vorgesehen. Wenn du unter 16 Jahre alt bist, darfst du Tintelo nur mit der Erlaubnis eines Elternteils oder Erziehungsberechtigten verwenden.</value>
+	</data>
+		<data name="About_Terms_2_Privacy" xml:space="preserve">
+		<value>2. Datenschutz und Datenspeicherung</value>
+	</data>
+		<data name="About_Terms_2_Privacy_Content" xml:space="preserve">
+		<value>Tintelo erfordert weder ein Konto noch eine Anmeldung.&#xD;&#xD;Deine Stimmungen, Kategorien, Notizen, Gewohnheiten, Bilder und sonstigen persönlichen Inhalte werden lokal auf deinem Gerät gespeichert. Tintelo betreibt keinen eigenen Server oder Backend-Dienst und übermittelt diese Inhalte weder an den Entwickler noch an Dritte.&#xD;&#xD;Tintelo verwendet keine Werbung, Tracking-Dienste, Analyse-Dienste von Drittanbietern oder künstliche Intelligenz zur Analyse deiner persönlichen Inhalte.&#xD;&#xD;Abhängig von deinem Gerät und deinen iCloud-Einstellungen können Tintelo-Daten auch in Backups über Apples iCloud-Dienste enthalten sein. Diese Backups werden von Apple und über deine persönlichen iCloud-Einstellungen verwaltet.</value>
+	</data>
+		<data name="About_Terms_3_Trends" xml:space="preserve">
+		<value>3. Trends und Statistiken</value>
+	</data>
+		<data name="About_Terms_3_Trends_Content" xml:space="preserve">
+		<value>Tintelo kann einfache Trends und Statistiken aus deinen Einträgen berechnen, beispielsweise deinen Stimmungsverlauf oder wie häufig du eine bestimmte Aktivität erfasst hast.&#xD;&#xD;Diese Berechnungen werden lokal auf deinem Gerät durchgeführt und dienen ausschließlich dazu, dir einen Überblick über deine eigenen Einträge zu geben. Tintelo verwendet deine Daten nicht, um medizinische Diagnosen, psychologische Beurteilungen oder personalisierte Behandlungsempfehlungen bereitzustellen.</value>
+	</data>
+		<data name="About_Terms_4_Permissions" xml:space="preserve">
+		<value>4. Berechtigungen und Gerätefunktionen</value>
+	</data>
+		<data name="About_Terms_4_Permissions_Content" xml:space="preserve">
+		<value>Tintelo kann den Zugriff auf bestimmte iOS-Funktionen anfordern, wenn diese für von dir gewählte Funktionen erforderlich sind. Dazu können gehören:&#xD;&#xD;  •  Mitteilungen für optionale tägliche Erinnerungen&#xD;  •  Zugriff auf Fotos beim Anhängen von Bildern an Einträge&#xD;  •  Face ID, Touch ID oder dein Gerätecode zum optionalen Schutz des Zugriffs auf Tintelo&#xD;&#xD;Mitteilungen werden lokal auf deinem Gerät geplant. Tintelo empfängt oder speichert keine biometrischen Informationen.</value>
+	</data>
+		<data name="About_Terms_5_Managing" xml:space="preserve">
+		<value>5. Verwaltung deiner Daten</value>
+	</data>
+		<data name="About_Terms_5_Managing_Content" xml:space="preserve">
+		<value>Tintelo ermöglicht dir die Verwaltung deiner eigenen Daten, einschließlich des Löschens von Einträgen und des Zurücksetzens gespeicherter App-Daten. Das Löschen von Tintelo von deinem Gerät entfernt möglicherweise nicht automatisch Daten, die in bestehenden Geräte- oder iCloud-Backups enthalten sind.&#xD;&#xD;Du kannst deine Tintelo-Datenbank außerdem manuell für Sicherungs- oder Wiederherstellungszwecke exportieren und importieren. Exportierte Dateien können private Informationen wie Stimmungen, Notizen, Gewohnheiten und andere Einträge enthalten. Sobald diese Daten außerhalb von Tintelo exportiert wurden, bist du für deren sichere Aufbewahrung verantwortlich.</value>
+	</data>
+		<data name="About_Terms_6_Health" xml:space="preserve">
+		<value>6. Gesundheits- und Wohlbefindenshinweis</value>
+	</data>
+		<data name="About_Terms_6_Health_Content" xml:space="preserve">
+		<value>Tintelo ist ein persönliches Werkzeug für Tagebucheinträge, Stimmungserfassung und Selbstreflexion. Es ist weder ein Medizinprodukt noch ein Gesundheitsdienst und ist nicht dazu bestimmt, Depressionen, Angststörungen oder andere körperliche oder psychische Erkrankungen zu diagnostizieren, zu behandeln, zu heilen, zu verhindern oder zu erkennen.&#xD;&#xD;Wenn du dich in einem medizinischen oder psychischen Notfall befindest, wende dich an eine geeignete medizinische Fachkraft oder den örtlichen Notdienst.</value>
+	</data>
+		<data name="About_Terms_7_Purchases" xml:space="preserve">
+		<value>7. In-App-Käufe</value>
+	</data>
+		<data name="About_Terms_7_Purchases_Content" xml:space="preserve">
+		<value>Tintelo kann derzeit kostenlos genutzt werden.&#xD;&#xD;Zukünftige Versionen können optionale kostenpflichtige Funktionen, Abonnements, einmalige Käufe oder eine Trinkgeldfunktion enthalten. Käufe über Apples App Store werden von Apple verarbeitet und unterliegen den jeweils geltenden Zahlungs- und Erstattungsrichtlinien von Apple.</value>
+	</data>
+		<data name="About_Terms_8_Security" xml:space="preserve">
+		<value>8. Sicherheit und Verantwortung</value>
+	</data>
+		<data name="About_Terms_8_Security_Content" xml:space="preserve">
+		<value>Tintelo ist darauf ausgelegt, deine persönlichen Inhalte auf deinem eigenen Gerät zu speichern. Du bist dafür verantwortlich, den Zugriff auf dein Gerät, deinen Apple Account und alle von dir exportierten Tintelo-Daten zu schützen.&#xD;&#xD;Du kannst den Zugriff auf Tintelo optional mithilfe der von iOS bereitgestellten Sicherheitsfunktionen schützen. Tintelo fügt seiner lokalen Datenbank keine zusätzliche Verschlüsselungsebene über die von deinem Gerät und Betriebssystem bereitgestellten Schutzmechanismen hinaus hinzu.</value>
+	</data>
+		<data name="About_Terms_9_Liability" xml:space="preserve">
+		<value>9. Haftung und Änderungen</value>
+	</data>
+		<data name="About_Terms_9_Liability_Content" xml:space="preserve">
+		<value>Tintelo wird ohne Gewährleistung eines unterbrechungs- oder fehlerfreien Betriebs im gegenwärtigen Zustand („as-is“) bereitgestellt. Obwohl angemessene Sorgfalt darauf verwendet wird, deine Daten zu schützen und eine zuverlässige Funktionalität bereitzustellen, können Datenverlust oder Softwarefehler nicht vollständig ausgeschlossen werden. Du solltest geeignete Sicherungskopien von Informationen erstellen, die für dich wichtig sind.&#xD;&#xD;Soweit nach geltendem Recht zulässig, haftet der Entwickler nicht für mittelbare Schäden oder Folgeschäden, die aus deiner Nutzung oder der Unmöglichkeit der Nutzung von Tintelo entstehen.&#xD;&#xD;Diese Bedingungen können aktualisiert werden, wenn sich Tintelo weiterentwickelt. Das oben in diesem Dokument angegebene Datum des Inkrafttretens wird bei Änderungen entsprechend aktualisiert.</value>
+	</data>
+		<data name="About_Terms_10_Government" xml:space="preserve">
+		<value>10. Anwendbares Recht</value>
+	</data>
+	<data name="About_Terms_10_Government_Content" xml:space="preserve">
+		<value>Diese Bedingungen unterliegen dem Recht der Bundesrepublik Deutschland und sind entsprechend auszulegen. Durch die Nutzung von Tintelo stimmst du der Zuständigkeit deutscher Gerichte für rechtliche Streitigkeiten zu, die aus oder im Zusammenhang mit der App entstehen.</value>
+	</data>
+	<data name="About_Terms_11_End" xml:space="preserve">
+		<value>Bei Fragen, Anliegen oder Supportanfragen kontaktiere bitte {0}.&#xD;&#xD;Vielen Dank, dass du Tintelo nutzt – genieße jeden Tag ein bisschen Farbe!</value>
+	</data>
+	<data name="DateTime_Format_yMMMMd" xml:space="preserve">
+		<value>d. MMMM yyyy</value>
+	</data>
 </root>

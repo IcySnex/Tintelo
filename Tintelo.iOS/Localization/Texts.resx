@@ -63,4 +63,94 @@
 	<data name="Settings_Theme" xml:space="preserve">
 		<value>Theme &amp; Customization</value>
 	</data>
+	<data name="About" xml:space="preserve">
+		<value>About</value>
+	</data>
+	<data name="About_Terms" xml:space="preserve">
+		<value>Terms &amp; Privacy</value>
+	</data>
+	<data name="About_Dependencies" xml:space="preserve">
+		<value>Dependencies</value>
+	</data>
+	<data name="About_Version" xml:space="preserve">
+		<value>Version {0}</value>
+	</data>
+	<data name="About_Contact" xml:space="preserve">
+		<value>Contact</value>
+	</data>
+	<data name="About_Dependencies_Thanks" xml:space="preserve">
+		<value>Tintelo wouldn't be what it is today without these amazing open-source libraries &amp; tools:</value>
+	</data>
+	<data name="About_Dependencies_Dependency_Description" xml:space="preserve">
+		<value>v{0}, {1}</value>
+	</data>
+	<data name="About_Terms_0_Intoduction" xml:space="preserve">
+		<value>Effective Date: {0}&#xD;&#xD;These Terms of Use and Privacy Policy (“Terms”) govern your access to and use of Tintelo, a simple mood tracker for iOS with notes and habit tracking features.&#xD;&#xD;Please read these Terms carefully. By using Tintelo, you agree to the terms outlined below.</value>
+	</data>
+	<data name="About_Terms_1_Use" xml:space="preserve">
+		<value>1. Use of Tintelo</value>
+	</data>
+	<data name="About_Terms_1_Use_Content" xml:space="preserve">
+		<value>Tintelo is intended for personal mood tracking, journaling, and reflection.&#xD;&#xD;Tintelo is a general-audience app and is not specifically directed at children. If you are under the age of 16, you may only use Tintelo with the permission of a parent or legal guardian.</value>
+	</data>
+	<data name="About_Terms_2_Privacy" xml:space="preserve">
+		<value>2. Privacy and Data Storage</value>
+	</data>
+	<data name="About_Terms_2_Privacy_Content" xml:space="preserve">
+		<value>Tintelo does not require any account or login.&#xD;&#xD;Your moods, categories, notes, habits, images, and other personal content are stored locally on your device. Tintelo does not operate its own server or backend and does not transmit this content to the developer or third parties.&#xD;&#xD;Tintelo does not use advertising, tracking services, third-party analytics, or artificial intelligence to analyze your personal content.&#xD;&#xD;Depending on your device and iCloud settings, Tintelo data may also be included in backups provided through Apple's iCloud services. These backups are managed by Apple and your personal iCloud settings.</value>
+	</data>
+	<data name="About_Terms_3_Trends" xml:space="preserve">
+		<value>3. Trends and Statistics</value>
+	</data>
+	<data name="About_Terms_3_Trends_Content" xml:space="preserve">
+		<value>Tintelo may calculate simple trends and statistics from your entries, such as mood history or how often you recorded a particular activity.&#xD;&#xD;These calculations are performed locally on your device and are intended only to help you review your own entries. Tintelo does not use your data to provide medical diagnoses, psychological assessments, or personalized treatment recommendations.</value>
+	</data>
+	<data name="About_Terms_4_Permissions" xml:space="preserve">
+		<value>4. Permissions and Device Features</value>
+	</data>
+	<data name="About_Terms_4_Permissions_Content" xml:space="preserve">
+		<value>Tintelo may request access to certain iOS features when required for functionality you choose to use. This may include:&#xD;&#xD;  •  Notifications for optional daily reminders&#xD;  •  Photo access when attaching images to entries&#xD;  •  Face ID, Touch ID, or your device passcode for optionally protecting access to Tintelo&#xD;&#xD;Notifications are scheduled locally on your device. Tintelo does not receive or store your biometric information.</value>
+	</data>
+	<data name="About_Terms_5_Managing" xml:space="preserve">
+		<value>5. Managing Your Data</value>
+	</data>
+	<data name="About_Terms_5_Managing_Content" xml:space="preserve">
+		<value>Tintelo allows you to manage your own data, including deleting entries and resetting stored app data. Deleting Tintelo from your device may not automatically remove data contained in existing device or iCloud backups.&#xD;&#xD;You may also manually export and import your Tintelo database for backup or restoration purposes. Exported files may contain private information such as moods, notes, habits, and other entries. Once exported outside Tintelo, you are responsible for keeping these files secure.</value>
+	</data>
+	<data name="About_Terms_6_Health" xml:space="preserve">
+		<value>6. Health and Wellness Disclaimer</value>
+	</data>
+	<data name="About_Terms_6_Health_Content" xml:space="preserve">
+		<value>Tintelo is a personal journaling, mood tracking, and self-reflection tool. It is not a medical device or healthcare service to diagnose, treat, cure, prevent, or identify depression, anxiety, or any other physical or mental health condition.&#xD;&#xD;If you are experiencing a medical or mental health emergency, contact an appropriate healthcare professional or your local emergency services.</value>
+	</data>
+	<data name="About_Terms_7_Purchases" xml:space="preserve">
+		<value>7. In-App Purchases</value>
+	</data>
+	<data name="About_Terms_7_Purchases_Content" xml:space="preserve">
+		<value>Tintelo is currently free to use.&#xD;&#xD;Future versions may include optional paid features, subscriptions, one-time purchases, or a tip jar. Purchases made through Apple's App Store are processed by Apple and are subject to Apple's applicable payment and refund policies.</value>
+	</data>
+	<data name="About_Terms_8_Security" xml:space="preserve">
+		<value>8. Security and Responsibility</value>
+	</data>
+	<data name="About_Terms_8_Security_Content" xml:space="preserve">
+		<value>Tintelo is designed to keep your personal content on your own device. You are responsible for protecting access to your device, Apple Account, and any Tintelo data you export.&#xD;&#xD;You may optionally protect access to Tintelo using the security features provided by iOS. Tintelo does not add a separate encryption layer to its local database beyond the protections provided by your device and operating system.</value>
+	</data>
+	<data name="About_Terms_9_Liability" xml:space="preserve">
+		<value>9. Liability and Changes</value>
+	</data>
+	<data name="About_Terms_9_Liability_Content" xml:space="preserve">
+		<value>Tintelo is provided on an “as-is” basis without warranties of uninterrupted or error-free operation. While reasonable care is taken to protect your data and provide reliable functionality, data loss or software errors cannot be completely ruled out. You should keep appropriate backups of information that is important to you.&#xD;&#xD;To the extent permitted by applicable law, the developer is not liable for indirect or consequential damages arising from your use of, or inability to use, Tintelo.&#xD;&#xD;These Terms may be updated as Tintelo changes. The Effective Date at the top of this document will be updated when changes are made.</value>
+	</data>
+	<data name="About_Terms_10_Government" xml:space="preserve">
+		<value>10. Governing Law</value>
+	</data>
+	<data name="About_Terms_10_Government_Content" xml:space="preserve">
+		<value>These Terms are governed by and constructed in accordance with the laws of Germany. By using Tintelo, you consent to the jurisdiction of German courts for any legal disputes arising from or related to the app.</value>
+	</data>
+	<data name="About_Terms_11_End" xml:space="preserve">
+		<value>For questions, concerns, or support requests, please contact {0}.&#xD;&#xD;Thank you for using Tintelo - enjoy a little color, every day!</value>
+	</data>
+	<data name="DateTime_Format_yMMMMd" xml:space="preserve">
+		<value>MMMM d, yyyy</value>
+	</data>
 </root>

@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net10.0-ios</TargetFramework>
+		<TargetFramework>net10.0-ios27.0</TargetFramework>
+		<NoWarn>$(NoWarn);XCODE_27_0_PREVIEW</NoWarn>
+		
 		<OutputType>Exe</OutputType>
 		<ApplicationId>com.icysnex.tintelo</ApplicationId>
 		<Nullable>enable</Nullable>
@@ -9,7 +11,8 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
 		
-		<ComposerIconName>AppIcon</ComposerIconName>
+		<AppIcon>AppIcon</AppIcon>
+		<ValidateXcodeVersion>true</ValidateXcodeVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -38,8 +41,6 @@
 	</ItemGroup>
 
 	<Import Project="..\..\SkeleKit\Source\Framework\SkeleKit.iOS\build\SkeleKit.iOS.targets" />
-	<Import Project="Resources\IconComposer.targets" />
-	
 	<PropertyGroup>
 		<ResXGenerator_NullForgivingOperators>true</ResXGenerator_NullForgivingOperators>
 	</PropertyGroup>

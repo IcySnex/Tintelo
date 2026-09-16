@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SkeleKit;
-using Tintelo.iOS;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Logging;
 using Tintelo.iOS.Models.Config;
@@ -11,7 +10,6 @@ using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.ViewModels.About;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
-using AboutViewModel = Tintelo.iOS.ViewModels.About.AboutViewModel;
 
 SkeleApplication.CreateBuilder()
 	.ConfigureLogging(logging =>
@@ -30,6 +28,7 @@ SkeleApplication.CreateBuilder()
 		services.AddSingleton<SimpleStorage>();
 		services.AddSingleton<DatabaseService>();
 		services.AddSingleton<BackupService>();
+		services.AddSingleton<SystemInfo>();
 		
 		// ViewModels
 		services.AddSingleton<CalendarViewModel>();

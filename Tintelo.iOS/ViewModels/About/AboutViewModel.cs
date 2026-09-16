@@ -1,11 +1,18 @@
 using System.Reflection;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using SkeleKit;
+using Tintelo.iOS.Localization;
+using Tintelo.iOS.Services;
+using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.ViewModels.About;
 
 public partial class AboutViewModel(
-	INavigator navigator)
+	ILogger<AboutViewModel> logger,
+	INavigator navigator,
+	IMailer mailer,
+	SystemInfo systemInfo)
 {
 	public const string ContactEmail = "lao43919@gmail.com";
 	
@@ -25,11 +32,24 @@ public partial class AboutViewModel(
 	[RelayCommand]
 	async Task ContactAsync()
 	{
-		const string body = """
-		                     hallo world
-		                     ha
-		                     """;
-
-		await navigator.AlertAsync("Contact", body); // show email composer
+		try
+		{
+			logger.LogInformation("Showing mail composer...");
+			await mailer.ComposeAsync(new()
+			{
+				To = { ContactEmail },
+				Subject = Texts.About_Contact_Mail_Subject,
+				Body = Texts.About_Contact_Mail_Body.Format(
+					Version,
+					systemInfo.GetDeviceModel(),
+					systemInfo.GetOperatingSystem(),
+					systemInfo.GetBatteryLevel())
+			});
+		}
+		catch (Exception ex)
+		{
+			logger.LogError(ex, "Failed to compose mail.");
+			await navigator.AlertAsync(Texts.Error_Title, Texts.Error_Description_Mail);
+		}
 	}
 }

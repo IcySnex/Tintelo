@@ -82,7 +82,6 @@ public class AboutView : ContentView<AboutViewModel>
 				
 				new StackPanel
 				{
-					Margin = new(0, -120, 0, 0),
 					HorizontalAlignment = HorizontalAlignment.Center,
 					Orientation = Orientation.Horizontal,
 					Spacing = 8,

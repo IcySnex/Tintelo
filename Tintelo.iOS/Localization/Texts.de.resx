@@ -159,4 +159,16 @@
 	<data name="Settings_Theme_InlineTitles" xml:space="preserve">
 		<value>Inline-Titel</value>
 	</data>
+	<data name="Error_Title" xml:space="preserve">
+		<value>Etwas ist schiefgelaufen!</value>
+	</data>
+	<data name="Error_Description_Mail" xml:space="preserve">
+		<value>Es sieht so aus, als wären E-Mail-Dienste auf diesem Gerät nicht verfügbar sind.</value>
+	</data>
+	<data name="About_Contact_Mail_Subject" xml:space="preserve">
+		<value>Tintelo: Kontaktanfrage</value>
+	</data>
+	<data name="About_Contact_Mail_Body" xml:space="preserve">
+		<value>Typ:&#xD;[z. B. Fehler, Verbesserungsvorschlag...]&#xD;&#xD;Beschreibung:&#xD;[Beschreibe hier kurz dein Anliegen...]&#xD;&#xD;&#xD;Weitere Informationen:&#xD;App Version: {0}&#xD;Gerätemodell: {0}&#xD;Betriebssystem: {0}&#xD;Batteriestand: {0}%</value>
+	</data>
 </root>

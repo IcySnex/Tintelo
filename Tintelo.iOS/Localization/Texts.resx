@@ -159,4 +159,16 @@
 	<data name="Settings_Theme_InlineTitles" xml:space="preserve">
 		<value>Inline Titles</value>
 	</data>
+	<data name="Error_Title" xml:space="preserve">
+		<value>Something went wrong!</value>
+	</data>
+	<data name="Error_Description_Mail" xml:space="preserve">
+		<value>It looks like mail services are not available on this device.</value>
+	</data>
+	<data name="About_Contact_Mail_Subject" xml:space="preserve">
+		<value>Tintelo: Contact Request</value>
+	</data>
+	<data name="About_Contact_Mail_Body" xml:space="preserve">
+		<value>Type:&#xD;[e.g. Bug, Suggestion...]&#xD;&#xD;Description:&#xD;[Briefly describe your request here...]&#xD;&#xD;&#xD;Additional Information:&#xD;App Version: {0}&#xD;Device Model: {1}&#xD;Operating System: {2}&#xD;Battery Level: {3}%</value>
+	</data>
 </root>

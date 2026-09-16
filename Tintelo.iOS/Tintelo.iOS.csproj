@@ -7,6 +7,7 @@
 		<ApplicationId>com.icysnex.tintelo</ApplicationId>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>true</ImplicitUsings>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
 		<NeutralLanguage>en</NeutralLanguage>
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>

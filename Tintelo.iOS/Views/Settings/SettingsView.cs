@@ -12,7 +12,6 @@ public class SettingsView : ContentView<SettingsViewModel>
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)
 	{
 		Title = Texts.Settings_Title;
-		TitleStyle = TitleStyle.Inline;
 
 		Background = Colors.GroupedBackground;
 		

@@ -10,6 +10,8 @@ internal sealed class AppLifecycle(
 	{
 		config.Theme.ApplyAppearance();
 		config.Theme.ApplyAccent();
+		config.Theme.ApplyInlineTitles();
+		config.Theme.ApplySoftScrollEdge();
 
 		return Task.CompletedTask;
 	}

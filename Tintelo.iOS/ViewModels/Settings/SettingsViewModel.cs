@@ -4,6 +4,7 @@ using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
 using Tintelo.iOS.Models.Settings;
+using Tintelo.iOS.ViewModels.About;
 
 namespace Tintelo.iOS.ViewModels.Settings;
 
@@ -20,13 +21,13 @@ public partial class SettingsViewModel(
 				"moon",
 				BindingFactory.Bind(config, config => config.Theme)
 					.Path(theme => theme.Appearance)
-					.TwoWay((theme, appearance) => theme.Appearance = appearance),
-				appearance => appearance switch
+					.TwoWay((theme, value) => theme.Appearance = value),
+				value => value switch
 				{
 					Appearance.System => Texts.Settings_Theme_Appearance_System,
 					Appearance.Light => Texts.Settings_Theme_Appearance_Light,
 					Appearance.Dark => Texts.Settings_Theme_Appearance_Dark,
-					_ => throw new ArgumentOutOfRangeException(nameof(appearance))
+					_ => throw new ArgumentOutOfRangeException(nameof(value))
 				}),
 				
 			SettingsPickerEntry.Enum(
@@ -34,8 +35,8 @@ public partial class SettingsViewModel(
 				"paintbrush",
 				BindingFactory.Bind(config, config => config.Theme)
 					.Path(theme => theme.Accent)
-					.TwoWay((theme, accent) => theme.Accent = accent),
-				accent => accent switch
+					.TwoWay((theme, value) => theme.Accent = value),
+				value => value switch
 				{
 					Accent.Default => Texts.Settings_Theme_Accent_Default,
 					Accent.Red => Texts.Settings_Theme_Accent_Red,
@@ -46,16 +47,32 @@ public partial class SettingsViewModel(
 					Accent.Purple => Texts.Settings_Theme_Accent_Purple,
 					Accent.Pink => Texts.Settings_Theme_Accent_Pink,
 					Accent.Gray => Texts.Settings_Theme_Accent_Gray,
-					_ => throw new ArgumentOutOfRangeException(nameof(accent))
+					_ => throw new ArgumentOutOfRangeException(nameof(value))
 				},
-				true)
+				true),
+			
+			new SettingsToggleEntry( 
+				Texts.Settings_Theme_InlineTitles,
+				"inset.filled.topthird.rectangle",
+				BindingFactory.Bind(config, config => config.Theme)
+					.Path(theme => theme.InlineTitles)
+					.TwoWay((theme, value) => theme.InlineTitles = value)),
+					
+			..OperatingSystem.IsIOSVersionAtLeast(27) 
+				? [new SettingsToggleEntry(
+					Texts.Settings_Theme_SoftScrollEdge,
+					"water.waves.and.arrow.trianglehead.down",
+					BindingFactory.Bind(config, config => config.Theme)
+						.Path(theme => theme.SoftScrollEdge)
+						.TwoWay((theme, value) => theme.SoftScrollEdge = value))] 
+				: Array.Empty<SettingsEntry>()
 		]),
 	];
 
 
 	[RelayCommand]
 	Task ShowAboutAsync() =>
-		navigator.PushAsync<About.AboutViewModel>();
+		navigator.PushAsync<AboutViewModel>();
 
 	[RelayCommand(AllowConcurrentExecutions = true)]
 	async Task ActivateAsync(

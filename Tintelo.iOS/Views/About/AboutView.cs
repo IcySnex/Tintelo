@@ -10,9 +10,6 @@ public class AboutView : ContentView<AboutViewModel>
 {
 	public AboutView(AboutViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.About;
-		TitleStyle = TitleStyle.Inline;
-
 		Background = LinearGradient.Vertical(Colors.Gray5, Colors.Gray6);
 
 		Content = new Grid
@@ -85,6 +82,7 @@ public class AboutView : ContentView<AboutViewModel>
 				
 				new StackPanel
 				{
+					Margin = new(0, -120, 0, 0),
 					HorizontalAlignment = HorizontalAlignment.Center,
 					Orientation = Orientation.Horizontal,
 					Spacing = 8,

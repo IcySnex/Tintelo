@@ -16,7 +16,6 @@ public class AboutDependenciesView : ContentView<AboutDependenciesViewModel>
 		
 		
 		Title = Texts.About_Dependencies;
-		TitleStyle = TitleStyle.Inline;
 
 		Background = LinearGradient.Vertical(Colors.Gray5, Colors.Gray6);
 

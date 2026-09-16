@@ -153,4 +153,10 @@
 	<data name="DateTime_Format_yMMMMd" xml:space="preserve">
 		<value>d. MMMM yyyy</value>
 	</data>
+	<data name="Settings_Theme_SoftScrollEdge" xml:space="preserve">
+		<value>Sanfte Scrollkante</value>
+	</data>
+	<data name="Settings_Theme_InlineTitles" xml:space="preserve">
+		<value>Inline-Titel</value>
+	</data>
 </root>

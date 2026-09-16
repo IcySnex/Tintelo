@@ -15,18 +15,26 @@ public partial class AppThemeConfig : ObservableObject
 	public partial Appearance Appearance { get; set; }
 
 	[ObservableProperty]
-	[StoreAs("configuration.theme.accent")]
+	[StoreAs("configuration.theme.accent", Accent.Default)]
 	public partial Accent Accent { get; set; }
+
+	[ObservableProperty]
+	[StoreAs("configuration.theme.inlinetitles", true)]
+	public partial bool InlineTitles { get; set; }
+
+	[ObservableProperty]
+	[StoreAs("configuration.theme.softscrolledge", false)]
+	public partial bool SoftScrollEdge { get; set; }
 
 
 	public void ApplyAppearance()
 	{
-		SkeleApplication.Current?.Appearance = Appearance;
+		SkeleApplication.Current?.Theme.Appearance = Appearance;
 	}
 	
 	public void ApplyAccent()
 	{
-		SkeleApplication.Current?.Tint = Accent switch
+		SkeleApplication.Current?.Theme.Tint = Accent switch
 		{
 			Accent.Default => Color.Dynamic(Color.FromHex(0x658631), Color.FromHex(0xb9cc7a)),
 			Accent.Red => Color.Dynamic(Color.FromHex(0xe15b5b), Color.FromHex(0xff7b7b)),
@@ -41,10 +49,30 @@ public partial class AppThemeConfig : ObservableObject
 		};
 	}
 
+	public void ApplyInlineTitles()
+	{
+		SkeleApplication.Current?.Theme.NavigationTitleStyle = InlineTitles
+			? TitleStyle.Inline
+			: TitleStyle.Large;
+	}
+
+	public void ApplySoftScrollEdge()
+	{
+		SkeleApplication.Current?.Theme.TopScrollEdgeStyle = SoftScrollEdge
+			? ScrollEdgeStyle.Soft
+			: ScrollEdgeStyle.Automatic;
+	}
+
 
 	partial void OnAppearanceChanged(Appearance value) =>
 		ApplyAppearance();
 
 	partial void OnAccentChanged(Accent value) =>
 		ApplyAccent();
+
+	partial void OnInlineTitlesChanged(bool value) =>
+		ApplyInlineTitles();
+	
+	partial void OnSoftScrollEdgeChanged(bool value) =>
+		ApplySoftScrollEdge();
 }

@@ -66,6 +66,6 @@ public class SettingsHeaderView : Grid
 		if (pressed)
 			Background = Colors.Gray4;
 		else
-			Animate(0.3, () => Background = Colors.SecondaryGroupedBackground);
+			Animate(0.3, () => Background = Colors.SecondaryGroupedBackground, layout: false);
 	}
 }

@@ -10,7 +10,6 @@ public class AboutTermsView : ContentView<AboutTermsViewModel>
 	public AboutTermsView(AboutTermsViewModel viewModel) : base(viewModel)
 	{
 		Title = Texts.About_Terms;
-		TitleStyle = TitleStyle.Inline;
 
 		Background = LinearGradient.Vertical(Colors.Gray5, Colors.Gray6);
 

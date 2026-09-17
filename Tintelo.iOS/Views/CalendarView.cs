@@ -230,7 +230,6 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 
 internal static class CalendarLayoutMetrics
 {
-	public const double CalendarMaxWidth = 560;
 	public const double DayMaxRowHeight = 60;
 	public const double DayMaxVisualSize = 52;
 }

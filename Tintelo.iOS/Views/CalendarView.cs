@@ -2,6 +2,7 @@ using CoreAnimation;
 using System.Globalization;
 using SkeleKit;
 using Tintelo.iOS.Localization;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -55,7 +56,8 @@ internal sealed class CalendarWeekdayHeader : Border
 			{
 				Text = CalendarPreview.WeekdayTitles[column],
 				TextStyle = TextStyle.Caption1,
-				MaxFontSize = 15,
+				MaxFontSize = 19,
+				AutoShrink = 0.7,
 				FontWeight = FontWeight.Semibold,
 				TextColor = Colors.SecondaryLabel,
 				TextAlignment = TextAlignment.Center,
@@ -106,6 +108,7 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 {
 	readonly CalendarDayCircle circle;
 	readonly Label number;
+	readonly Border noteMarker;
 
 
 	public CalendarDayCell()
@@ -117,16 +120,33 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 			HorizontalAlignment = HorizontalAlignment.Center,
 			VerticalAlignment = VerticalAlignment.Center,
 			TextStyle = TextStyle.Callout,
-			MaxFontSize = 20,
+			MaxFontSize = 24,
+			AutoShrink = 0.7,
 			FontWeight = FontWeight.Semibold,
 			TextAlignment = TextAlignment.Center,
 			MaxLines = 1
 		};
 
+		noteMarker = new()
+		{
+			HorizontalAlignment = HorizontalAlignment.Center,
+			VerticalAlignment = VerticalAlignment.End,
+			Margin = new(0, 0, 0, 6),
+			Width = 4,
+			Height = 4,
+			CornerRadius = 2
+		};
+
 		circle = new()
 		{
-			Margin = 2,
-			Child = number
+			Child = new Grid
+			{
+				Children =
+				{
+					number,
+					noteMarker
+				}
+			}
 		};
 
 		Content = circle;
@@ -149,9 +169,16 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 		Content!.IsVisible = true;
 		number.Text = day.ToString(CultureInfo.CurrentCulture);
 		number.TextColor = item.IsFuture
-			? Colors.TertiaryLabel
+			? Colors.SecondaryLabel.WithAlpha(0.6)
 			: item.Mood?.Text ?? CalendarPalette.EmptyText;
 		number.Opacity = 1;
+		noteMarker.IsVisible = item.HasNote;
+		noteMarker.Background = item.Mood?.Text ?? CalendarPalette.EmptyText;
+		Background = item.IsSelected
+			? Colors.Link.WithAlpha(0.12)
+			: null;
+		CornerRadius = 12;
+		CornerCurve = CornerCurve.Continuous;
 
 		circle.Background = item.IsFuture
 			? Colors.Transparent
@@ -171,13 +198,41 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 	protected override Size MeasureOverride(
 		Size availableSize)
 	{
-		double side = double.IsFinite(availableSize.Width)
+		double width = double.IsFinite(availableSize.Width)
 			? availableSize.Width
-			: 52;
+			: CalendarLayoutMetrics.DayMaxRowHeight;
+		double height = Math.Min(width, CalendarLayoutMetrics.DayMaxRowHeight);
+		double marker = MarkerSize(new(width, height));
 
-		Content?.Measure(new(side, side));
-		return new(side, side);
+		Content?.Measure(new(marker, marker));
+		return new(width, height);
 	}
+
+	protected override Size ArrangeOverride(
+		Size finalSize)
+	{
+		double marker = MarkerSize(finalSize);
+		Content?.Arrange(new(
+			(finalSize.Width - marker) / 2,
+			(finalSize.Height - marker) / 2,
+			marker,
+			marker));
+
+		return finalSize;
+	}
+
+	static double MarkerSize(
+		Size available) =>
+		Math.Min(
+			CalendarLayoutMetrics.DayMaxVisualSize,
+			Math.Max(0, Math.Min(available.Width, available.Height) - 4));
+}
+
+internal static class CalendarLayoutMetrics
+{
+	public const double CalendarMaxWidth = 560;
+	public const double DayMaxRowHeight = 60;
+	public const double DayMaxVisualSize = 52;
 }
 
 internal sealed class CalendarDayCircle : Border
@@ -244,7 +299,9 @@ internal sealed record CalendarDayPreview(
 	string AccessibilityLabel = "",
 	CalendarMoodPreview? Mood = null,
 	bool IsToday = false,
-	bool IsFuture = false);
+	bool IsFuture = false,
+	bool HasNote = false,
+	bool IsSelected = false);
 
 internal sealed record CalendarMonthPreview(
 	string Month,
@@ -350,7 +407,8 @@ internal static class CalendarPreview
 				date.ToString("D", Culture),
 				mood,
 				IsToday: day == 13,
-				IsFuture: day > 13));
+				IsFuture: day > 13,
+				HasNote: day is 7 or 12));
 		}
 
 		return new(

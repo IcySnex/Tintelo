@@ -12,7 +12,6 @@ public class SettingsView : ContentView<SettingsViewModel>
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)
 	{
 		Title = Texts.Settings_Title;
-
 		Background = Colors.GroupedBackground;
 		
 		Content = new CollectionView<SettingsEntry, SettingsSection>
@@ -22,21 +21,22 @@ public class SettingsView : ContentView<SettingsViewModel>
 			SeparatorInsets = new(56, 0, 12, 0),
 			RetainsSelection = false,
 			
-			Header = new SettingsHeaderView()
+			Header = new AboutHeader()
 			{
 				Margin = new(0, 0, 0, 20),
 				
 				TapCommand = viewModel.ShowAboutCommand
 			},
 			
-			GroupedItemsSource = Bind(vm => vm.Sections),
+			SectionHeaderTemplate = static () => new SettingsSectionHeaderCell(),
 			ItemTemplateSelector = new ItemTemplateSelector<SettingsEntry>()
 				.Add(static () => new SettingsActionEntryCell())
 				.Add(static () => new SettingsDisplayEntryCell())
 				.Add(static () => new SettingsNavigationEntryCell())
 				.Add(static () => new SettingsToggleEntryCell())
 				.Add(static () => new SettingsPickerEntryCell()),
-			SectionHeaderTemplate = static () => new SettingsSectionHeaderCell(),
+			
+			GroupedItemsSource = Bind(vm => vm.Sections),
 			ItemCommand = viewModel.ActivateCommand
 		};
 	}

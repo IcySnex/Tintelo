@@ -3,9 +3,9 @@ using Tintelo.iOS.Localization;
 
 namespace Tintelo.iOS.Views.Settings;
 
-public class SettingsHeaderView : Grid
+public class AboutHeader : Grid
 {
-	public SettingsHeaderView()
+	public AboutHeader()
 	{
 		Pressed = OnPressed;
 		IsAccessibilityElement = true;

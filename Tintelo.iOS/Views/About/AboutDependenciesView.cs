@@ -16,7 +16,6 @@ public class AboutDependenciesView : ContentView<AboutDependenciesViewModel>
 		
 		
 		Title = Texts.About_Dependencies;
-
 		Background = LinearGradient.Vertical(Colors.Gray5, Colors.Gray6);
 
 		Content = new ScrollView

@@ -50,14 +50,7 @@ public partial class SettingsViewModel(
 					_ => throw new ArgumentOutOfRangeException(nameof(value))
 				},
 				true),
-			
-			new SettingsToggleEntry( 
-				Texts.Settings_Theme_InlineTitles,
-				"inset.filled.topthird.rectangle",
-				BindingFactory.Bind(config, config => config.Theme)
-					.Path(theme => theme.InlineTitles)
-					.TwoWay((theme, value) => theme.InlineTitles = value)),
-					
+	
 			..OperatingSystem.IsIOSVersionAtLeast(27) 
 				? [new SettingsToggleEntry(
 					Texts.Settings_Theme_SoftScrollEdge,

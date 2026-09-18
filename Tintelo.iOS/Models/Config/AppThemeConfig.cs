@@ -19,10 +19,6 @@ public partial class AppThemeConfig : ObservableObject
 	public partial Accent Accent { get; set; }
 
 	[ObservableProperty]
-	[StoreAs("configuration.theme.inlinetitles", true)]
-	public partial bool InlineTitles { get; set; }
-
-	[ObservableProperty]
 	[StoreAs("configuration.theme.softscrolledge", false)]
 	public partial bool SoftScrollEdge { get; set; }
 
@@ -49,13 +45,6 @@ public partial class AppThemeConfig : ObservableObject
 		};
 	}
 
-	public void ApplyInlineTitles()
-	{
-		SkeleApplication.Current?.Theme.NavigationTitleStyle = InlineTitles
-			? TitleStyle.Inline
-			: TitleStyle.Large;
-	}
-
 	public void ApplySoftScrollEdge()
 	{
 		SkeleApplication.Current?.Theme.TopScrollEdgeStyle = SoftScrollEdge
@@ -70,9 +59,6 @@ public partial class AppThemeConfig : ObservableObject
 	partial void OnAccentChanged(Accent value) =>
 		ApplyAccent();
 
-	partial void OnInlineTitlesChanged(bool value) =>
-		ApplyInlineTitles();
-	
 	partial void OnSoftScrollEdgeChanged(bool value) =>
 		ApplySoftScrollEdge();
 }

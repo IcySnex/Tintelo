@@ -8,8 +8,10 @@ using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.ViewModels.About;
+using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
+using Tintelo.iOS.Views.Calendar;
 
 SkeleApplication.CreateBuilder()
 	.ConfigureLogging(logging =>
@@ -32,7 +34,10 @@ SkeleApplication.CreateBuilder()
 		
 		// ViewModels
 		services.AddSingleton<CalendarViewModel>();
+		services.AddSingleton<CalendarDetailsViewModel>();
+		
 		services.AddSingleton<AnalyticsViewModel>();
+		
 		services.AddSingleton<AddViewModel>();
 		
 		services.AddSingleton<SettingsViewModel>();
@@ -47,7 +52,7 @@ SkeleApplication.CreateBuilder()
 			Texts.Calendar_Title,
 			ImageSource.Symbol(OperatingSystem.IsIOSVersionAtLeast(26) ? $"{DateTime.Now.Day}.calendar" : "calendar"),
 			split => split
-				.Primary<CalendarDayDetailView>(weight: 1)
+				.Primary<CalendarDetailsView>(weight: 1)
 				.Secondary<CalendarView>(weight: 2)
 				.Compact<CalendarView>()
 				.PrimaryEdge(SplitViewEdge.Trailing)

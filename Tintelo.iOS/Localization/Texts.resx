@@ -85,7 +85,7 @@
 		<value>v{0}, {1}</value>
 	</data>
 	<data name="About_Terms_0_Intoduction" xml:space="preserve">
-		<value>Effective Date: {0}&#xD;&#xD;These Terms of Use and Privacy Policy (“Terms”) govern your access to and use of Tintelo, a simple mood tracker for iOS with notes and habit tracking features.&#xD;&#xD;Please read these Terms carefully. By using Tintelo, you agree to the terms outlined below.</value>
+		<value>Effective Date: {0}&#xD;&#xD;These Terms of Use and Privacy Policy (“Terms”) govern your access to and use of Tintelo, a simple mood tracker for iOS with notes and activity tracking features.&#xD;&#xD;Please read these Terms carefully. By using Tintelo, you agree to the terms outlined below.</value>
 	</data>
 	<data name="About_Terms_1_Use" xml:space="preserve">
 		<value>1. Use of Tintelo</value>
@@ -97,7 +97,7 @@
 		<value>2. Privacy and Data Storage</value>
 	</data>
 	<data name="About_Terms_2_Privacy_Content" xml:space="preserve">
-		<value>Tintelo does not require any account or login.&#xD;&#xD;Your moods, categories, notes, habits, images, and other personal content are stored locally on your device. Tintelo does not operate its own server or backend and does not transmit this content to the developer or third parties.&#xD;&#xD;Tintelo does not use advertising, tracking services, third-party analytics, or artificial intelligence to analyze your personal content.&#xD;&#xD;Depending on your device and iCloud settings, Tintelo data may also be included in backups provided through Apple's iCloud services. These backups are managed by Apple and your personal iCloud settings.</value>
+		<value>Tintelo does not require any account or login.&#xD;&#xD;Your moods, categories, notes, activities, images, and other personal content are stored locally on your device. Tintelo does not operate its own server or backend and does not transmit this content to the developer or third parties.&#xD;&#xD;Tintelo does not use advertising, tracking services, third-party analytics, or artificial intelligence to analyze your personal content.&#xD;&#xD;Depending on your device and iCloud settings, Tintelo data may also be included in backups provided through Apple's iCloud services. These backups are managed by Apple and your personal iCloud settings.</value>
 	</data>
 	<data name="About_Terms_3_Trends" xml:space="preserve">
 		<value>3. Trends and Statistics</value>
@@ -115,7 +115,7 @@
 		<value>5. Managing Your Data</value>
 	</data>
 	<data name="About_Terms_5_Managing_Content" xml:space="preserve">
-		<value>Tintelo allows you to manage your own data, including deleting entries and resetting stored app data. Deleting Tintelo from your device may not automatically remove data contained in existing device or iCloud backups.&#xD;&#xD;You may also manually export and import your Tintelo database for backup or restoration purposes. Exported files may contain private information such as moods, notes, habits, and other entries. Once exported outside Tintelo, you are responsible for keeping these files secure.</value>
+		<value>Tintelo allows you to manage your own data, including deleting entries and resetting stored app data. Deleting Tintelo from your device may not automatically remove data contained in existing device or iCloud backups.&#xD;&#xD;You may also manually export and import your Tintelo database for backup or restoration purposes. Exported files may contain private information such as moods, notes, activities, and other entries. Once exported outside Tintelo, you are responsible for keeping these files secure.</value>
 	</data>
 	<data name="About_Terms_6_Health" xml:space="preserve">
 		<value>6. Health and Wellness Disclaimer</value>

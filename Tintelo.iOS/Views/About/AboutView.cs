@@ -34,7 +34,7 @@ public class AboutView : ContentView<AboutViewModel>
 						{
 							HorizontalAlignment = HorizontalAlignment.Center,
 							Height = 130,
-							Margin = new(0, -24, 0, 0),
+							Margin = new(0, -56, 0, 0),
 							
 							Source = ImageSource.Bundle("Splash.png")
 						},
@@ -82,6 +82,7 @@ public class AboutView : ContentView<AboutViewModel>
 				
 				new StackPanel
 				{
+					Margin = new(0, 0, 0, 8),
 					HorizontalAlignment = HorizontalAlignment.Center,
 					Orientation = Orientation.Horizontal,
 					Spacing = 8,

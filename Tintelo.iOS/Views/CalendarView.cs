@@ -29,6 +29,11 @@ public class CalendarView : ContentView<CalendarViewModel>
 			GroupedItemsSource = CalendarPreview.Months,
 			ItemTemplate = static () => new CalendarDayCell(),
 			SectionHeaderTemplate = static () => new CalendarMonthHeaderCell(),
+			ItemCommand = Command.From<CalendarDayPreview>(item =>
+			{
+				if (item is { Date: DateTime date, IsFuture: false })
+					viewModel.SelectDay(date, item.Mood?.Name, item.Mood?.Background, item.HasNote);
+			}),
 			Layout = CollectionLayout.Grid(columns: 7, spacing: 6),
 			Padding = new(10, 0, 10, 32),
 			RetainsSelection = false,
@@ -158,7 +163,7 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 	{
 		base.OnItemChanged(item);
 
-		if (item is null || item.Day is not int day)
+		if (item is null || item.Date is not DateTime date)
 		{
 			Content!.IsVisible = false;
 			IsAccessibilityElement = false;
@@ -167,16 +172,14 @@ internal sealed class CalendarDayCell : ItemView<CalendarDayPreview>
 		}
 
 		Content!.IsVisible = true;
-		number.Text = day.ToString(CultureInfo.CurrentCulture);
+		number.Text = date.Day.ToString(CultureInfo.CurrentCulture);
 		number.TextColor = item.IsFuture
 			? Colors.SecondaryLabel.WithAlpha(0.6)
 			: item.Mood?.Text ?? CalendarPalette.EmptyText;
 		number.Opacity = 1;
 		noteMarker.IsVisible = item.HasNote;
 		noteMarker.Background = item.Mood?.Text ?? CalendarPalette.EmptyText;
-		Background = item.IsSelected
-			? Colors.Link.WithAlpha(0.12)
-			: null;
+		Background = null;
 		CornerRadius = 12;
 		CornerCurve = CornerCurve.Continuous;
 
@@ -291,16 +294,16 @@ internal sealed class CalendarDayCircle : Border
 
 internal sealed record CalendarMoodPreview(
 	Color Background,
-	Color Text);
+	Color Text,
+	string Name);
 
 internal sealed record CalendarDayPreview(
-	int? Day,
+	DateTime? Date,
 	string AccessibilityLabel = "",
 	CalendarMoodPreview? Mood = null,
 	bool IsToday = false,
 	bool IsFuture = false,
-	bool HasNote = false,
-	bool IsSelected = false);
+	bool HasNote = false);
 
 internal sealed record CalendarMonthPreview(
 	string Month,
@@ -319,31 +322,38 @@ internal static class CalendarPalette
 
 	public static readonly CalendarMoodPreview ExtremelyGood = new(
 		Color.Dynamic(Color.FromHex(0x187d68), Color.FromHex(0x23866f)),
-		Colors.White);
+		Colors.White,
+		"Extremely good");
 
 	public static readonly CalendarMoodPreview VeryGood = new(
 		Color.Dynamic(Color.FromHex(0x4dab86), Color.FromHex(0x4fac88)),
-		Color.FromHex(0x163f31));
+		Color.FromHex(0x163f31),
+		"Very good");
 
 	public static readonly CalendarMoodPreview Good = new(
 		Color.Dynamic(Color.FromHex(0xa7d3bc), Color.FromHex(0x8fc3a8)),
-		Color.FromHex(0x315947));
+		Color.FromHex(0x315947),
+		"Good");
 
 	public static readonly CalendarMoodPreview Neutral = new(
 		Color.Dynamic(Color.FromHex(0xd8d5cf), Color.FromHex(0x494844)),
-		Color.Dynamic(Color.FromHex(0x5d5a54), Color.FromHex(0xe6e3dd)));
+		Color.Dynamic(Color.FromHex(0x5d5a54), Color.FromHex(0xe6e3dd)),
+		"Neutral");
 
 	public static readonly CalendarMoodPreview Bad = new(
 		Color.Dynamic(Color.FromHex(0xead2b1), Color.FromHex(0xc7aa88)),
-		Color.FromHex(0x675137));
+		Color.FromHex(0x675137),
+		"Bad");
 
 	public static readonly CalendarMoodPreview VeryBad = new(
 		Color.Dynamic(Color.FromHex(0xe29a62), Color.FromHex(0xd28d5c)),
-		Color.FromHex(0x603919));
+		Color.FromHex(0x603919),
+		"Very bad");
 
 	public static readonly CalendarMoodPreview ExtremelyBad = new(
 		Color.Dynamic(Color.FromHex(0xca555a), Color.FromHex(0xc9585d)),
-		Colors.White);
+		Colors.White,
+		"Extremely bad");
 }
 
 internal static class CalendarPreview
@@ -402,7 +412,7 @@ internal static class CalendarPreview
 			DateTime date = new(year, month, day);
 			RecordedDays.TryGetValue(day, out CalendarMoodPreview? mood);
 			days.Add(new(
-				day,
+				date,
 				date.ToString("D", Culture),
 				mood,
 				IsToday: day == 13,

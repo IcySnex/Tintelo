@@ -43,7 +43,17 @@ SkeleApplication.CreateBuilder()
 	})
 	.UseLifecycle<AppLifecycle>()
 	.Tabs(configure => configure
-		.Tab<CalendarView>(Texts.Calendar_Title, ImageSource.Symbol(OperatingSystem.IsIOSVersionAtLeast(26) ? $"{DateTime.Now.Day}.calendar" : "calendar"))
+		.Split(
+			Texts.Calendar_Title,
+			ImageSource.Symbol(OperatingSystem.IsIOSVersionAtLeast(26) ? $"{DateTime.Now.Day}.calendar" : "calendar"),
+			split => split
+				.Primary<CalendarDayDetailView>(weight: 1)
+				.Secondary<CalendarView>(weight: 2)
+				.Compact<CalendarView>()
+				.PrimaryEdge(SplitViewEdge.Trailing)
+				.Behavior(SplitViewBehavior.SideBySide)
+				.Display(SplitViewDisplay.TwoColumns)
+				.NavigationColumn(SplitViewColumn.Secondary))
 		.Tab<AnalyticsView>(Texts.Analytics_Title, ImageSource.Symbol("chart.bar.xaxis"))
 		.Bubble<AddViewModel>(Texts.AddEntry_Title, ImageSource.Symbol("plus"), vm => vm.ShowCommand)
 		.Sidebar())

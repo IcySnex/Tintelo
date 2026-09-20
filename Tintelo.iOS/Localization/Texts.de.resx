@@ -168,4 +168,7 @@
 	<data name="About_Contact_Mail_Body" xml:space="preserve">
 		<value>Typ:&#xD;[z. B. Fehler, Verbesserungsvorschlag...]&#xD;&#xD;Beschreibung:&#xD;[Beschreibe hier kurz dein Anliegen...]&#xD;&#xD;&#xD;Weitere Informationen:&#xD;App Version: {0}&#xD;Gerätemodell: {0}&#xD;Betriebssystem: {0}&#xD;Batteriestand: {0}%</value>
 	</data>
+	<data name="Settings_Theme_MoodPalette" xml:space="preserve">
+		<value>Stimmungsfarben</value>
+	</data>
 </root>

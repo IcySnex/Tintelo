@@ -2,6 +2,7 @@ bin/
 obj/
 .vs/
 .idea/
+.opencode/
 
 *.user
 *.binlog
@@ -10,3 +11,4 @@ obj/
 cscargs.json
 
 PLAN.md
+tintelo.json

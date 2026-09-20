@@ -32,7 +32,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 				spacing: 6,
 				itemAspectRatio: 1),
 			ShowsSeparators = false,
-			RetainsSelection = false,
+			RetainsHighlight = false,
 			
 			SectionHeaderTemplate = static () => new CalendarMonthHeaderCell(),
 			ItemTemplateSelector = new ItemTemplateSelector<ICalendarDaySummary>()

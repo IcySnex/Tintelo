@@ -17,6 +17,11 @@ public partial class SettingsViewModel(
 	[
 		new(Texts.Settings_Theme,
 		[
+			new SettingsNavigationEntry(
+				Texts.Settings_Theme_MoodPalette,
+				"swatchpalette",
+				typeof(SettingsMoodPaletteViewModel)),
+			
 			SettingsPickerEntry.Enum(
 				Texts.Settings_Theme_Appearance,
 				"moon",

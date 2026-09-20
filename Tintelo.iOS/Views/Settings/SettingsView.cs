@@ -16,10 +16,9 @@ public class SettingsView : ContentView<SettingsViewModel>
 		
 		Content = new CollectionView<SettingsEntry, SettingsSection>
 		{
-			Layout = CollectionLayout.List(true), 
-			ShowsSeparators = true,
+			Layout = CollectionLayout.List(true),
 			SeparatorInsets = new(56, 0, 12, 0),
-			RetainsSelection = false,
+			RetainsHighlight = false,
 			
 			Header = new AboutHeader()
 			{

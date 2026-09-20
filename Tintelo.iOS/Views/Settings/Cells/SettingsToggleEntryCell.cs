@@ -21,8 +21,8 @@ public sealed class SettingsToggleEntryCell : SettingsEntryCell<SettingsToggleEn
 
 
 	protected override void OnItemChanged(
-		SettingsToggleEntry? entry)
+		SettingsToggleEntry entry)
 	{
-		toggle.IsOn = entry?.IsOn ?? false;
+		toggle.IsOn = entry.IsOn;
 	}
 }

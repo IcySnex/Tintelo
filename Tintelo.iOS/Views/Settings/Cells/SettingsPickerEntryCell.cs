@@ -26,8 +26,8 @@ public sealed class SettingsPickerEntryCell : SettingsEntryCell<SettingsPickerEn
 
 
 	protected override void OnItemChanged(
-		SettingsPickerEntry? item)
+		SettingsPickerEntry item)
 	{
-		picker.SelectedItem = item?.SelectedOption ?? default;
+		picker.SelectedItem = item.SelectedOption;
 	}
 }

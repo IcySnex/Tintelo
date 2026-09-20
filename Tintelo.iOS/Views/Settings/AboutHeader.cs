@@ -10,7 +10,7 @@ public class AboutHeader : Grid
 		Pressed = OnPressed;
 		IsAccessibilityElement = true;
 		AccessibilityLabel = Texts.App_Name;
-		AccessibilityTraits = AccessibilityTraits.Button;
+		AccessibilityTraits = AccessibilityTrait.Button;
 
 		Padding = 16;
 		Background = Colors.SecondaryGroupedBackground;

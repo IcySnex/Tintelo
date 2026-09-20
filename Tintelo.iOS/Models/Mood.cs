@@ -2,17 +2,17 @@ namespace Tintelo.iOS.Models;
 
 public enum Mood
 {
-	ExtremelyGood,
+	ExtremelyGood = 3,
 	
-	VeryGood,
+	VeryGood = 2,
 	
-	Good,
+	Good = 1,
 	
-	Neutral,
+	Neutral = 0,
 	
-	Bad,
+	Bad = -1,
 	
-	VeryBad,
+	VeryBad = -2,
 	
-	ExtremelyBad
+	ExtremelyBad = -3
 }

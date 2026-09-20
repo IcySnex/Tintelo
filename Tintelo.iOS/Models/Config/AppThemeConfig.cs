@@ -1,15 +1,28 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SkeleKit;
+using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Services;
 
 namespace Tintelo.iOS.Models.Config;
 
 public partial class AppThemeConfig : ObservableObject
 {
-	public AppThemeConfig(SimpleStorage storage) =>
+	readonly MoodPaletteCatalog moodPaletteCatalog;
+	
+	public AppThemeConfig(
+		SimpleStorage storage,
+		MoodPaletteCatalog moodPaletteCatalog)
+	{
+		this.moodPaletteCatalog = moodPaletteCatalog;
+		
 		InitializeStoredProperties(storage);
+	}
 	
 	
+	[ObservableProperty]
+	[StoreAs("configuration.theme.moodpalette", MoodPaletteId.Default)]
+	public partial MoodPaletteId MoodPalette { get; set; }
+
 	[ObservableProperty]
 	[StoreAs("configuration.theme.appearance", Appearance.System)]
 	public partial Appearance Appearance { get; set; }
@@ -23,13 +36,26 @@ public partial class AppThemeConfig : ObservableObject
 	public partial bool SoftScrollEdge { get; set; }
 
 
-	public void ApplyAppearance()
-	{
-		SkeleApplication.Current?.Theme.Appearance = Appearance;
-	}
+	partial void OnMoodPaletteChanged(MoodPaletteId value) =>
+		ApplyMoodPalette();
+
+	partial void OnAppearanceChanged(Appearance value) =>
+		ApplyAppearance();
+
+	partial void OnAccentChanged(Accent value) =>
+		ApplyAccent();
+
+	partial void OnSoftScrollEdgeChanged(bool value) =>
+		ApplySoftScrollEdge();
+
 	
-	public void ApplyAccent()
-	{
+	void ApplyMoodPalette() =>
+		moodPaletteCatalog.Current = moodPaletteCatalog.Palettes[MoodPalette];
+	
+	void ApplyAppearance() =>
+		SkeleApplication.Current?.Theme.Appearance = Appearance;
+	
+	void ApplyAccent() =>
 		SkeleApplication.Current?.Theme.Tint = Accent switch
 		{
 			Accent.Default => Color.Dynamic(Color.FromHex(0x658631), Color.FromHex(0xb9cc7a)),
@@ -43,22 +69,18 @@ public partial class AppThemeConfig : ObservableObject
 			Accent.Gray => Color.Dynamic(Color.FromHex(0x64748b), Color.FromHex(0x94a3b8)),
 			_ => throw new ArgumentOutOfRangeException(nameof(Accent))
 		};
-	}
 
-	public void ApplySoftScrollEdge()
-	{
+	void ApplySoftScrollEdge() =>
 		SkeleApplication.Current?.Theme.TopScrollEdgeStyle = SoftScrollEdge
 			? ScrollEdgeStyle.Soft
 			: ScrollEdgeStyle.Automatic;
-	}
 
 
-	partial void OnAppearanceChanged(Appearance value) =>
+	public void Apply()
+	{
+		ApplyMoodPalette();
 		ApplyAppearance();
-
-	partial void OnAccentChanged(Accent value) =>
 		ApplyAccent();
-
-	partial void OnSoftScrollEdgeChanged(bool value) =>
 		ApplySoftScrollEdge();
+	}
 }

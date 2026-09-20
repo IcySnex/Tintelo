@@ -35,7 +35,9 @@ public class CalendarView : ContentView<CalendarViewModel>
 			RetainsSelection = false,
 			
 			SectionHeaderTemplate = static () => new CalendarMonthHeaderCell(),
-			ItemTemplate = static () => new CalendarDayCell(),
+			ItemTemplateSelector = new ItemTemplateSelector<ICalendarDaySummary>()
+				.Add(static () => new EmptyCalendarDayCell())
+				.Add(static () => new CalendarDayCell()),
 			
 			GroupedItemsSource = viewModel.Months,
 			ItemCommand = viewModel.OpenDetailsCommand

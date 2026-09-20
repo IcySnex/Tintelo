@@ -8,9 +8,7 @@ internal sealed class AppLifecycle(
 {
 	public Task StartAsync()
 	{
-		config.Theme.ApplyAppearance();
-		config.Theme.ApplyAccent();
-		config.Theme.ApplySoftScrollEdge();
+		config.Theme.Apply();
 
 		return Task.CompletedTask;
 	}

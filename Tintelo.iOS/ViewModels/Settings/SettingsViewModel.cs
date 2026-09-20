@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
+using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.ViewModels.About;
 

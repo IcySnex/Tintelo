@@ -1,10 +1,14 @@
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using SkeleKit;
+using Tintelo.iOS.Models;
 using Tintelo.iOS.Models.Calendar;
+using Tintelo.iOS.Models.Palette;
+using Tintelo.iOS.Services;
 
 namespace Tintelo.iOS.Views.Calendar.Cells;
 
-public class CalendarDayCell: ItemView<ICalendarDaySummary>
+public class CalendarDayCell: ItemView<CalendarDaySummary>
 {
 	const double MaxVisualSize = 52;
 	
@@ -12,6 +16,22 @@ public class CalendarDayCell: ItemView<ICalendarDaySummary>
 	static readonly Color EmptyStrokeColor = Color.Dynamic(Color.FromHex(0xdbdbdb), Color.FromHex(0x636363));
 	static readonly Color EmptyTextColor = Color.Dynamic(Color.FromHex(0x646464), Color.FromHex(0xdadada));
 
+	static readonly double[] EmptyStrokeDashPattern = [1, 5];
+	static readonly double[] StrokeDashPattern = [];
+
+	
+	static readonly MoodPaletteCatalog MoodPaletteCatalog = SkeleApplication.Current!.Services.GetRequiredService<MoodPaletteCatalog>();
+	
+	static BindableBrush ResolvePaletteBackground(
+		Mood mood) =>
+		BindingFactory.Bind(MoodPaletteCatalog, moodPalette => moodPalette.Current)
+			.ConvertTo(value => MoodPalette.Get(value, mood).Background);
+	
+	static BindingExpression<Color?> ResolvePaletteForeground(
+		Mood mood) =>
+		BindingFactory.Bind(MoodPaletteCatalog, moodPalette => moodPalette.Current)
+			.ConvertTo(value => (Color?)MoodPalette.Get(value, mood).Foreground);
+	
 	
 	readonly Border contentBorder;
 	readonly Label numberLabel;
@@ -67,28 +87,21 @@ public class CalendarDayCell: ItemView<ICalendarDaySummary>
 	
 	
 	protected override void OnItemChanged(
-		ICalendarDaySummary? item)
+		CalendarDaySummary item)
 	{
-		if (item is not CalendarDaySummary summary)
-		{
-			contentBorder.IsVisible = false;
-			return;
-		}
-		
-		bool isFuture = summary.Day > DateTime.Now.Day;
-		bool isToday = summary.Day == DateTime.Now.Day;
-		bool isEmpty = !isFuture && summary.Mood is null && !isToday;
-		
-		contentBorder.IsVisible = true;
-		contentBorder.Background = isFuture ? Colors.Transparent : isEmpty ? EmptyBackgroundColor : Colors.Blue; // RESOLVE FROM PALETTE BASED ON MOOD
-		contentBorder.Stroke = isToday ? Colors.Label.WithAlpha(0.72) : isEmpty ? EmptyStrokeColor : null;
-		contentBorder.StrokeThickness = isToday || isEmpty ? 2 : 0;
-		contentBorder.StrokeDashPattern = isEmpty ? [1, 5] : null;
-		
-		numberLabel.Text = summary.Day.ToString(CultureInfo.CurrentCulture);
-		numberLabel.TextColor = isFuture ? Colors.SecondaryLabel.WithAlpha(0.6) : isEmpty ? EmptyTextColor : Colors.Red; // RESOLVE FROM PALETTE BASED ON MOOD
+		bool isFuture = item.Day > DateTime.Now.Day;
+		bool isToday = item.Day == DateTime.Now.Day;
+		bool isEmpty = !isFuture && item.Mood is null && !isToday;
 
-		dotBorder.IsVisible = summary.HasNote;
-		dotBorder.Background = Colors.Red; // RESOLVE FROM PALETTE BASED ON MOOD // future cant have content so we only need mood based palette color
+		contentBorder.Background = isFuture ?Colors.Transparent : item.Mood.HasValue ? ResolvePaletteBackground(item.Mood.Value) : EmptyBackgroundColor;
+		contentBorder.Stroke = isToday ? Colors.Label.WithAlpha(0.72) : isEmpty ? EmptyStrokeColor : default;
+		contentBorder.StrokeThickness = isToday || isEmpty ? 2 : 0;
+		contentBorder.StrokeDashPattern = isEmpty ? EmptyStrokeDashPattern : StrokeDashPattern;
+		
+		numberLabel.Text = item.Day.ToString(CultureInfo.CurrentCulture);
+		numberLabel.TextColor = isFuture ? Colors.SecondaryLabel.WithAlpha(0.6) : item.Mood.HasValue ? ResolvePaletteForeground(item.Mood.Value) : EmptyTextColor;
+
+		dotBorder.IsVisible = item.HasNote;
+		dotBorder.Background = item.Mood.HasValue ? ResolvePaletteForeground(item.Mood.Value) : EmptyTextColor;
 	}
 }

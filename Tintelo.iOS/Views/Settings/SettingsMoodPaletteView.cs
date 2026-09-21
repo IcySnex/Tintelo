@@ -1,8 +1,9 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.ViewModels.Settings;
+using Tintelo.iOS.Views.Settings.Cells;
 
-namespace Tintelo.iOS.Views.Settings.Cells;
+namespace Tintelo.iOS.Views.Settings;
 
 [Page]
 public class SettingsMoodPaletteView : ContentView<SettingsMoodPaletteViewModel>
@@ -16,6 +17,7 @@ public class SettingsMoodPaletteView : ContentView<SettingsMoodPaletteViewModel>
 		{
 			Layout = CollectionLayout.List(true),
 			ShowsSelectionCheckmark = true,
+			RetainsHighlight = false,
 			
 			ItemTemplate = static () => new SettingsMoodPaletteContainerCell(),
 

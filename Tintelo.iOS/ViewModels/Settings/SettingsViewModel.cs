@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
-using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Models.Settings;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels.About;
 
 namespace Tintelo.iOS.ViewModels.Settings;
@@ -13,6 +13,14 @@ public partial class SettingsViewModel(
 	AppConfig config,
 	INavigator navigator) : ObservableObject
 {
+	static SettingsEntry[] OnIOSVersionAtLeast(
+		int major,
+		SettingsEntry entry) =>
+		OperatingSystem.IsIOSVersionAtLeast(major)
+			? [entry]
+			: Array.Empty<SettingsEntry>();
+
+	
 	public IReadOnlyList<SettingsSection> Sections { get; } =
 	[
 		new(Texts.Settings_Theme,
@@ -23,61 +31,35 @@ public partial class SettingsViewModel(
 				typeof(SettingsMoodPaletteViewModel),
 				BindingFactory.Bind(config, config => config.Theme)
 					.Path(theme => theme.MoodPalette)
-					.ConvertTo(value => value switch
-					{
-						MoodPaletteId.Default => Texts.Settings_Theme_MoodPalette_Default,
-						MoodPaletteId.Pixy => Texts.Settings_Theme_MoodPalette_Pixy,
-						MoodPaletteId.RedGreenCvd => Texts.Settings_Theme_MoodPalette_RedGreenCvd,
-						MoodPaletteId.BlueYellowCvd => Texts.Settings_Theme_MoodPalette_BlueYellowCvd,
-						MoodPaletteId.Monochrome => Texts.Settings_Theme_MoodPalette_Monochrome,
-						_ => throw new ArgumentOutOfRangeException(nameof(value))
-					})),
+					.ConvertTo(SettingsDisplays.MoodPalettes.GetTitle)),
 			
 			new SettingsPickerEntry(
 				Texts.Settings_Theme_Appearance,
 				"moon",
-				SettingsPickerEntry.Arguments(
-					BindingFactory.Bind(config, config => config.Theme)
-						.Path(theme => theme.Appearance)
-						.TwoWay((theme, value) => theme.Appearance = value),
-					value => value switch
-					{
-						Appearance.System => Texts.Settings_Theme_Appearance_System,
-						Appearance.Light => Texts.Settings_Theme_Appearance_Light,
-						Appearance.Dark => Texts.Settings_Theme_Appearance_Dark,
-						_ => throw new ArgumentOutOfRangeException(nameof(value))
-					}),
+				SettingsDisplays.Appearances.Titles,
+				BindingFactory.Bind(config, config => config.Theme)
+					.Path(theme => theme.Appearance)
+					.ConvertTo(SettingsDisplays.Appearances.GetTitle)
+					.ConvertFrom(SettingsDisplays.Appearances.GetValue)
+					.TwoWay((theme, value) => theme.Appearance = value),
 				Colors.SecondaryLabel),
 			
 			new SettingsPickerEntry(
 				Texts.Settings_Theme_Accent,
 				"paintbrush",
-				SettingsPickerEntry.Arguments(
-					BindingFactory.Bind(config, config => config.Theme)
-						.Path(theme => theme.Accent)
-						.TwoWay((theme, value) => theme.Accent = value),
-					value => value switch
-					{
-						Accent.Default => Texts.Settings_Theme_Accent_Default,
-						Accent.Red => Texts.Settings_Theme_Accent_Red,
-						Accent.Orange => Texts.Settings_Theme_Accent_Orange,
-						Accent.Yellow => Texts.Settings_Theme_Accent_Yellow,
-						Accent.Green =>  Texts.Settings_Theme_Accent_Green,
-						Accent.Blue => Texts.Settings_Theme_Accent_Blue,
-						Accent.Purple => Texts.Settings_Theme_Accent_Purple,
-						Accent.Pink => Texts.Settings_Theme_Accent_Pink,
-						Accent.Gray => Texts.Settings_Theme_Accent_Gray,
-						_ => throw new ArgumentOutOfRangeException(nameof(value))
-					})),
+				SettingsDisplays.Accents.Titles,
+				BindingFactory.Bind(config, config => config.Theme)
+					.Path(theme => theme.Accent)
+					.ConvertTo(SettingsDisplays.Accents.GetTitle)
+					.ConvertFrom(SettingsDisplays.Accents.GetValue)
+					.TwoWay((theme, value) => theme.Accent = value)),
 	
-			..OperatingSystem.IsIOSVersionAtLeast(27) 
-				? [new SettingsToggleEntry(
-					Texts.Settings_Theme_SoftScrollEdge,
-					"water.waves.and.arrow.trianglehead.down",
-					BindingFactory.Bind(config, config => config.Theme)
-						.Path(theme => theme.SoftScrollEdge)
-						.TwoWay((theme, value) => theme.SoftScrollEdge = value))] 
-				: Array.Empty<SettingsEntry>()
+			..OnIOSVersionAtLeast(27, new SettingsToggleEntry(
+				Texts.Settings_Theme_SoftScrollEdge,
+				"water.waves.and.arrow.trianglehead.down",
+				BindingFactory.Bind(config, config => config.Theme)
+					.Path(theme => theme.SoftScrollEdge)
+					.TwoWay((theme, value) => theme.SoftScrollEdge = value)))
 		])
 	];
 

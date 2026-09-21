@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using SkeleKit;
-using Tintelo.iOS.Localization;
-using Tintelo.iOS.Models.Palette;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels.Settings;
 
 namespace Tintelo.iOS.Views.Settings.Cells;
@@ -22,7 +21,6 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 	public SettingsMoodPaletteContainerCell()
 	{
 		Background = Colors.SecondaryGroupedBackground;
-		HighlightBackground = Colors.TertiaryBackground;
 
 		Content = new StackPanel
 		{
@@ -55,15 +53,7 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 				{
 					Text = Bind(item => item.Id)
 						.Once()
-						.ConvertTo(value => value switch
-						{
-							MoodPaletteId.Default => Texts.Settings_Theme_MoodPalette_Default,
-							MoodPaletteId.Pixy => Texts.Settings_Theme_MoodPalette_Pixy,
-							MoodPaletteId.RedGreenCvd => Texts.Settings_Theme_MoodPalette_RedGreenCvd,
-							MoodPaletteId.BlueYellowCvd => Texts.Settings_Theme_MoodPalette_BlueYellowCvd,
-							MoodPaletteId.Monochrome => Texts.Settings_Theme_MoodPalette_Monochrome,
-							_ => throw new ArgumentOutOfRangeException(nameof(value))
-						}),
+						.ConvertTo(SettingsDisplays.MoodPalettes.GetTitle),
 					TextStyle = TextStyle.Callout,
 					FontWeight = FontWeight.Medium
 					
@@ -72,15 +62,7 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 				{
 					Text = Bind(item => item.Id)
 						.Once()
-						.ConvertTo(value => value switch
-						{
-							MoodPaletteId.Default => Texts.Settings_Theme_MoodPalette_Default_Description,
-							MoodPaletteId.Pixy => Texts.Settings_Theme_MoodPalette_Pixy_Description,
-							MoodPaletteId.RedGreenCvd => Texts.Settings_Theme_MoodPalette_RedGreenCvd_Description,
-							MoodPaletteId.BlueYellowCvd => Texts.Settings_Theme_MoodPalette_BlueYellowCvd_Description,
-							MoodPaletteId.Monochrome => Texts.Settings_Theme_MoodPalette_Monochrome_Description,
-							_ => throw new ArgumentOutOfRangeException(nameof(value))
-						}),
+						.ConvertTo(SettingsDisplays.MoodPalettes.GetDescription),
 					TextStyle = TextStyle.Footnote,
 					TextColor = Colors.SecondaryLabel
 				}

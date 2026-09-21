@@ -171,4 +171,34 @@
 	<data name="Settings_Theme_MoodPalette" xml:space="preserve">
 		<value>Mood Palette</value>
 	</data>
+	<data name="Settings_Theme_MoodPalette_Default" xml:space="preserve">
+		<value>Default</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Pixy" xml:space="preserve">
+		<value>Pixy</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_RedGreenCvd" xml:space="preserve">
+		<value>Protan/Deutan</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_BlueYellowCvd" xml:space="preserve">
+		<value>Tritan</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Monochrome" xml:space="preserve">
+		<value>Mono</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Default_Description" xml:space="preserve">
+		<value>A calm, natural palette with earthy greens and warm reds.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Pixy_Description" xml:space="preserve">
+		<value>Inspired by Pixy, a brighter and more distinct palette based on research by Dr. Cynthia Brewer.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_RedGreenCvd_Description" xml:space="preserve">
+		<value>Designed for red-green color vision differences, a purple and orange palette.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_BlueYellowCvd_Description" xml:space="preserve">
+		<value>Designed for blue-yellow color vision differences, a green and magenta palette.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Monochrome_Description" xml:space="preserve">
+		<value>A grayscale palette that only uses brightness instead of color.</value>
+	</data>
 </root>

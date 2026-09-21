@@ -166,9 +166,39 @@
 		<value>Tintelo: Kontaktanfrage</value>
 	</data>
 	<data name="About_Contact_Mail_Body" xml:space="preserve">
-		<value>Typ:&#xD;[z. B. Fehler, Verbesserungsvorschlag...]&#xD;&#xD;Beschreibung:&#xD;[Beschreibe hier kurz dein Anliegen...]&#xD;&#xD;&#xD;Weitere Informationen:&#xD;App Version: {0}&#xD;Gerätemodell: {0}&#xD;Betriebssystem: {0}&#xD;Batteriestand: {0}%</value>
+		<value>Typ:&#xD;[z. B. Fehler, Verbesserungsvorschlag...]&#xD;&#xD;Beschreibung:&#xD;[Beschreibe hier kurz dein Anliegen...]&#xD;&#xD;&#xD;Weitere Informationen:&#xD;App Version: {0}&#xD;Gerätemodell: {1}&#xD;Betriebssystem: {2}&#xD;Batteriestand: {3}%</value>
 	</data>
 	<data name="Settings_Theme_MoodPalette" xml:space="preserve">
 		<value>Stimmungsfarben</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Default" xml:space="preserve">
+		<value>Standard</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Pixy" xml:space="preserve">
+		<value>Pixy</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_RedGreenCvd" xml:space="preserve">
+		<value>Protan/Deutan</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_BlueYellowCvd" xml:space="preserve">
+		<value>Tritan</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Monochrome" xml:space="preserve">
+		<value>Mono</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Default_Description" xml:space="preserve">
+		<value>Eine ruhige, natürliche Farbpalette mit erdigen Grün- und warmen Rottönen.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Pixy_Description" xml:space="preserve">
+		<value>Inspiriert von Pixy, eine hellere und deutlicher unterscheidbare Farbpalette nach Forschung von Dr. Cynthia Brewer.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_RedGreenCvd_Description" xml:space="preserve">
+		<value>Für Menschen mit Rot-Grün-Sehschwäche, eine violett-orange Farbpalette.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_BlueYellowCvd_Description" xml:space="preserve">
+		<value>Für Menschen mit Blau-Gelb-Sehschwäche, eine grün-magenta Farbpalette.</value>
+	</data>
+	<data name="Settings_Theme_MoodPalette_Monochrome_Description" xml:space="preserve">
+		<value>Eine Graustufen-Palette, die nur Helligkeit statt Farbe zur Unterscheidung nutzt.</value>
 	</data>
 </root>

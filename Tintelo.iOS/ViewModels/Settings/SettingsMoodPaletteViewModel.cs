@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Models.Config;
 using Tintelo.iOS.Models.Palette;
@@ -27,21 +25,28 @@ public partial class SettingsMoodPaletteViewModel : ObservableObject
 		this.navigator = navigator;
 		
 		Palettes = moodPaletteCatalog.Palettes
-			.Select(pair => new MoodPaletteContainer(pair.Key, pair.Value))
+			.Select(pair =>
+			{
+				MoodPaletteContainer container = new(pair.Key, pair.Value);
+				
+				if (pair.Key == config.Theme.MoodPalette)
+					SelectedPalette = container;
+				
+				return container;
+			})
 			.ToArray();
-		SelectedPalette = new(config.Theme.MoodPalette, moodPaletteCatalog.Current);
 	}
 	
 	
 	public MoodPaletteContainer[] Palettes { get; }
 	
     [ObservableProperty]
-    public partial MoodPaletteContainer SelectedPalette { get; set; }
+    public partial MoodPaletteContainer? SelectedPalette { get; set; }
 
 
-    partial void OnSelectedPaletteChanged(MoodPaletteContainer value)
+    partial void OnSelectedPaletteChanged(MoodPaletteContainer? value)
     {
-	    config.Theme.MoodPalette = value.Id;
+	    config.Theme.MoodPalette = value?.Id ?? MoodPaletteId.Default;
 	    _ = navigator.PopAsync();
     }
 }

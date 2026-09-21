@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
+using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.ViewModels.About;
 
@@ -19,42 +20,55 @@ public partial class SettingsViewModel(
 			new SettingsNavigationEntry(
 				Texts.Settings_Theme_MoodPalette,
 				"swatchpalette",
-				typeof(SettingsMoodPaletteViewModel)),
+				typeof(SettingsMoodPaletteViewModel),
+				BindingFactory.Bind(config, config => config.Theme)
+					.Path(theme => theme.MoodPalette)
+					.ConvertTo(value => value switch
+					{
+						MoodPaletteId.Default => Texts.Settings_Theme_MoodPalette_Default,
+						MoodPaletteId.Pixy => Texts.Settings_Theme_MoodPalette_Pixy,
+						MoodPaletteId.RedGreenCvd => Texts.Settings_Theme_MoodPalette_RedGreenCvd,
+						MoodPaletteId.BlueYellowCvd => Texts.Settings_Theme_MoodPalette_BlueYellowCvd,
+						MoodPaletteId.Monochrome => Texts.Settings_Theme_MoodPalette_Monochrome,
+						_ => throw new ArgumentOutOfRangeException(nameof(value))
+					})),
 			
-			SettingsPickerEntry.Enum(
+			new SettingsPickerEntry(
 				Texts.Settings_Theme_Appearance,
 				"moon",
-				BindingFactory.Bind(config, config => config.Theme)
-					.Path(theme => theme.Appearance)
-					.TwoWay((theme, value) => theme.Appearance = value),
-				value => value switch
-				{
-					Appearance.System => Texts.Settings_Theme_Appearance_System,
-					Appearance.Light => Texts.Settings_Theme_Appearance_Light,
-					Appearance.Dark => Texts.Settings_Theme_Appearance_Dark,
-					_ => throw new ArgumentOutOfRangeException(nameof(value))
-				}),
-				
-			SettingsPickerEntry.Enum(
+				SettingsPickerEntry.Arguments(
+					BindingFactory.Bind(config, config => config.Theme)
+						.Path(theme => theme.Appearance)
+						.TwoWay((theme, value) => theme.Appearance = value),
+					value => value switch
+					{
+						Appearance.System => Texts.Settings_Theme_Appearance_System,
+						Appearance.Light => Texts.Settings_Theme_Appearance_Light,
+						Appearance.Dark => Texts.Settings_Theme_Appearance_Dark,
+						_ => throw new ArgumentOutOfRangeException(nameof(value))
+					}),
+				Colors.SecondaryLabel),
+			
+			new SettingsPickerEntry(
 				Texts.Settings_Theme_Accent,
 				"paintbrush",
-				BindingFactory.Bind(config, config => config.Theme)
-					.Path(theme => theme.Accent)
-					.TwoWay((theme, value) => theme.Accent = value),
-				value => value switch
-				{
-					Accent.Default => Texts.Settings_Theme_Accent_Default,
-					Accent.Red => Texts.Settings_Theme_Accent_Red,
-					Accent.Orange => Texts.Settings_Theme_Accent_Orange,
-					Accent.Yellow => Texts.Settings_Theme_Accent_Yellow,
-					Accent.Green =>  Texts.Settings_Theme_Accent_Green,
-					Accent.Blue => Texts.Settings_Theme_Accent_Blue,
-					Accent.Purple => Texts.Settings_Theme_Accent_Purple,
-					Accent.Pink => Texts.Settings_Theme_Accent_Pink,
-					Accent.Gray => Texts.Settings_Theme_Accent_Gray,
-					_ => throw new ArgumentOutOfRangeException(nameof(value))
-				},
-				true),
+				SettingsPickerEntry.Arguments(
+					BindingFactory.Bind(config, config => config.Theme)
+						.Path(theme => theme.Accent)
+						.TwoWay((theme, value) => theme.Accent = value),
+					value => value switch
+					{
+						Accent.Default => Texts.Settings_Theme_Accent_Default,
+						Accent.Red => Texts.Settings_Theme_Accent_Red,
+						Accent.Orange => Texts.Settings_Theme_Accent_Orange,
+						Accent.Yellow => Texts.Settings_Theme_Accent_Yellow,
+						Accent.Green =>  Texts.Settings_Theme_Accent_Green,
+						Accent.Blue => Texts.Settings_Theme_Accent_Blue,
+						Accent.Purple => Texts.Settings_Theme_Accent_Purple,
+						Accent.Pink => Texts.Settings_Theme_Accent_Pink,
+						Accent.Gray => Texts.Settings_Theme_Accent_Gray,
+						_ => throw new ArgumentOutOfRangeException(nameof(value))
+					})),
 	
 			..OperatingSystem.IsIOSVersionAtLeast(27) 
 				? [new SettingsToggleEntry(

@@ -5,19 +5,19 @@ namespace Tintelo.iOS.Views.Settings.Cells;
 
 public sealed class SettingsDisplayEntryCell : SettingsEntryCell<SettingsDisplayEntry>
 {
+	readonly LabelAccessory labelAccessory;
+	
 	public SettingsDisplayEntryCell()
 	{
 		HighlightBackground = null;
+		
+		Accessories.Add(labelAccessory = new LabelAccessory());
+	}
 
-		ContainerView.Columns.Add(GridLength.Auto);
-		ContainerView.Children.Add(new Label
-		{
-			VerticalAlignment = VerticalAlignment.Center,
-			
-			TextColor = Colors.SecondaryLabel,
-			
-			Text = Bind(entry => entry.Value),
-			MaxLines = 1
-		}.Column(2));
+
+	protected override void OnItemChanged(
+		SettingsDisplayEntry item)
+	{
+		labelAccessory.Text = item.Text;
 	}
 }

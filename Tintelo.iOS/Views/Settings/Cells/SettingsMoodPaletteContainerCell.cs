@@ -47,7 +47,7 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 						Circle(item => item.Palette.Neutral.Background),
 						Circle(item => item.Palette.Good.Background),
 						Circle(item => item.Palette.VeryGood.Background),
-						Circle(item => item.Palette.ExtremelyGood.Background),
+						Circle(item => item.Palette.ExtremelyGood.Background)
 					}
 				},
 				
@@ -65,7 +65,7 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 							_ => throw new ArgumentOutOfRangeException(nameof(value))
 						}),
 					TextStyle = TextStyle.Callout,
-					FontWeight = FontWeight.Medium,
+					FontWeight = FontWeight.Medium
 					
 				},
 				new Label
@@ -83,8 +83,7 @@ public class SettingsMoodPaletteContainerCell : ItemView<SettingsMoodPaletteView
 						}),
 					TextStyle = TextStyle.Footnote,
 					TextColor = Colors.SecondaryLabel
-				},
-
+				}
 			}
 		};
 	}

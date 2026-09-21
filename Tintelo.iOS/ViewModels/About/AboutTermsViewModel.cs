@@ -1,3 +1,4 @@
+using System.Globalization;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Utils;
@@ -44,7 +45,7 @@ public class AboutTermsViewModel
 	
 	public Span[] Text { get; } =
 	[
-		Footnote(Texts.About_Terms_0_Intoduction.Format(EffectiveDate.ToString(Texts.DateTime_Format_yMMMMd))),
+		Footnote(Texts.About_Terms_0_Intoduction.Format(EffectiveDate.ToString(Texts.DateTime_Format_yMMMMd, CultureInfo.InvariantCulture))),
 		NewLine(),
 		Title(Texts.About_Terms_1_Use),
 		NewLineSmol(),

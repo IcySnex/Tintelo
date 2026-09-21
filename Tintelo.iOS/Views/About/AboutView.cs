@@ -55,7 +55,7 @@ public class AboutView : ContentView<AboutViewModel>
 							
 							Text = Texts.App_Description,
 							TextAlignment = TextAlignment.Center,
-							TextStyle = TextStyle.Body,
+							TextStyle = TextStyle.Body
 						},
 						
 						new Button
@@ -112,7 +112,7 @@ public class AboutView : ContentView<AboutViewModel>
 							
 							Text = Texts.About_Contact,
 							Size = ButtonSize.Small,
-							Command = viewModel.ContactCommand,
+							Command = viewModel.ContactCommand
 						}
 					}
 				}.Row(1)

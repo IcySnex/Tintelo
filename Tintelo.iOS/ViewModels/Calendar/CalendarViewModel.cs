@@ -10,7 +10,7 @@ namespace Tintelo.iOS.ViewModels.Calendar;
 public partial class CalendarViewModel(
 	INavigator navigator) : ObservableObject
 {
-	public CalendarMonthSummary[] Months = new[]
+	public CalendarMonthSummary[] Months { get; } = new[]
 	{
 		new CalendarMonthSummary(9, 2026, new ICalendarDaySummary[]
 		{
@@ -45,7 +45,7 @@ public partial class CalendarViewModel(
 			new CalendarDaySummary(27, null, false),
 			new CalendarDaySummary(28, null, false),
 			new CalendarDaySummary(29, null, false),
-			new CalendarDaySummary(30, null, false),
+			new CalendarDaySummary(30, null, false)
 		})
 	};
 	

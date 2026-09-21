@@ -38,7 +38,7 @@ public class AboutHeader : Grid
 				{
 					Text = Texts.App_Name,
 					TextStyle = TextStyle.Title3,
-					FontWeight = FontWeight.Bold,
+					FontWeight = FontWeight.Bold
 				},
 
 				new Label
@@ -55,7 +55,7 @@ public class AboutHeader : Grid
 			Source = ImageSource.Symbol(
 				"chevron.forward",
 				weight: FontWeight.Semibold,
-				colors: [Colors.Gray2]),
+				colors: [Colors.Gray2])
 		}.Column(2));
 	}
 

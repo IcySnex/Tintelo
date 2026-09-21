@@ -22,7 +22,7 @@ public class AboutDependenciesView : ContentView<AboutDependenciesViewModel>
 		{
 			SystemInsetEdges = LayoutEdges.Horizontal | LayoutEdges.Top,
 			
-			Content = (stack = new StackPanel
+			Content = stack = new StackPanel
 			{
 				Spacing = 8,
 
@@ -35,7 +35,7 @@ public class AboutDependenciesView : ContentView<AboutDependenciesViewModel>
 						Truncation = Truncation.Tail
 					}
 				}
-			})
+			}
 		};
 		
 		foreach (Dependency dependency in viewModel.Dependencies)

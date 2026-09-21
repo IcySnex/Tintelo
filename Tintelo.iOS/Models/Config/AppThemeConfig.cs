@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using SkeleKit;
 using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Services;
@@ -7,12 +8,15 @@ namespace Tintelo.iOS.Models.Config;
 
 public partial class AppThemeConfig : ObservableObject
 {
+	readonly ILogger<AppConfig> logger;
 	readonly MoodPaletteCatalog moodPaletteCatalog;
 	
 	public AppThemeConfig(
+		ILogger<AppConfig> logger,
 		SimpleStorage storage,
 		MoodPaletteCatalog moodPaletteCatalog)
 	{
+		this.logger = logger;
 		this.moodPaletteCatalog = moodPaletteCatalog;
 		
 		InitializeStoredProperties(storage);
@@ -48,14 +52,22 @@ public partial class AppThemeConfig : ObservableObject
 	partial void OnSoftScrollEdgeChanged(bool value) =>
 		ApplySoftScrollEdge();
 
-	
-	void ApplyMoodPalette() =>
+
+	void ApplyMoodPalette()
+	{
+		logger.LogInformation("Applying mood palette...");
 		moodPaletteCatalog.Current = moodPaletteCatalog.Palettes[MoodPalette];
-	
-	void ApplyAppearance() =>
+	}
+
+	void ApplyAppearance()
+	{
+		logger.LogInformation("Applying appearance...");
 		SkeleApplication.Current?.Theme.Appearance = Appearance;
-	
-	void ApplyAccent() =>
+	}
+
+	void ApplyAccent()
+	{
+		logger.LogInformation("Applying accent...");
 		SkeleApplication.Current?.Theme.Tint = Accent switch
 		{
 			Accent.Default => Color.Dynamic(Color.FromHex(0x658631), Color.FromHex(0xb9cc7a)),
@@ -69,11 +81,15 @@ public partial class AppThemeConfig : ObservableObject
 			Accent.Gray => Color.Dynamic(Color.FromHex(0x64748b), Color.FromHex(0x94a3b8)),
 			_ => throw new ArgumentOutOfRangeException(nameof(Accent))
 		};
+	}
 
-	void ApplySoftScrollEdge() =>
+	void ApplySoftScrollEdge()
+	{
+		logger.LogInformation("Applying soft scroll edge...");
 		SkeleApplication.Current?.Theme.TopScrollEdgeStyle = SoftScrollEdge
 			? ScrollEdgeStyle.Soft
 			: ScrollEdgeStyle.Automatic;
+	}
 
 
 	public void Apply()

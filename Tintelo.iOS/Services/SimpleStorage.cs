@@ -50,7 +50,7 @@ public sealed class SimpleStorage(
 
 		if (value is null)
 		{
-			logger.LogInformation("Value is null, removing '{key}'...", key);
+			logger.LogInformation("Value is null, removing '{Key}'...", key);
 			RemoveValue(key);
 			return;
 		}

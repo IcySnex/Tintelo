@@ -11,7 +11,7 @@ public class SettingsView : ContentView<SettingsViewModel>
 {
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.Settings_Title;
+		Title = Texts.Settings;
 		Background = Colors.GroupedBackground;
 		
 		Content = new CollectionView<SettingsEntry, SettingsSection>

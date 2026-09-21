@@ -9,12 +9,12 @@ public class AnalyticsView : ContentView<AnalyticsViewModel>
 {
 	public AnalyticsView(AnalyticsViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.Analytics_Title;
+		Title = Texts.Analytics;
 		
 		ToolbarItems.Add(new()
 		{
 			Icon = "switch.2",
-			Text = Texts.Settings_Title,
+			Text = Texts.Settings,
 			Command = viewModel.OpenSettingsCommand
 		});
 	}

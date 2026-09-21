@@ -11,7 +11,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 {
 	public CalendarView(CalendarViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.Calendar_Title;
+		Title = Texts.Calendar;
 		Background = Colors.Background;
 		
 		NavigationAccessory = new WeekdaysHeader();
@@ -19,7 +19,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 		ToolbarItems.Add(new()
 		{
 			Icon = "switch.2",
-			Text = Texts.Settings_Title,
+			Text = Texts.Settings,
 			Command = viewModel.OpenSettingsCommand
 		});
 		

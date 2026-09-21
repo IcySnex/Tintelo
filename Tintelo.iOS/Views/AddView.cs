@@ -9,6 +9,6 @@ public class AddView : ContentView<AddViewModel>
 {
 	public AddView(AddViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.AddEntry_Title;
+		Title = Texts.AddEntry;
 	}
 }

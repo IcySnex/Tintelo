@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<data name="AddEntry_Title">
+	<data name="AddEntry">
 		<value>Eintrag hinzufügen</value>
 	</data>
-	<data name="Analytics_Title">
+	<data name="Analytics">
 		<value>Statistiken</value>
 	</data>
-	<data name="Calendar_Title">
+	<data name="Calendar">
 		<value>Kalender</value>
 	</data>
-	<data name="Settings_Title" xml:space="preserve">
+	<data name="Settings" xml:space="preserve">
 		<value>Einstellungen</value>
 	</data>
 	<data name="App_Name" xml:space="preserve">
@@ -156,7 +156,7 @@
 	<data name="Settings_Theme_SoftScrollEdge" xml:space="preserve">
 		<value>Sanfte Scrollkante</value>
 	</data>
-	<data name="Error_Title" xml:space="preserve">
+	<data name="Error" xml:space="preserve">
 		<value>Etwas ist schiefgelaufen!</value>
 	</data>
 	<data name="Error_Description_Mail" xml:space="preserve">

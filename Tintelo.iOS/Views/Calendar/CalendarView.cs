@@ -14,7 +14,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 		Title = Texts.Calendar;
 		Background = Colors.Background;
 		
-		NavigationAccessory = new WeekdaysHeader(viewModel.FirstWeekday);
+		NavigationAccessory = new WeekdaysHeader(viewModel.Calendar);
 
 		ToolbarItems.Add(new()
 		{

@@ -7,6 +7,16 @@ namespace Tintelo.iOS.Utils;
 
 internal static class SettingsDisplays
 {
+	public static readonly EnumDisplay<FirstDayOfWeek> FirstDayOfWeeks = new(
+		value => value switch
+		{
+			FirstDayOfWeek.Automatic => Texts.Settings_Calendar_FirstDayOfWeek_Automatic,
+			FirstDayOfWeek.Monday => Texts.Settings_Calendar_FirstDayOfWeek_Monday,
+			FirstDayOfWeek.Sunday => Texts.Settings_Calendar_FirstDayOfWeek_Sunday,
+			_ => throw new ArgumentOutOfRangeException(nameof(value))
+		});
+
+	
 	public static readonly EnumDisplay<Appearance> Appearances = new(
 		value => value switch
 		{

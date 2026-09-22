@@ -23,6 +23,20 @@ public partial class SettingsViewModel(
 	
 	public IReadOnlyList<SettingsSection> Sections { get; } =
 	[
+		new(Texts.Settings_Calendar,
+		[
+			new SettingsPickerEntry(
+				Texts.Settings_Calendar_FirstDayOfWeek,
+				OperatingSystem.IsIOSVersionAtLeast(26) ? "1.calendar" : "calendar",
+				SettingsDisplays.FirstDayOfWeeks.Titles,
+				BindingFactory.Bind(config, config => config.Calendar)
+					.Path(theme => theme.FirstDayOfWeek)
+					.ConvertTo(SettingsDisplays.FirstDayOfWeeks.GetTitle)
+					.ConvertFrom(SettingsDisplays.FirstDayOfWeeks.GetValue)
+					.TwoWay((theme, value) => theme.FirstDayOfWeek = value),
+				Colors.SecondaryLabel),
+		]),
+		
 		new(Texts.Settings_Theme,
 		[
 			new SettingsNavigationEntry(

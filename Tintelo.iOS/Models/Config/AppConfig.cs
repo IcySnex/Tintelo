@@ -8,5 +8,7 @@ public sealed class AppConfig(
 	SimpleStorage storage,
 	MoodPaletteCatalog moodPaletteCatalog)
 {
+	public AppCalendarConfig Calendar { get; } = new(storage);
+	
 	public AppThemeConfig Theme { get; } = new(logger, storage, moodPaletteCatalog);
 }

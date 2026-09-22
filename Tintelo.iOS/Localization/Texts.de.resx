@@ -201,4 +201,19 @@
 	<data name="Settings_Theme_MoodPalette_Monochrome_Description" xml:space="preserve">
 		<value>Eine Graustufen-Palette, die nur Helligkeit statt Farbe zur Unterscheidung nutzt.</value>
 	</data>
+	<data name="Settings_Calendar_FirstDayOfWeek" xml:space="preserve">
+		<value>Erster Wochentag</value>
+	</data>
+	<data name="Settings_Calendar_FirstDayOfWeek_Automatic" xml:space="preserve">
+		<value>Automatisch</value>
+	</data>
+	<data name="Settings_Calendar_FirstDayOfWeek_Monday" xml:space="preserve">
+		<value>Montag</value>
+	</data>
+	<data name="Settings_Calendar_FirstDayOfWeek_Sunday" xml:space="preserve">
+		<value>Sonntag</value>
+	</data>
+	<data name="Settings_Calendar" xml:space="preserve">
+		<value>Kalendar</value>
+	</data>
 </root>

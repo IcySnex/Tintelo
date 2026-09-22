@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SkeleKit;
 using Tintelo.iOS.Localization;
+using Tintelo.iOS.Logging;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 
@@ -35,7 +36,8 @@ public partial class AboutViewModel(
 		try
 		{
 			logger.LogInformation("Showing mail composer...");
-			await mailer.ComposeAsync(new()
+
+			MailContent content = new()
 			{
 				To = { ContactEmail },
 				Subject = Texts.About_Contact_Mail_Subject,
@@ -44,7 +46,17 @@ public partial class AboutViewModel(
 					systemInfo.GetDeviceModel(),
 					systemInfo.GetOperatingSystem(),
 					systemInfo.GetBatteryLevel())
-			});
+			};
+
+			if (LogFiles.GetLatestPath() is string logPath)
+				content.Attachments.Add(new()
+				{
+					Data = await File.ReadAllBytesAsync(logPath),
+					FileName = Path.GetFileName(logPath),
+					MimeType = "text/plain"
+				});
+
+			await mailer.ComposeAsync(content);
 		}
 		catch (Exception ex)
 		{

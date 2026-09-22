@@ -5,10 +5,11 @@ namespace Tintelo.iOS.Views.Calendar;
 
 public class WeekdaysHeader : Border
 {
-	public WeekdaysHeader()
+	public WeekdaysHeader(
+		DayOfWeek firstWeekday)
 	{
 		string[] weekdays = Enumerable.Range(0, 7)
-			.Select(i => CultureInfo.CurrentCulture.DateTimeFormat.ShortestDayNames[(0 + i) % 7].ToUpper(CultureInfo.CurrentCulture))
+			.Select(offset => CultureInfo.CurrentCulture.DateTimeFormat.ShortestDayNames[((int)firstWeekday + offset) % 7].ToUpper(CultureInfo.CurrentCulture))
 			.ToArray();
 		
 		

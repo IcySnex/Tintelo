@@ -32,6 +32,7 @@ SkeleApplication.CreateBuilder()
 		services.AddSingleton<BackupService>();
 		services.AddSingleton<SystemInfo>();
 		services.AddSingleton<MoodPaletteCatalog>();
+		services.AddSingleton<CalendarProvider>();
 		
 		// ViewModels
 		services.AddSingleton<CalendarViewModel>();

@@ -14,7 +14,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 		Title = Texts.Calendar;
 		Background = Colors.Background;
 		
-		NavigationAccessory = new WeekdaysHeader();
+		NavigationAccessory = new WeekdaysHeader(viewModel.FirstWeekday);
 
 		ToolbarItems.Add(new()
 		{
@@ -39,7 +39,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 				.Add(static () => new EmptyCalendarDayCell())
 				.Add(static () => new CalendarDayCell()),
 			
-			GroupedItemsSource = viewModel.Months,
+			GroupedItemsSource = Bind(viewModel => viewModel.Months),
 			ItemCommand = viewModel.OpenDetailsCommand
 		};
 	}

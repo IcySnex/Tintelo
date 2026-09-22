@@ -1,33 +1,44 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
+using Tintelo.iOS.Models;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Services;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels.Settings;
 
 namespace Tintelo.iOS.ViewModels.Calendar;
 
-public partial class CalendarViewModel(
-	INavigator navigator,
-	CalendarProvider calendar) : ObservableObject
+public partial class CalendarViewModel : ObservableObject
 {
-	public CalendarProvider Calendar => calendar;
+	readonly INavigator navigator;
+
+	public CalendarViewModel(INavigator navigator,
+		CalendarProvider calendar)
+	{
+		this.navigator = navigator;
+		this.Calendar = calendar;
+		
+		Months =
+		[
+			..CreateTestMonths(1200)
+		];
+	}
+
 	
-	public IReadOnlyList<CalendarMonthSummary> Months { get; } =
-	[
-		calendar.GetMonth(YearMonth.Current),
-		calendar.GetMonth(YearMonth.Current.Add(1)),
-		calendar.GetMonth(YearMonth.Current.Add(2)),
-		calendar.GetMonth(YearMonth.Current.Add(3)),
-		calendar.GetMonth(YearMonth.Current.Add(4)),
-		calendar.GetMonth(YearMonth.Current.Add(5)),
-		calendar.GetMonth(YearMonth.Current.Add(6)),
-		calendar.GetMonth(YearMonth.Current.Add(7)),
-		calendar.GetMonth(YearMonth.Current.Add(8)),
-		calendar.GetMonth(YearMonth.Current.Add(9)),
-		calendar.GetMonth(YearMonth.Current.Add(10)),
-		calendar.GetMonth(YearMonth.Current.Add(11)),
-	];
+	IEnumerable<CalendarMonthSummary> CreateTestMonths(
+		int count)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			yield return Calendar.GetMonth(YearMonth.Current.Add(i));
+		}
+	}
+	
+	
+	public CalendarProvider Calendar { get; }
+
+	public IReadOnlyList<CalendarMonthSummary> Months { get; }
 	
 	
 	[RelayCommand]

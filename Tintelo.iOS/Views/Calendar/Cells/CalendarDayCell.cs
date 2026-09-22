@@ -19,18 +19,11 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	static readonly double[] EmptyStrokeDashPattern = [1, 5];
 	static readonly double[] StrokeDashPattern = [];
 
+	static readonly string[] DayNumbers = Enumerable.Range(0, 32)
+		.Select(day => day.ToString(CultureInfo.CurrentCulture))
+		.ToArray();
 	
 	static readonly MoodPaletteCatalog MoodPaletteCatalog = SkeleApplication.Current!.Services.GetRequiredService<MoodPaletteCatalog>();
-	
-	static BindableBrush ResolvePaletteBackground(
-		Mood mood) =>
-		BindingFactory.Bind(MoodPaletteCatalog, moodPalette => moodPalette.Current)
-			.ConvertTo(value => MoodPalette.Get(value, mood).Background);
-	
-	static BindingExpression<Color?> ResolvePaletteForeground(
-		Mood mood) =>
-		BindingFactory.Bind(MoodPaletteCatalog, moodPalette => moodPalette.Current)
-			.ConvertTo(value => (Color?)MoodPalette.Get(value, mood).Foreground);
 	
 	
 	readonly Border contentBorder;
@@ -83,7 +76,29 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 				}
 			}
 		};
+
+		contentBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveBackground(), "palette => palette.Current");
+		numberLabel.TextColor = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveForeground(), "palette => palette.Current");
+		dotBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveDot(), "palette => palette.Current");
 	}
+	
+	
+	Color? ResolveBackground() =>
+		Item is not CalendarDaySummary day ? null
+		: day.Key > DateOnly.FromDateTime(DateTime.Now) ? Colors.Transparent
+		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Background
+		: EmptyBackgroundColor;
+	
+	Color? ResolveForeground() =>
+		Item is not CalendarDaySummary day ? null
+		: day.Key > DateOnly.FromDateTime(DateTime.Now) ? Colors.SecondaryLabel.WithAlpha(0.6)
+		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Foreground
+		: EmptyTextColor;
+	
+	Color ResolveDot() =>
+		Item is CalendarDaySummary day && day.Mood is Mood mood
+			? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Foreground
+			: EmptyTextColor;
 	
 	
 	protected override void OnItemChanged(
@@ -94,15 +109,12 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 		bool isToday = item.Key == today;
 		bool isEmpty = !isFuture && item.Mood is null && !isToday;
 
-		contentBorder.Background = isFuture ?Colors.Transparent : item.Mood.HasValue ? ResolvePaletteBackground(item.Mood.Value) : EmptyBackgroundColor;
 		contentBorder.Stroke = isToday ? Colors.Label.WithAlpha(0.72) : isEmpty ? EmptyStrokeColor : default;
 		contentBorder.StrokeThickness = isToday || isEmpty ? 2 : 0;
 		contentBorder.StrokeDashPattern = isEmpty ? EmptyStrokeDashPattern : StrokeDashPattern;
 		
-		numberLabel.Text = item.Key.Day.ToString(CultureInfo.CurrentCulture);
-		numberLabel.TextColor = isFuture ? Colors.SecondaryLabel.WithAlpha(0.6) : item.Mood.HasValue ? ResolvePaletteForeground(item.Mood.Value) : EmptyTextColor;
+		numberLabel.Text = DayNumbers[item.Key.Day];
 
 		dotBorder.IsVisible = item.HasNote;
-		dotBorder.Background = item.Mood.HasValue ? ResolvePaletteForeground(item.Mood.Value) : EmptyTextColor;
 	}
 }

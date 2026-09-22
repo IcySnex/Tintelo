@@ -41,12 +41,10 @@ public class CalendarProvider : ObservableObject
 	CalendarMonthSummary CreateMonth(
 		YearMonth month)
 	{
-		logger.LogInformation("Creating month {Month}...", month);
-		
 		int leading = Leading(month);
 		int dayCount = DateTime.DaysInMonth(month.Year, month.Month);
 		
-		ObservableRangeCollection<ICalendarDaySummary> items = [];
+		List<ICalendarDaySummary> items = new(leading + dayCount);
 		
 		for (int index = 0; index < leading; index++)
 			items.Add(new EmptyCalendarDaySummary());
@@ -55,13 +53,12 @@ public class CalendarProvider : ObservableObject
 		{
 			DateOnly date = new(month.Year, month.Month, day);
 			
-			// stored content is copied so a live month never shares day instances with the store
 			items.Add(days.TryGetValue(date, out CalendarDaySummary? saved)
 				? saved with { Key = date }
 				: new CalendarDaySummary(date, null, false));
 		}
 		
-		return new(month, items);
+		return new(month, new ObservableRangeCollection<ICalendarDaySummary>(items));
 	}
 
 	int Leading(

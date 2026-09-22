@@ -2,7 +2,6 @@ using SkeleKit;
 
 namespace Tintelo.iOS.Models.Calendar;
 
-public record CalendarMonthSummary(
-	int Month,
-	int Year,
+public sealed record CalendarMonthSummary(
+	YearMonth Key,
 	IReadOnlyList<ICalendarDaySummary> Items) : ISection<ICalendarDaySummary>;

@@ -20,7 +20,7 @@ public class CalendarMonthHeaderCell : ItemView<CalendarMonthSummary>
 			{
 				new Label
 				{
-					Text = Bind(month => month.Month)
+					Text = Bind(month => month.Key.Month)
 						.ConvertTo(value => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(value)),
 					
 					TextStyle = TextStyle.Title2,
@@ -31,8 +31,8 @@ public class CalendarMonthHeaderCell : ItemView<CalendarMonthSummary>
 				{
 					VerticalAlignment = VerticalAlignment.End,
 					
-					Text = Bind(month => month.Year)
-						.ConvertTo(value => value.ToString(CultureInfo.CurrentCulture)),
+					Text = Bind(month => month.Key.Year)
+						.ConvertTo(value => value.ToString()),
 					TextColor = Colors.SecondaryLabel,
 					
 					TextStyle = TextStyle.Subheadline,

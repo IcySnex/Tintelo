@@ -12,41 +12,43 @@ public partial class CalendarViewModel(
 {
 	public CalendarMonthSummary[] Months { get; } = new[]
 	{
-		new CalendarMonthSummary(9, 2026, new ICalendarDaySummary[]
-		{
-			new EmptyCalendarDaySummary(),
-			new EmptyCalendarDaySummary(),
-			new CalendarDaySummary(1, null, false),
-			new CalendarDaySummary(2, null, false),
-			new CalendarDaySummary(3, null, false),
-			new CalendarDaySummary(4, null, false),
-			new CalendarDaySummary(5, null, false),
-			new CalendarDaySummary(6, Mood.ExtremelyBad, true),
-			new CalendarDaySummary(7, Mood.VeryBad, true),
-			new CalendarDaySummary(8, Mood.Bad, true),
-			new CalendarDaySummary(9, Mood.Neutral, true),
-			new CalendarDaySummary(10, Mood.Good, true),
-			new CalendarDaySummary(11, Mood.VeryGood, true),
-			new CalendarDaySummary(12, Mood.ExtremelyGood, true),
-			new CalendarDaySummary(13, null, false),
-			new CalendarDaySummary(14, null, false),
-			new CalendarDaySummary(15, null, false),
-			new CalendarDaySummary(16, null, false),
-			new CalendarDaySummary(17, null, false),
-			new CalendarDaySummary(18, null, false),
-			new CalendarDaySummary(19, null, false),
-			new CalendarDaySummary(20, null, false),
-			new CalendarDaySummary(21, null, false),
-			new CalendarDaySummary(22, null, false),
-			new CalendarDaySummary(23, null, false),
-			new CalendarDaySummary(24, null, false),
-			new CalendarDaySummary(25, null, false),
-			new CalendarDaySummary(26, null, false),
-			new CalendarDaySummary(27, null, false),
-			new CalendarDaySummary(28, null, false),
-			new CalendarDaySummary(29, null, false),
-			new CalendarDaySummary(30, null, false)
-		})
+		new CalendarMonthSummary(
+			new YearMonth(2026, 9),
+			new ICalendarDaySummary[]
+			{
+				new EmptyCalendarDaySummary(),
+				new EmptyCalendarDaySummary(),
+				new CalendarDaySummary(new(2026, 9, 1), null, false),
+				new CalendarDaySummary(new(2026, 9, 2), null, false),
+				new CalendarDaySummary(new(2026, 9, 3), null, false),
+				new CalendarDaySummary(new(2026, 9, 4), null, false),
+				new CalendarDaySummary(new(2026, 9, 5), null, false),
+				new CalendarDaySummary(new(2026, 9, 6), Mood.ExtremelyBad, true),
+				new CalendarDaySummary(new(2026, 9, 7), Mood.VeryBad, true),
+				new CalendarDaySummary(new(2026, 9, 8), Mood.Bad, true),
+				new CalendarDaySummary(new(2026, 9, 9), Mood.Neutral, true),
+				new CalendarDaySummary(new(2026, 9, 10), Mood.Good, true),
+				new CalendarDaySummary(new(2026, 9, 11), Mood.VeryGood, true),
+				new CalendarDaySummary(new(2026, 9, 12), Mood.ExtremelyGood, true),
+				new CalendarDaySummary(new(2026, 9, 13), null, false),
+				new CalendarDaySummary(new(2026, 9, 14), null, false),
+				new CalendarDaySummary(new(2026, 9, 15), null, false),
+				new CalendarDaySummary(new(2026, 9, 16), null, false),
+				new CalendarDaySummary(new(2026, 9, 17), null, false),
+				new CalendarDaySummary(new(2026, 9, 18), null, false),
+				new CalendarDaySummary(new(2026, 9, 19), null, false),
+				new CalendarDaySummary(new(2026, 9, 20), null, false),
+				new CalendarDaySummary(new(2026, 9, 21), null, false),
+				new CalendarDaySummary(new(2026, 9, 22), null, false),
+				new CalendarDaySummary(new(2026, 9, 23), null, false),
+				new CalendarDaySummary(new(2026, 9, 24), null, false),
+				new CalendarDaySummary(new(2026, 9, 25), null, false),
+				new CalendarDaySummary(new(2026, 9, 26), null, false),
+				new CalendarDaySummary(new(2026, 9, 27), null, false),
+				new CalendarDaySummary(new(2026, 9, 28), null, false),
+				new CalendarDaySummary(new(2026, 9, 29), null, false),
+				new CalendarDaySummary(new(2026, 9, 30), null, false)
+			})
 	};
 	
 	

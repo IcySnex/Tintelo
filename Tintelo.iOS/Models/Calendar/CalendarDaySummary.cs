@@ -2,9 +2,9 @@ namespace Tintelo.iOS.Models.Calendar;
 
 public interface ICalendarDaySummary;
 
-public record CalendarDaySummary(
-	int Day,
+public sealed record CalendarDaySummary(
+	DateOnly Key,
 	Mood? Mood,
 	bool HasNote) : ICalendarDaySummary;
-	
-public record EmptyCalendarDaySummary : ICalendarDaySummary;
+
+public sealed record EmptyCalendarDaySummary : ICalendarDaySummary;

@@ -89,8 +89,9 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	protected override void OnItemChanged(
 		CalendarDaySummary item)
 	{
-		bool isFuture = item.Day > DateTime.Now.Day;
-		bool isToday = item.Day == DateTime.Now.Day;
+		DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+		bool isFuture = item.Key > today;
+		bool isToday = item.Key == today;
 		bool isEmpty = !isFuture && item.Mood is null && !isToday;
 
 		contentBorder.Background = isFuture ?Colors.Transparent : item.Mood.HasValue ? ResolvePaletteBackground(item.Mood.Value) : EmptyBackgroundColor;
@@ -98,7 +99,7 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 		contentBorder.StrokeThickness = isToday || isEmpty ? 2 : 0;
 		contentBorder.StrokeDashPattern = isEmpty ? EmptyStrokeDashPattern : StrokeDashPattern;
 		
-		numberLabel.Text = item.Day.ToString(CultureInfo.CurrentCulture);
+		numberLabel.Text = item.Key.Day.ToString(CultureInfo.CurrentCulture);
 		numberLabel.TextColor = isFuture ? Colors.SecondaryLabel.WithAlpha(0.6) : item.Mood.HasValue ? ResolvePaletteForeground(item.Mood.Value) : EmptyTextColor;
 
 		dotBorder.IsVisible = item.HasNote;

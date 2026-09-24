@@ -25,9 +25,11 @@ public class CalendarView : ContentView<CalendarViewModel>
 		
 		Content = new CollectionView<ICalendarDaySummary, CalendarMonthSummary>
 		{
+			DefaultScrollPosition = ScrollPosition.Bottom,
+
 			Padding = new(10, 0, 10, 0),
 			
-			Layout = CollectionLayout.Grid(
+			Layout = CollectionLayout.FixedGrid(
 				columns: 7,
 				spacing: 6,
 				itemAspectRatio: 1),
@@ -39,7 +41,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 				.Add(static () => new EmptyCalendarDayCell())
 				.Add(static () => new CalendarDayCell()),
 			
-			GroupedItemsSource = Bind(viewModel => viewModel.Months),
+			GroupedItemsSource = Bind(vm => vm.Calendar.Months),
 			ItemCommand = viewModel.OpenDetailsCommand
 		};
 	}

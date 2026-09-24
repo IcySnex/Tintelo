@@ -5,8 +5,7 @@ namespace Tintelo.iOS.Models.Calendar;
 
 public sealed class CalendarMonthSummary(
 	YearMonth key,
-	ObservableRangeCollection<ICalendarDaySummary> items)
-	: ISection<ICalendarDaySummary>
+	ObservableRangeCollection<ICalendarDaySummary> items) : ISection<ICalendarDaySummary>
 {
 	public YearMonth Key { get; } = key;
 
@@ -19,18 +18,28 @@ public sealed class CalendarMonthSummary(
 		items[index] = item;
 	
 	public void SetLeading(
-		int blanks)
+		int count)
 	{
 		int current = 0;
 		while (current < items.Count && items[current] is EmptyCalendarDaySummary)
 			current++;
-		
-		if (blanks == current)
-			return;
-		
-		if (blanks > current)
-			items.InsertRange(0, Enumerable.Range(0, blanks - current).Select(_ => new EmptyCalendarDaySummary()));
-		else
-			items.RemoveRange(0, current - blanks);
+
+		int difference = count - current;
+		switch (difference)
+		{
+			case 0:
+				return;
+			case > 0:
+			{
+				ICalendarDaySummary[] added = new ICalendarDaySummary[difference];
+				Array.Fill(added, ICalendarDaySummary.Empty);
+
+				items.InsertRange(0, added);
+				break;
+			}
+			default:
+				items.RemoveRange(0, -difference);
+				break;
+		}
 	}
 }

@@ -83,15 +83,18 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	}
 	
 	
+	DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+	
+	
 	Color? ResolveBackground() =>
 		Item is not CalendarDaySummary day ? null
-		: day.Key > DateOnly.FromDateTime(DateTime.Now) ? Colors.Transparent
+		: day.Key > today ? Colors.Transparent
 		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Background
 		: EmptyBackgroundColor;
 	
 	Color? ResolveForeground() =>
 		Item is not CalendarDaySummary day ? null
-		: day.Key > DateOnly.FromDateTime(DateTime.Now) ? Colors.SecondaryLabel.WithAlpha(0.6)
+		: day.Key > today ? Colors.SecondaryLabel.WithAlpha(0.6)
 		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Foreground
 		: EmptyTextColor;
 	
@@ -104,7 +107,7 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	protected override void OnItemChanged(
 		CalendarDaySummary item)
 	{
-		DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+		today = DateOnly.FromDateTime(DateTime.Now);
 		bool isFuture = item.Key > today;
 		bool isToday = item.Key == today;
 		bool isEmpty = !isFuture && item.Mood is null && !isToday;

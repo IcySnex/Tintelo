@@ -1,6 +1,7 @@
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
+using SkeleKit;
 using Tintelo.iOS.Models;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Models.Config;
@@ -10,18 +11,35 @@ namespace Tintelo.iOS.Services;
 
 public class CalendarProvider : ObservableObject
 {
-	readonly ILogger<CalendarProvider> logger;
+	static int GetMonthLeadingItemCount(
+		YearMonth month,
+		DayOfWeek firstWeekday)
+	{
+		DateOnly firstDay = new(month.Year, month.Month, 1);
+		return ((int)firstDay.DayOfWeek - (int)firstWeekday + 7) % 7;
+	}
+
+	public static int GetMonthItemCount(
+		YearMonth month,
+		DayOfWeek firstWeekday) =>
+		GetMonthLeadingItemCount(month, firstWeekday) + DateTime.DaysInMonth(month.Year, month.Month);
+	
+	
 	readonly AppConfig config;
 	
 	readonly Dictionary<YearMonth, CalendarMonthSummary> months = []; // The same month instances the view model holds, so in-place item updates reach the calendar.
 	readonly Dictionary<DateOnly, CalendarDaySummary> days = []; // Day content until SQLite exists; new months are filled from it.
+	readonly LinkedList<YearMonth> monthOrder = []; // Least recently shown first, so the cache stays bounded.
+
+	const int MonthCacheLimit = 24;
 	
 	public CalendarProvider(
 		ILogger<CalendarProvider> logger,
 		AppConfig config)
 	{
-		this.logger = logger;
 		this.config = config;
+		
+		Months = new CalendarMonthSource(this);
 
 		config.Calendar.PropertyChanged += (_, e) =>
 		{
@@ -30,7 +48,7 @@ public class CalendarProvider : ObservableObject
 				logger.LogInformation("First day of week changed to {Day}.", config.Calendar.FirstDayOfWeek);
 				
 				foreach (CalendarMonthSummary month in months.Values)
-					month.SetLeading(Leading(month.Key));
+					month.SetLeading(GetMonthLeadingItemCount(month.Key, FirstWeekday));
 				
 				OnPropertyChanged(nameof(FirstWeekday));
 			}
@@ -41,33 +59,26 @@ public class CalendarProvider : ObservableObject
 	CalendarMonthSummary CreateMonth(
 		YearMonth month)
 	{
-		int leading = Leading(month);
+		int year = month.Year;
+		int monthNumber = month.Month;
+		
+		int leadingCount = GetMonthLeadingItemCount(month, FirstWeekday);
 		int dayCount = DateTime.DaysInMonth(month.Year, month.Month);
 		
-		List<ICalendarDaySummary> items = new(leading + dayCount);
-		
-		for (int index = 0; index < leading; index++)
-			items.Add(new EmptyCalendarDaySummary());
+		ICalendarDaySummary[] items = new ICalendarDaySummary[leadingCount + dayCount];
+		Array.Fill(items, ICalendarDaySummary.Empty, 0, leadingCount);
 
 		for (int day = 1; day <= dayCount; day++)
 		{
-			DateOnly date = new(month.Year, month.Month, day);
-			
-			items.Add(days.TryGetValue(date, out CalendarDaySummary? saved)
-				? saved with { Key = date }
-				: new CalendarDaySummary(date, null, false));
+			DateOnly date = new(year, monthNumber, day);
+			items[leadingCount + day - 1] = days.TryGetValue(date, out CalendarDaySummary? saved) 
+				? saved
+				: new CalendarDaySummary(date, null, false, false);
 		}
 		
 		return new(month, new ObservableRangeCollection<ICalendarDaySummary>(items));
 	}
 
-	int Leading(
-		YearMonth month)
-	{
-		DateOnly firstDay = new(month.Year, month.Month, 1);
-		return ((int)firstDay.DayOfWeek - (int)FirstWeekday + 7) % 7;
-	}
-	
 	
 	public DayOfWeek FirstWeekday => config.Calendar.FirstDayOfWeek switch
 	{
@@ -77,15 +88,29 @@ public class CalendarProvider : ObservableObject
 		_ => throw new ArgumentOutOfRangeException()
 	};
 
+	public IVirtualizedList<CalendarMonthSummary> Months { get; }
 	
+
 	public CalendarMonthSummary GetMonth(
 		YearMonth month)
 	{
 		if (months.TryGetValue(month, out CalendarMonthSummary? cached))
+		{
+			monthOrder.Remove(month);
+			monthOrder.AddFirst(month);
 			return cached;
+		}
 		
 		CalendarMonthSummary created = CreateMonth(month);
 		months.Add(month, created);
+		monthOrder.AddFirst(month);
+		
+		while (months.Count > MonthCacheLimit)
+		{
+			YearMonth oldest = monthOrder.Last!.Value;
+			monthOrder.RemoveLast();
+			months.Remove(oldest);
+		}
 		
 		return created;
 	}
@@ -100,6 +125,6 @@ public class CalendarProvider : ObservableObject
 		if (!months.TryGetValue(YearMonth.From(date), out CalendarMonthSummary? month))
 			return;
 		
-		month.SetItem(Leading(month.Key) + date.Day - 1, new CalendarDaySummary(date, mood, hasNote));
+		month.SetItem(GetMonthLeadingItemCount(month.Key, FirstWeekday) + date.Day - 1, new CalendarDaySummary(date, mood, hasNote));
 	}
 }

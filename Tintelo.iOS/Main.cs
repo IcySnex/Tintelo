@@ -1,3 +1,5 @@
+// dotnet publish Tintelo.iOS/Tintelo.iOS.csproj -f net10.0-ios27.0 -c Release -p:RuntimeIdentifier=ios-arm64 -p:BuildIpa=true
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SkeleKit;

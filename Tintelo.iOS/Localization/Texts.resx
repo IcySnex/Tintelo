@@ -213,6 +213,9 @@
 	<data name="Settings_Calendar_FirstDayOfWeek_Sunday" xml:space="preserve">
 		<value>Sunday</value>
 	</data>
+	<data name="Settings_Calendar_StartOfDay" xml:space="preserve">
+		<value>Start of Day</value>
+	</data>
 	<data name="Settings_Calendar" xml:space="preserve">
 		<value>Calendar</value>
 	</data>

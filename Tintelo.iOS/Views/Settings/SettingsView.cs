@@ -33,7 +33,8 @@ public class SettingsView : ContentView<SettingsViewModel>
 				.Add(static () => new SettingsDisplayEntryCell())
 				.Add(static () => new SettingsNavigationEntryCell())
 				.Add(static () => new SettingsToggleEntryCell())
-				.Add(static () => new SettingsPickerEntryCell()),
+				.Add(static () => new SettingsPickerEntryCell())
+				.Add(static () => new SettingsTimeEntryCell()),
 			
 			GroupedItemsSource = Bind(vm => vm.Sections),
 			ItemCommand = viewModel.ActivateCommand

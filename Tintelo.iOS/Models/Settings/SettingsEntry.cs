@@ -35,3 +35,10 @@ public sealed record SettingsPickerEntry(
 	IReadOnlyList<string> Options,
 	Bindable<string?> SelectedOption,
 	Color? Color = null) : SettingsEntry(Title, Icon);
+
+public sealed record SettingsTimeEntry(
+	string Title,
+	string Icon,
+	Bindable<DateTime> Date,
+	DateTime? Minimum,
+	DateTime? Maximum) : SettingsEntry(Title, Icon);

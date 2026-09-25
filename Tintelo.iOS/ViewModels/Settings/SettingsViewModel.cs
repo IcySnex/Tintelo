@@ -19,7 +19,7 @@ public partial class SettingsViewModel(
 		OperatingSystem.IsIOSVersionAtLeast(major)
 			? [entry]
 			: Array.Empty<SettingsEntry>();
-
+	
 	
 	public IReadOnlyList<SettingsSection> Sections { get; } =
 	[
@@ -30,11 +30,24 @@ public partial class SettingsViewModel(
 				OperatingSystem.IsIOSVersionAtLeast(26) ? "1.calendar" : "calendar",
 				SettingsDisplays.FirstDayOfWeeks.Titles,
 				BindingFactory.Bind(config, config => config.Calendar)
-					.Path(theme => theme.FirstDayOfWeek)
+					.Path(calendar => calendar.FirstDayOfWeek)
 					.ConvertTo(SettingsDisplays.FirstDayOfWeeks.GetTitle)
 					.ConvertFrom(SettingsDisplays.FirstDayOfWeeks.GetValue)
-					.TwoWay((theme, value) => theme.FirstDayOfWeek = value),
+					.TwoWay((calendar, value) => calendar.FirstDayOfWeek = value),
 				Colors.SecondaryLabel),
+
+			new SettingsTimeEntry(
+				Texts.Settings_Calendar_StartOfDay,
+				"moon.stars",
+				BindingFactory.Bind(config, config => config.Calendar)
+					.Path(calendar => calendar.StartOfDay)
+					.ConvertTo(value => value.HasValue
+						? DateTime.MinValue.Add(value.Value.ToTimeSpan())
+						: DateTime.MinValue)
+					.ConvertFrom(value => TimeOnly.FromDateTime(value))
+					.TwoWay((calendar, value) => calendar.StartOfDay = value),
+				DateTime.MinValue,
+				DateTime.MinValue.AddHours(6))
 		]),
 		
 		new(Texts.Settings_Theme,

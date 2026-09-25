@@ -15,4 +15,8 @@ public partial class AppCalendarConfig : ObservableObject
 	[ObservableProperty]
 	[StoreAs("configuration.calendar.firstdayofweek", FirstDayOfWeek.Automatic)]
 	public partial FirstDayOfWeek FirstDayOfWeek { get; set; }
+
+	[ObservableProperty]
+	[StoreAs("configuration.calendar.startofday")]
+	public partial TimeOnly? StartOfDay { get; set; }
 }

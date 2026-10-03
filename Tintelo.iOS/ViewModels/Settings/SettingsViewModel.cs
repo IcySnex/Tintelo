@@ -13,6 +13,8 @@ public partial class SettingsViewModel(
 	AppConfig config,
 	INavigator navigator) : ObservableObject
 {
+	static readonly DateTime TimePickerAnchor = new(2001, 1, 1);
+	
 	static SettingsEntry[] OnIOSVersionAtLeast(
 		int major,
 		SettingsEntry entry) =>
@@ -42,12 +44,12 @@ public partial class SettingsViewModel(
 				BindingFactory.Bind(config, config => config.Calendar)
 					.Path(calendar => calendar.StartOfDay)
 					.ConvertTo(value => value.HasValue
-						? DateTime.MinValue.Add(value.Value.ToTimeSpan())
-						: DateTime.MinValue)
+						? TimePickerAnchor.Add(value.Value.ToTimeSpan())
+						: TimePickerAnchor)
 					.ConvertFrom(value => TimeOnly.FromDateTime(value))
 					.TwoWay((calendar, value) => calendar.StartOfDay = value),
-				DateTime.MinValue,
-				DateTime.MinValue.AddHours(6))
+				TimePickerAnchor,
+				TimePickerAnchor.AddHours(6).AddMinutes(-1))
 		]),
 		
 		new(Texts.Settings_Theme,

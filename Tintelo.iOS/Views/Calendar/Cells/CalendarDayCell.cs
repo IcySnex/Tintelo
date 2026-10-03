@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using SkeleKit;
@@ -24,6 +25,7 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 		.ToArray();
 	
 	static readonly MoodPaletteCatalog MoodPaletteCatalog = SkeleApplication.Current!.Services.GetRequiredService<MoodPaletteCatalog>();
+	static readonly CurrentDay CurrentDay = SkeleApplication.Current!.Services.GetRequiredService<CurrentDay>();
 	
 	
 	readonly Border contentBorder;
@@ -77,24 +79,21 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 			}
 		};
 
-		contentBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveBackground(), "palette => palette.Current");
-		numberLabel.TextColor = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveForeground(), "palette => palette.Current");
-		dotBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveDot(), "palette => palette.Current");
+		BindColors();
+
+		CurrentDay.PropertyChanged += OnCurrentDayChanged;
 	}
-	
-	
-	DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 	
 	
 	Color? ResolveBackground() =>
 		Item is not CalendarDaySummary day ? null
-		: day.Key > today ? Colors.Transparent
+		: day.Key > CurrentDay.Value ? Colors.Transparent
 		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Background
 		: EmptyBackgroundColor;
 	
 	Color? ResolveForeground() =>
 		Item is not CalendarDaySummary day ? null
-		: day.Key > today ? Colors.SecondaryLabel.WithAlpha(0.6)
+		: day.Key > CurrentDay.Value ? Colors.SecondaryLabel.WithAlpha(0.6)
 		: day.Mood is Mood mood ? MoodPalette.Get(MoodPaletteCatalog.Current, mood).Foreground
 		: EmptyTextColor;
 	
@@ -105,19 +104,46 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	
 	
 	protected override void OnItemChanged(
-		CalendarDaySummary item)
+		CalendarDaySummary item) =>
+		ApplyItem();
+
+	void OnCurrentDayChanged(
+		object? sender,
+		PropertyChangedEventArgs e)
 	{
-		today = DateOnly.FromDateTime(DateTime.Now);
-		bool isFuture = item.Key > today;
-		bool isToday = item.Key == today;
-		bool isEmpty = !isFuture && item.Mood is null && !isToday;
+		switch (e.PropertyName)
+		{
+			case nameof(CurrentDay.Value):
+				ApplyItem();
+				BindColors();
+				break;
+		}
+	}
+
+	
+	void ApplyItem()
+	{
+		if (Item is not CalendarDaySummary day)
+			return;
+
+		DateOnly today = CurrentDay.Value;
+		bool isFuture = day.Key > today;
+		bool isToday = day.Key == today;
+		bool isEmpty = !isFuture && day.Mood is null && !isToday;
 
 		contentBorder.Stroke = isToday ? Colors.Label.WithAlpha(0.72) : isEmpty ? EmptyStrokeColor : default;
 		contentBorder.StrokeThickness = isToday || isEmpty ? 2 : 0;
 		contentBorder.StrokeDashPattern = isEmpty ? EmptyStrokeDashPattern : StrokeDashPattern;
 		
-		numberLabel.Text = DayNumbers[item.Key.Day];
+		numberLabel.Text = DayNumbers[day.Key.Day];
 
-		dotBorder.IsVisible = item.HasNote;
+		dotBorder.IsVisible = day.HasNote;
+	}
+
+	void BindColors()
+	{
+		contentBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveBackground(), "palette => palette.Current");
+		numberLabel.TextColor = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveForeground(), "palette => palette.Current");
+		dotBorder.Background = BindingFactory.Bind(MoodPaletteCatalog, _ => ResolveDot(), "palette => palette.Current");
 	}
 }

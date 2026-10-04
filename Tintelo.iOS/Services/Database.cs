@@ -50,7 +50,10 @@ public sealed class Database(
 					Id TEXT NOT NULL PRIMARY KEY,
 					Name TEXT NOT NULL CHECK (length(trim(Name)) > 0),
 					Emoji TEXT,
-					Color TEXT NOT NULL,
+					Color TEXT NOT NULL CHECK (
+						length(Color) = 7
+						AND Color GLOB '#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]'
+					),
 					IsArchived INTEGER NOT NULL DEFAULT 0 CHECK (IsArchived IN (0, 1))
 				) STRICT;
 	
@@ -195,10 +198,6 @@ public sealed class Database(
 		}, cancellationToken);
 
 	
-	public Task InitializeAsync(
-		CancellationToken cancellationToken = default) =>
-		ExecuteAsync(() => GetConnection(cancellationToken), cancellationToken);
-
 	public ValueTask DisposeAsync() =>
 		new(ExecuteAsync(() =>
 		{
@@ -218,15 +217,6 @@ public sealed class Database(
 		Func<SqliteConnection, SqliteTransaction, TResult> write,
 		CancellationToken cancellationToken = default) =>
 		TransactionAsync(write, true, cancellationToken);
-
-	public Task WriteAsync(
-		Action<SqliteConnection, SqliteTransaction> write,
-		CancellationToken cancellationToken = default) =>
-		WriteAsync((database, transaction) =>
-		{
-			write(database, transaction);
-			return true;
-		}, cancellationToken);
 
 	
 	public Task<TResult> ReadSnapshotAsync<TResult>(

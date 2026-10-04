@@ -30,8 +30,8 @@ SkeleApplication.CreateBuilder()
 
 		// Services
 		services.AddSingleton<SimpleStorage>();
-		services.AddSingleton<DatabaseService>();
-		services.AddSingleton<BackupService>();
+		services.AddSingleton<Database>();
+		services.AddSingleton<BackupHandler>();
 		services.AddSingleton<SystemInfo>();
 		services.AddSingleton<MoodPaletteCatalog>();
 		services.AddSingleton<CalendarProvider>();

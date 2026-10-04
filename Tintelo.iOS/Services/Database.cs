@@ -1,12 +1,109 @@
+using System.Globalization;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.Services;
 
-public sealed class DatabaseService(
-	ILogger<DatabaseService> logger) : IAsyncDisposable
+public sealed class Database(
+	ILogger<Database> logger) : IAsyncDisposable
 {
+	static class Migrations
+	{
+		const int CurrentVersion = 1;
+	
+	
+		static int ReadVersion(
+			SqliteConnection connection,
+			SqliteTransaction transaction)
+		{
+			using SqliteCommand command = connection.CreateCommand();
+			command.Transaction = transaction;
+			command.CommandText = "PRAGMA user_version;";
+			
+			return Convert.ToInt32(command.ExecuteScalar(), CultureInfo.InvariantCulture);
+		}
+	
+		static void ApplyVersion1(
+			SqliteConnection connection,
+			SqliteTransaction transaction)
+		{
+			using SqliteCommand command = connection.CreateCommand();
+			command.Transaction = transaction;
+			command.CommandText =
+				"""
+				PRAGMA application_id = 0x54494E54;
+	
+				CREATE TABLE Entry (
+					Id TEXT NOT NULL PRIMARY KEY,
+					Date TEXT NOT NULL CHECK (date(Date) IS Date),
+					Mood INTEGER NOT NULL CHECK (Mood BETWEEN -3 AND 3),
+					Note TEXT,
+					CreatedUtc TEXT NOT NULL,
+					UpdatedUtc TEXT NOT NULL
+				) STRICT;
+	
+				CREATE UNIQUE INDEX UX_Entry_Date
+				ON Entry (Date);
+	
+				CREATE TABLE Category (
+					Id TEXT NOT NULL PRIMARY KEY,
+					Name TEXT NOT NULL CHECK (length(trim(Name)) > 0),
+					Emoji TEXT,
+					Color TEXT NOT NULL,
+					IsArchived INTEGER NOT NULL DEFAULT 0 CHECK (IsArchived IN (0, 1))
+				) STRICT;
+	
+				CREATE TABLE EntryCategory (
+					EntryId TEXT NOT NULL REFERENCES Entry(Id) ON DELETE CASCADE,
+					CategoryId TEXT NOT NULL REFERENCES Category(Id) ON DELETE RESTRICT,
+					PRIMARY KEY (EntryId, CategoryId)
+				) STRICT, WITHOUT ROWID;
+	
+				CREATE INDEX IX_EntryCategory_CategoryId_EntryId
+				ON EntryCategory (CategoryId, EntryId);
+	
+				CREATE TABLE Library (
+					Id TEXT NOT NULL PRIMARY KEY,
+					Revision INTEGER NOT NULL DEFAULT 0 CHECK (Revision >= 0)
+				) STRICT;
+	
+				INSERT INTO Library (Id, Revision)
+				VALUES ($libraryId, 0);
+	
+				PRAGMA user_version = 1;
+				""";
+			command.Parameters.AddWithValue("$libraryId", Guid.CreateVersion7().ToString("D"));
+			command.ExecuteNonQuery();
+		}
+	
+		
+		public static void Apply(
+			SqliteConnection connection,
+			CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			
+			using SqliteTransaction transaction = connection.BeginTransaction(false);
+			
+			int version = ReadVersion(connection, transaction);
+			switch (version)
+			{
+				case < 0:
+				case > CurrentVersion:
+					throw new InvalidOperationException($"Database schema version {version} is not supported (current version: {CurrentVersion}).");
+				
+				case < 1:
+					ApplyVersion1(connection, transaction);
+					break;
+			}
+			
+			cancellationToken.ThrowIfCancellationRequested();
+			transaction.Commit();
+		}
+	}
+	
+	
 	readonly SemaphoreSlim gate = new(1, 1);
 	
 	SqliteConnection? connection;
@@ -43,7 +140,7 @@ public sealed class DatabaseService(
 			command.CommandText = "PRAGMA journal_mode = WAL;";
 			command.ExecuteNonQuery();
 			
-			DatabaseMigrations.Apply(opened, cancellationToken);
+			Migrations.Apply(opened, cancellationToken);
 			
 			logger.LogInformation("Opened database at '{DatabasePath}'.", Paths.Database);
 			return connection = opened;
@@ -86,8 +183,9 @@ public sealed class DatabaseService(
 			{
 				using SqliteCommand command = database.CreateCommand();
 				command.Transaction = transaction;
-				command.CommandText = "UPDATE LibraryMetadata SET Revision = Revision + 1 WHERE Id = 1;";
-				command.ExecuteNonQuery();
+				command.CommandText = "UPDATE Library SET Revision = Revision + 1;";
+				if (command.ExecuteNonQuery() != 1)
+					throw new InvalidOperationException("The library row is missing or duplicated; the revision could not be updated.");
 			}
 			
 			cancellationToken.ThrowIfCancellationRequested();

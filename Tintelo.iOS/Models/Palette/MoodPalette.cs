@@ -1,4 +1,5 @@
 using SkeleKit;
+using Tintelo.iOS.Models.Journal;
 
 namespace Tintelo.iOS.Models.Palette;
 

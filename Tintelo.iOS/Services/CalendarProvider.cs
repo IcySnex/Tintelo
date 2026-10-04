@@ -5,6 +5,7 @@ using SkeleKit;
 using Tintelo.iOS.Models;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Models.Config;
+using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.Services;

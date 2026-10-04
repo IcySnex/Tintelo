@@ -1,4 +1,4 @@
-namespace Tintelo.iOS.Models;
+namespace Tintelo.iOS.Models.Journal;
 
 public enum Mood
 {

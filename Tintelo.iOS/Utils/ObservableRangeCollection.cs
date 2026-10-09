@@ -72,6 +72,23 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
 		OnCollectionChanged(new(NotifyCollectionChangedAction.Add, insertedItems, startingIndex));
 	}
 
+	public void ReplaceAll(
+		IEnumerable<T> items)
+	{
+		ArgumentNullException.ThrowIfNull(items);
+		CheckReentrancy();
+
+		List<T> replacement = items.ToList();
+
+		Items.Clear();
+		foreach (T item in replacement)
+			Items.Add(item);
+
+		OnPropertyChanged(CountPropertyChanged);
+		OnPropertyChanged(IndexerPropertyChanged);
+		OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
+	}
+
 	public void RemoveRange(
 		int index,
 		int count)

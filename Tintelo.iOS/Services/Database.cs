@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
@@ -137,15 +138,22 @@ public sealed class Database(
 		SqliteConnection opened = new(ConnectionString(Paths.Database));
 		try
 		{
+			Stopwatch stopwatch = Stopwatch.StartNew();
+
 			opened.Open();
 			
 			using SqliteCommand command = opened.CreateCommand();
-			command.CommandText = "PRAGMA journal_mode = WAL;";
+			command.CommandText =
+				"""
+				PRAGMA journal_mode = WAL;
+				PRAGMA synchronous = NORMAL;
+				""";
 			command.ExecuteNonQuery();
 			
 			Migrations.Apply(opened, cancellationToken);
+			stopwatch.Stop();
 			
-			logger.LogInformation("Opened database at '{DatabasePath}'.", Paths.Database);
+			logger.LogInformation("Opened database at '{DatabasePath}' in {Elapsed} ms.", Paths.Database, stopwatch.ElapsedMilliseconds);
 			return connection = opened;
 		}
 		catch

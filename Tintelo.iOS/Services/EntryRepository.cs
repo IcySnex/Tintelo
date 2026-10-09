@@ -7,10 +7,6 @@ namespace Tintelo.iOS.Services;
 public sealed class EntryRepository(
 	Database database)
 {
-	const string SelectById = "SELECT Id, Date, Mood, Note, CreatedUtc, UpdatedUtc FROM Entry WHERE Id = $value;";
-	const string SelectByDate = "SELECT Id, Date, Mood, Note, CreatedUtc, UpdatedUtc FROM Entry WHERE Date = $value;";
-
-
 	static Entry? ReadEntry(
 		SqliteConnection connection,
 		SqliteTransaction transaction,
@@ -58,6 +54,27 @@ public sealed class EntryRepository(
 		return categories;
 	}
 
+	static IReadOnlyList<EntrySummary> ReadSummaries(
+		SqliteConnection connection,
+		SqliteTransaction transaction,
+		string statement,
+		params (string Name, object? Value)[] parameters)
+	{
+		using SqliteCommand command = connection.CreateCommand(transaction, statement, parameters);
+		using SqliteDataReader reader = command.ExecuteReader();
+
+		List<EntrySummary> summaries = [];
+		while (reader.Read())
+		{
+			summaries.Add(new EntrySummary(
+				SqliteValues.ToDate(reader.GetString(0)),
+				(Mood)reader.GetInt32(1),
+				reader.GetBoolean(2)));
+		}
+
+		return summaries;
+	}
+	
 	static void ReplaceCategories(
 		SqliteConnection connection,
 		SqliteTransaction transaction,
@@ -91,43 +108,52 @@ public sealed class EntryRepository(
 		Guid id,
 		CancellationToken cancellationToken = default) =>
 		database.ReadAsync((connection, transaction) =>
-			ReadEntry(connection, transaction, SelectById, id.ToString("D")), cancellationToken);
-
+			ReadEntry(
+				connection,
+				transaction,
+				"SELECT Id, Date, Mood, Note, CreatedUtc, UpdatedUtc FROM Entry WHERE Id = $value;",
+				id.ToString("D")),
+			cancellationToken);
 	public Task<Entry?> GetByDateAsync(
 		DateOnly date,
 		CancellationToken cancellationToken = default) =>
 		database.ReadAsync((connection, transaction) =>
-			ReadEntry(connection, transaction, SelectByDate, SqliteValues.ToText(date)), cancellationToken);
+			ReadEntry(
+				connection,
+				transaction,
+				"SELECT Id, Date, Mood, Note, CreatedUtc, UpdatedUtc FROM Entry WHERE Date = $value;",
+				SqliteValues.ToText(date)),
+			cancellationToken);
 
 	public Task<IReadOnlyList<EntrySummary>> GetSummariesAsync(
-		DateOnly from,
-		DateOnly to,
 		CancellationToken cancellationToken = default) =>
-		database.ReadAsync((connection, transaction) =>
-		{
-			using SqliteCommand command = connection.CreateCommand(
+		database.ReadAsync(
+			(connection, transaction) => ReadSummaries(
+				connection,
 				transaction,
 				"""
 				SELECT Date, Mood, Note IS NOT NULL AS HasNote
 				FROM Entry
-				WHERE Date BETWEEN $from AND $to;
+				ORDER BY Date;
+				"""),
+			cancellationToken);
+	public Task<IReadOnlyList<EntrySummary>> GetSummariesAsync(
+		DateOnly from,
+		DateOnly to,
+		CancellationToken cancellationToken = default) =>
+		database.ReadAsync(
+			(connection, transaction) => ReadSummaries(
+				connection,
+				transaction,
+				"""
+				SELECT Date, Mood, Note IS NOT NULL AS HasNote
+				FROM Entry
+				WHERE Date BETWEEN $from AND $to
+				ORDER BY Date;
 				""",
 				("$from", SqliteValues.ToText(from)),
-				("$to", SqliteValues.ToText(to)));
-
-			using SqliteDataReader reader = command.ExecuteReader();
-
-			List<EntrySummary> summaries = [];
-			while (reader.Read())
-			{
-				summaries.Add(new EntrySummary(
-					SqliteValues.ToDate(reader.GetString(0)),
-					(Mood)reader.GetInt32(1),
-					reader.GetBoolean(2)));
-			}
-
-			return (IReadOnlyList<EntrySummary>)summaries;
-		}, cancellationToken);
+				("$to", SqliteValues.ToText(to))),
+			cancellationToken);
 
 	public Task<Entry> CreateAsync(
 		DateOnly date,

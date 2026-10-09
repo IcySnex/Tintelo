@@ -7,15 +7,16 @@ namespace Tintelo.iOS.Services;
 internal sealed class AppLifecycle(
 	ILogger<AppLifecycle> logger,
 	AppConfig config,
-	CurrentDay currentDay) : IApplicationLifecycle
+	CurrentDay currentDay,
+	CalendarProvider calendar) : IApplicationLifecycle
 {
-	public Task StartAsync()
+	public async Task StartAsync()
 	{
 		logger.LogInformation("App has started.");
-		
+
 		config.Theme.Apply();
 
-		return Task.CompletedTask;
+		await calendar.LoadAsync();
 	}
 
 	public Task EnterForegroundAsync()

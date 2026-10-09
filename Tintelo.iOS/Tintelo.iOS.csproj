@@ -8,6 +8,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>true</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<EnableSGenConc>true</EnableSGenConc>
 
 		<NeutralLanguage>en</NeutralLanguage>
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>

@@ -21,7 +21,7 @@ public sealed class CategoryRepository(
 			reader.GetBoolean(4));
 
 
-	public Task<IReadOnlyList<Category>> GetAllAsync(
+	public Task<IReadOnlyList<Category>> GetAsync(
 		bool includeArchived = false,
 		CancellationToken cancellationToken = default) =>
 		database.ReadAsync((connection, transaction) =>

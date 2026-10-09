@@ -34,6 +34,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 				spacing: 6,
 				itemAspectRatio: 1),
 			ShowsSeparators = false,
+			ShowsIndicator = false,
 			RetainsHighlight = false,
 			
 			SectionHeaderTemplate = static () => new CalendarMonthHeaderCell(),

@@ -17,6 +17,10 @@ public sealed class CalendarMonthSummary(
 		ICalendarDaySummary item) =>
 		items[index] = item;
 	
+	public void SetItems(
+		IEnumerable<ICalendarDaySummary> replacements) =>
+		items.ReplaceAll(replacements);
+	
 	public void SetLeading(
 		int count)
 	{

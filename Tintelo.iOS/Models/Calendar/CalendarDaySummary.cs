@@ -10,7 +10,6 @@ public interface ICalendarDaySummary
 public sealed record CalendarDaySummary(
 	DateOnly Key,
 	Mood? Mood,
-	bool HasNote,
-	bool IsResolved = true) : ICalendarDaySummary;
+	bool HasNote) : ICalendarDaySummary;
 
 public sealed record EmptyCalendarDaySummary : ICalendarDaySummary;

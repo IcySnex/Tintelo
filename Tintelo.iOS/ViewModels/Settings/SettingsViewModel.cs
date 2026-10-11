@@ -118,8 +118,10 @@ public partial class SettingsViewModel : ObservableObject
 	
 	public IReadOnlyList<SettingsSection> Sections { get; }
 
+	public int RunningActions { get; private set; }
 
-	[RelayCommand]
+    
+    [RelayCommand]
 	Task ShowAboutAsync() =>
 		navigator.PushAsync<AboutViewModel>();
 
@@ -127,15 +129,24 @@ public partial class SettingsViewModel : ObservableObject
 	async Task ActivateAsync(
 		SettingsEntry entry)
 	{
-		switch (entry)
-		{
-			case SettingsActionEntry action when action.Command.CanExecute(null):
-				await action.Command.ExecuteAsync(null);
-				break;
+		RunningActions++;
 
-			case SettingsNavigationEntry navigation:
-				await navigator.PushAsync(navigation.ViewModelType);
-				break;
+		try
+		{
+			switch (entry)
+			{
+				case SettingsActionEntry action when action.Command.CanExecute(null):
+					await action.Command.ExecuteAsync(null);
+					break;
+
+				case SettingsNavigationEntry navigation:
+					await navigator.PushAsync(navigation.ViewModelType);
+					break;
+			}
+		}
+		finally
+		{
+			RunningActions--;
 		}
 	}
 

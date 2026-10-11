@@ -13,6 +13,8 @@ public class SettingsView : ContentView<SettingsViewModel>
 	{
 		Title = Texts.Settings;
 		Background = Colors.GroupedBackground;
+
+		ConfirmLeave = () => Task.FromResult(viewModel.RunningActions == 0);
 		
 		Content = new CollectionView<SettingsEntry, SettingsSection>
 		{

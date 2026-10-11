@@ -12,7 +12,8 @@ public partial class CalendarViewModel(
 	ISplitView split,
 	CurrentDay currentDay,
 	CalendarProvider calendar,
-	CalendarDetailsViewModel details) : ObservableObject
+	CalendarDetailsViewModel details,
+	AddViewModel add) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 
@@ -23,12 +24,19 @@ public partial class CalendarViewModel(
 
 
 	[RelayCommand]
-	Task OpenDetailsAsync(
+	Task OpenDayAsync(
 		CalendarDaySummary summary)
 	{
 		if (summary.Key > currentDay.Value)
 			return Task.CompletedTask;
-		
+
+		if (summary.Mood is null)
+		{
+			add.Date = summary.Key;
+
+			return navigator.PresentAsync<AddViewModel>(ModalStyle.FormSheet);
+		}
+
 		details.Date = summary.Key;
 		if (split.IsCollapsed)
 			return navigator.PresentAsync<CalendarDetailsViewModel>(ModalStyle.FormSheet);

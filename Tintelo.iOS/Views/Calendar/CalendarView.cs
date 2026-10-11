@@ -43,7 +43,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 				.Add(static () => new CalendarDayCell()),
 			
 			GroupedItemsSource = Bind(vm => vm.Calendar.Months),
-			ItemCommand = viewModel.OpenDetailsCommand
+			ItemCommand = viewModel.OpenDayCommand
 		};
 	}
 }

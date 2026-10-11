@@ -9,6 +9,9 @@
 	<data name="Calendar">
 		<value>Kalender</value>
 	</data>
+	<data name="Calendar_Details">
+		<value>Details</value>
+	</data>
 	<data name="Settings" xml:space="preserve">
 		<value>Einstellungen</value>
 	</data>

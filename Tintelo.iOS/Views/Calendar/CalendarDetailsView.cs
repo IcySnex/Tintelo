@@ -8,6 +8,6 @@ public class CalendarDetailsView : ContentView<CalendarDetailsViewModel>
 {
 	public CalendarDetailsView(CalendarDetailsViewModel viewModel) : base(viewModel)
 	{
-		Title = "Details";
+		Title = Bind(vm => vm.Title);
 	}
 }

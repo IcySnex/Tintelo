@@ -9,7 +9,10 @@ namespace Tintelo.iOS.ViewModels.Calendar;
 
 public partial class CalendarViewModel(
 	INavigator navigator,
-	CalendarProvider calendar) : ObservableObject
+	ISplitView split,
+	CurrentDay currentDay,
+	CalendarProvider calendar,
+	CalendarDetailsViewModel details) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 
@@ -23,10 +26,15 @@ public partial class CalendarViewModel(
 	Task OpenDetailsAsync(
 		CalendarDaySummary summary)
 	{
-		// tell details view model selected day has changed (if needed)
-		// if sidebar is available and closed, open it
-		// else open details modal with selected day
+		if (summary.Key > currentDay.Value)
+			return Task.CompletedTask;
 		
+		details.Date = summary.Key;
+		if (split.IsCollapsed)
+			return navigator.PresentAsync<CalendarDetailsViewModel>(ModalStyle.FormSheet);
+
+		split.Show(SplitViewColumn.Primary);
+
 		return Task.CompletedTask;
 	}
 }

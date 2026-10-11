@@ -13,7 +13,7 @@ public partial class CalendarViewModel(
 	CurrentDay currentDay,
 	CalendarProvider calendar,
 	CalendarDetailsViewModel details,
-	AddViewModel add) : ObservableObject
+	Add.AddViewModel add) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 
@@ -34,7 +34,7 @@ public partial class CalendarViewModel(
 		{
 			add.Date = summary.Key;
 
-			return navigator.PresentAsync<AddViewModel>(ModalStyle.FormSheet);
+			return navigator.PresentAsync<Add.AddViewModel>(ModalStyle.FormSheet);
 		}
 
 		details.Date = summary.Key;

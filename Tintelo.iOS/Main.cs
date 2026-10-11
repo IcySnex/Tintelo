@@ -14,6 +14,7 @@ using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
 using Tintelo.iOS.Views.Calendar;
+using AddViewModel = Tintelo.iOS.ViewModels.Add.AddViewModel;
 
 SkeleApplication.CreateBuilder()
 	.ConfigureLogging(logging =>

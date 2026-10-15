@@ -222,4 +222,10 @@
 	<data name="Settings_Calendar" xml:space="preserve">
 		<value>Kalendar</value>
 	</data>
+	<data name="AddEntry_Continue" xml:space="preserve">
+		<value>Weiter</value>
+	</data>
+	<data name="AddEntry_Previous" xml:space="preserve">
+		<value>Zurück</value>
+	</data>
 </root>

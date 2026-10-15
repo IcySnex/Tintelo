@@ -15,28 +15,39 @@ public class MoodOptionCell : ItemView<AddViewModel.MoodOption>
 	
 	public MoodOptionCell()
 	{
-		HighlightBackground = null;
+		Background = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
+			.ConvertTo<Color?>(current => Item is null
+				? null
+				: MoodPalette.Get(current, Item.Mood).Background);
+		HighlightBackground = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
+			.ConvertTo<Color?>(current => Item is null
+				? null
+				: MoodPalette.Get(current, Item.Mood).Background.Map(
+					light => light with
+					{
+						Red = Math.Clamp(light.Red * 0.95, 0, 1),
+						Green = Math.Clamp(light.Green * 0.95, 0, 1),
+						Blue = Math.Clamp(light.Blue * 0.95, 0, 1)
+					},
+					dark => dark with
+					{
+						Red = Math.Clamp(dark.Red * 0.85, 0, 1),
+						Green = Math.Clamp(dark.Green * 0.85, 0, 1),
+						Blue = Math.Clamp(dark.Blue * 0.85, 0, 1)
+					}));
 
-		Content = new Border
+		CornerRadius = double.PositiveInfinity;
+
+		Content = checkmark = new Image
 		{
-			CornerRadius = double.PositiveInfinity,
-
-			Background = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
-				.ConvertTo<Color?>(current => Item is null 
+			Source = ImageSource.Symbol("checkmark", size: 22, weight: FontWeight.Bold),
+			Tint = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
+				.ConvertTo<Color?>(current => Item is null
 					? null
-					: MoodPalette.Get(current, Item.Mood).Background),
+					: MoodPalette.Get(current, Item.Mood).Foreground),
 
-			Child = checkmark = new Image
-			{
-				Source = ImageSource.Symbol("checkmark", size: 22, weight: FontWeight.Bold),
-				Tint = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
-					.ConvertTo<Color?>(current => Item is null 
-						? null
-						: MoodPalette.Get(current, Item.Mood).Foreground),
-
-				HorizontalAlignment = HorizontalAlignment.Center,
-				VerticalAlignment = VerticalAlignment.Center
-			}
+			HorizontalAlignment = HorizontalAlignment.Center,
+			VerticalAlignment = VerticalAlignment.Center
 		};
 	}
 	

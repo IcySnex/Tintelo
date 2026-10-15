@@ -67,4 +67,10 @@ public partial class AddViewModel(
 
 		SelectedMood = option.Mood;
 	}
+
+	[RelayCommand]
+	Task ContinueAsync()
+	{
+		return navigator.PushAsync<AddViewModel>();
+	}
 }

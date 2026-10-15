@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Services;
+using Tintelo.iOS.ViewModels.Add;
 using Tintelo.iOS.ViewModels.Settings;
 
 namespace Tintelo.iOS.ViewModels.Calendar;
@@ -13,7 +14,7 @@ public partial class CalendarViewModel(
 	CurrentDay currentDay,
 	CalendarProvider calendar,
 	CalendarDetailsViewModel details,
-	Add.AddViewModel add) : ObservableObject
+	AddViewModel add) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 
@@ -34,12 +35,12 @@ public partial class CalendarViewModel(
 		{
 			add.Date = summary.Key;
 
-			return navigator.PresentAsync<Add.AddViewModel>(ModalStyle.FormSheet);
+			return navigator.PresentAsync<AddViewModel>(ModalStyle.Sheet(Detent.Content));
 		}
 
 		details.Date = summary.Key;
 		if (split.IsCollapsed)
-			return navigator.PresentAsync<CalendarDetailsViewModel>(ModalStyle.FormSheet);
+			return navigator.PresentAsync<CalendarDetailsViewModel>(ModalStyle.Sheet(Detent.Content));
 
 		split.Show(SplitViewColumn.Primary);
 

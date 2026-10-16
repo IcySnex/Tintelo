@@ -14,7 +14,7 @@ public partial class CalendarViewModel(
 	CurrentDay currentDay,
 	CalendarProvider calendar,
 	CalendarDetailsViewModel details,
-	AddViewModel add) : ObservableObject
+	AddEntryViewModelFactory addEntry) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 
@@ -32,18 +32,14 @@ public partial class CalendarViewModel(
 			return Task.CompletedTask;
 
 		if (summary.Mood is null)
-		{
-			add.Date = summary.Key;
-
-			return navigator.PresentAsync<AddViewModel>(ModalStyle.Sheet(Detent.Content));
-		}
+			return addEntry.ShowDayAsync(summary.Key);
 
 		details.Date = summary.Key;
+		
 		if (split.IsCollapsed)
 			return navigator.PresentAsync<CalendarDetailsViewModel>(ModalStyle.Sheet(Detent.Content));
 
 		split.Show(SplitViewColumn.Primary);
-
 		return Task.CompletedTask;
 	}
 }

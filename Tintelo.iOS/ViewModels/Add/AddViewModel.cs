@@ -4,28 +4,22 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Journal;
-using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.ViewModels.Add;
 
 public partial class AddViewModel(
-	INavigator navigator,
-	CurrentDay currentDay) : ObservableObject
+	INavigator navigator) : ObservableObject
 {
 	public record MoodOption(
 		Mood Mood,
 		bool IsSelected);
 
+
+	public DateOnly Date { get; set; }
+
+	public string Title => Date.ToString(Texts.DateTime_Format_yMMMMd, CultureInfo.CurrentCulture);
 	
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(Title))]
-	public partial DateOnly? Date { get; set; }
-
-	[ObservableProperty]
-	public partial Mood? SelectedMood { get; private set; }
-
-
 	public ObservableRangeCollection<MoodOption> Moods { get; } = new()
 	{
 		new(Mood.ExtremelyBad, false),
@@ -37,20 +31,8 @@ public partial class AddViewModel(
 		new(Mood.ExtremelyGood, false)
 	};
 	
-	public string Title =>
-		Date is DateOnly day
-			? day.ToString(Texts.DateTime_Format_yMMMMd, CultureInfo.CurrentCulture)
-			: Texts.AddEntry;
+	public Mood? SelectedMood => Moods.FirstOrDefault(o => o.IsSelected)?.Mood;
 	
-
-	[RelayCommand]
-	Task ShowAsync()
-	{
-		Date = currentDay.Value;
-
-		return navigator.PresentAsync<AddViewModel>(ModalStyle.Sheet(Detent.Content));
-	}
-
 
 	[RelayCommand]
 	void SelectMood(
@@ -65,7 +47,7 @@ public partial class AddViewModel(
 				Moods[index] = current with { IsSelected = selected };
 		}
 
-		SelectedMood = option.Mood;
+		OnPropertyChanged(nameof(SelectedMood));
 	}
 
 	[RelayCommand]

@@ -10,11 +10,11 @@ using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.ViewModels.About;
+using Tintelo.iOS.ViewModels.Add;
 using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
 using Tintelo.iOS.Views.Calendar;
-using AddViewModel = Tintelo.iOS.ViewModels.Add.AddViewModel;
 
 SkeleApplication.CreateBuilder()
 	.ConfigureLogging(logging =>
@@ -46,7 +46,8 @@ SkeleApplication.CreateBuilder()
 		
 		services.AddSingleton<AnalyticsViewModel>();
 		
-		services.AddSingleton<AddViewModel>();
+		services.AddTransient<AddViewModel>();
+		services.AddSingleton<AddEntryViewModelFactory>();
 		
 		services.AddSingleton<SettingsViewModel>();
 		services.AddSingleton<SettingsMoodPaletteViewModel>();
@@ -69,7 +70,7 @@ SkeleApplication.CreateBuilder()
 				.Display(SplitViewDisplay.TwoColumns)
 				.NavigationColumn(SplitViewColumn.Secondary))
 		.Tab<AnalyticsView>(Texts.Analytics, ImageSource.Symbol("chart.bar.xaxis"))
-		.Bubble<AddViewModel>(Texts.AddEntry, ImageSource.Symbol("plus"), vm => vm.ShowCommand)
+		.Bubble<AddEntryViewModelFactory>(Texts.AddEntry, ImageSource.Symbol("plus"), vm => vm.ShowCurrentDayCommand)
 		.Sidebar())
 	.Build()
 	.Run(args);

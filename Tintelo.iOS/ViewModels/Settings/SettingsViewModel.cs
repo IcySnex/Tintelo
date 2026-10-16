@@ -118,7 +118,8 @@ public partial class SettingsViewModel : ObservableObject
 	
 	public IReadOnlyList<SettingsSection> Sections { get; }
 
-	public int RunningActions { get; private set; }
+	[ObservableProperty]
+	public partial int RunningActions { get; private set; }
 
     
     [RelayCommand]

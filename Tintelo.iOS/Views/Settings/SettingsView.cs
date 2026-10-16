@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Settings;
@@ -11,10 +12,10 @@ public class SettingsView : ContentView<SettingsViewModel>
 {
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)
 	{
+		viewModel.PropertyChanged += OnViewModelPropertyChanged;
+		
 		Title = Texts.Settings;
 		Background = Colors.GroupedBackground;
-
-		ConfirmLeave = () => Task.FromResult(viewModel.RunningActions == 0);
 		
 		Content = new CollectionView<SettingsEntry, SettingsSection>
 		{
@@ -41,5 +42,16 @@ public class SettingsView : ContentView<SettingsViewModel>
 			GroupedItemsSource = Bind(vm => vm.Sections),
 			ItemCommand = viewModel.ActivateCommand
 		};
+	}
+
+	
+	void OnViewModelPropertyChanged(object? _, PropertyChangedEventArgs e)
+	{
+		switch (e.PropertyName)
+		{
+			case nameof(SettingsViewModel.RunningActions):
+				ConfirmLeave = ViewModel.RunningActions == 0 ? null : () => Task.FromResult(false);
+				break;
+		}
 	}
 }

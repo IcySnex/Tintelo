@@ -228,4 +228,19 @@
 	<data name="AddEntry_Previous" xml:space="preserve">
 		<value>Previous</value>
 	</data>
+	<data name="AddEntry_ConfirmLeave" xml:space="preserve">
+		<value>Are you sure?</value>
+	</data>
+	<data name="AddEntry_ConfirmLeave_Description" xml:space="preserve">
+		<value>All entered data will be discarded. This action cannot be undone. Uh-oh- careful!</value>
+	</data>
+	<data name="AddEntry_ConfirmLeave_Yes" xml:space="preserve">
+		<value>Discard</value>
+	</data>
+	<data name="AddEntry_ConfirmLeave_No" xml:space="preserve">
+		<value>Stay</value>
+	</data>
+	<data name="AddEntry_Close" xml:space="preserve">
+		<value>Close</value>
+	</data>
 </root>

@@ -30,9 +30,22 @@ public partial class AddViewModel(
 		new(Mood.VeryGood, false),
 		new(Mood.ExtremelyGood, false)
 	};
-	
+
 	public Mood? SelectedMood => Moods.FirstOrDefault(o => o.IsSelected)?.Mood;
-	
+
+	[RelayCommand]
+	async Task CloseAsync()
+	{
+		if (SelectedMood.HasValue && !await navigator.ConfirmAsync(
+			Texts.AddEntry_ConfirmLeave,
+			Texts.AddEntry_ConfirmLeave_Description,
+			Texts.AddEntry_ConfirmLeave_Yes,
+			Texts.AddEntry_ConfirmLeave_No,
+			true))
+			return;
+		
+		await navigator.DismissAsync();
+	}
 
 	[RelayCommand]
 	void SelectMood(

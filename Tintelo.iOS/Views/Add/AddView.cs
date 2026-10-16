@@ -9,6 +9,7 @@ namespace Tintelo.iOS.Views.Add;
 [Page]
 public class AddView : ContentView<AddViewModel>
 {
+	readonly ToolbarItem closeButton;
 	readonly ToolbarItem continueButton;
 	
 	public AddView(AddViewModel viewModel) : base(viewModel)
@@ -19,11 +20,21 @@ public class AddView : ContentView<AddViewModel>
 
 		BackButtonTitle = Texts.AddEntry_Previous;
 		BackButtonStyle = BackButtonStyle.Minimal;
-		
+
+		ToolbarItems.Add(closeButton = new ToolbarItem
+		{
+			IsVisible = viewModel.SelectedMood.HasValue,
+			Side = ToolbarSide.Leading,
+			
+			Command = viewModel.CloseCommand,
+			
+			Icon = ImageSource.Symbol("xmark", weight: FontWeight.Semibold),
+			Text = Texts.AddEntry_Close,
+			Tint = Colors.Label
+		});
 		ToolbarItems.Add(continueButton = new ToolbarItem
 		{
 			IsVisible = viewModel.SelectedMood.HasValue,
-			Side = ToolbarSide.Trailing,
 
 			Command = viewModel.ContinueCommand,
 
@@ -62,8 +73,25 @@ public class AddView : ContentView<AddViewModel>
 		switch (e.PropertyName)
 		{
 			case nameof(AddViewModel.SelectedMood):
-				continueButton.IsVisible = ViewModel.SelectedMood.HasValue;
+				if (ViewModel.SelectedMood.HasValue)
+				{
+					closeButton.IsVisible = true;
+					continueButton.IsVisible = true;
+					ConfirmLeave = () => Navigator.ConfirmAsync(
+						Texts.AddEntry_ConfirmLeave,
+						Texts.AddEntry_ConfirmLeave_Description,
+						Texts.AddEntry_ConfirmLeave_Yes,
+						Texts.AddEntry_ConfirmLeave_No,
+						true);
+				}
+				else
+				{
+					closeButton.IsVisible = false;
+					continueButton.IsVisible = false;
+					ConfirmLeave = null;
+				}
 				break;
 		}
 	}
+		
 }

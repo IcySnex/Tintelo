@@ -4,7 +4,7 @@ using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
 
-[Page]
+[Page(Singleton = true)]
 public class AnalyticsView : ContentView<AnalyticsViewModel>
 {
 	public AnalyticsView(AnalyticsViewModel viewModel) : base(viewModel)

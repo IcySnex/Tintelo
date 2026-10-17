@@ -7,7 +7,7 @@ using Tintelo.iOS.Views.Settings.Cells;
 
 namespace Tintelo.iOS.Views.Settings;
 
-[Page]
+[Page(Singleton = true)]
 public class SettingsView : ContentView<SettingsViewModel>
 {
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)

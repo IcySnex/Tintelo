@@ -6,7 +6,7 @@ using Tintelo.iOS.Views.Calendar.Cells;
 
 namespace Tintelo.iOS.Views.Calendar;
 
-[Page]
+[Page(Singleton = true)]
 public class CalendarView : ContentView<CalendarViewModel>
 {
 	public CalendarView(CalendarViewModel viewModel) : base(viewModel)

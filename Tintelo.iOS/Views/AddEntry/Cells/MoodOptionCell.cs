@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using SkeleKit;
+using Tintelo.iOS.Models.AddEntry;
 using Tintelo.iOS.Models.Palette;
 using Tintelo.iOS.Services;
-using Tintelo.iOS.ViewModels.Add;
 
-namespace Tintelo.iOS.Views.Add.Cells;
+namespace Tintelo.iOS.Views.AddEntry.Cells;
 
-public class MoodOptionCell : ItemView<AddViewModel.MoodOption>
+public class MoodOptionCell : ItemView<MoodOption>
 {
 	static readonly MoodPaletteCatalog MoodPaletteCatalog = SkeleApplication.Current!.Services.GetRequiredService<MoodPaletteCatalog>();
 
@@ -53,6 +53,6 @@ public class MoodOptionCell : ItemView<AddViewModel.MoodOption>
 	
 
 	protected override void OnItemChanged(
-		AddViewModel.MoodOption item) =>
+		MoodOption item) =>
 		checkmark.IsVisible = item.IsSelected;
 }

@@ -243,4 +243,7 @@
 	<data name="AddEntry_Close" xml:space="preserve">
 		<value>Schließen</value>
 	</data>
+	<data name="AddEntry_Categories" xml:space="preserve">
+		<value>Kategorien</value>
+	</data>
 </root>

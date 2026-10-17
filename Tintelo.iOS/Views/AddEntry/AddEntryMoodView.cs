@@ -1,25 +1,26 @@
 using System.ComponentModel;
 using SkeleKit;
 using Tintelo.iOS.Localization;
-using Tintelo.iOS.ViewModels.Add;
-using Tintelo.iOS.Views.Add.Cells;
+using Tintelo.iOS.Models.AddEntry;
+using Tintelo.iOS.Utils;
+using Tintelo.iOS.ViewModels.AddEntry;
+using Tintelo.iOS.Views.AddEntry.Cells;
 
-namespace Tintelo.iOS.Views.Add;
+namespace Tintelo.iOS.Views.AddEntry;
 
 [Page]
-public class AddView : ContentView<AddViewModel>
+public class AddMoodView : ContentView<AddMoodViewModel>
 {
 	readonly ToolbarItem closeButton;
 	readonly ToolbarItem continueButton;
 	
-	public AddView(AddViewModel viewModel) : base(viewModel)
+	public AddMoodView(AddMoodViewModel viewModel) : base(viewModel)
 	{
 		viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
 		Title = Bind(vm => vm.Title);
 
-		BackButtonTitle = Texts.AddEntry_Previous;
-		BackButtonStyle = BackButtonStyle.Minimal;
+		BackButtonStyle = BackButtonStyle.None;
 
 		ToolbarItems.Add(closeButton = new ToolbarItem
 		{
@@ -30,7 +31,7 @@ public class AddView : ContentView<AddViewModel>
 			
 			Icon = ImageSource.Symbol("xmark", weight: FontWeight.Semibold),
 			Text = Texts.AddEntry_Close,
-			Tint = Colors.Label
+			Tint = Colors.ToolbarButton
 		});
 		ToolbarItems.Add(continueButton = new ToolbarItem
 		{
@@ -44,7 +45,7 @@ public class AddView : ContentView<AddViewModel>
 		});
 
 		MinimumContentInsets = new Thickness(0, 0, 0, 36);
-		Content = new CollectionView<AddViewModel.MoodOption>
+		Content = new CollectionView<MoodOption>
 		{
 			MaxWidth = 500,
 			SizesToContent = true,
@@ -72,7 +73,7 @@ public class AddView : ContentView<AddViewModel>
 	{
 		switch (e.PropertyName)
 		{
-			case nameof(AddViewModel.SelectedMood):
+			case nameof(AddMoodViewModel.SelectedMood):
 				if (ViewModel.SelectedMood.HasValue)
 				{
 					closeButton.IsVisible = true;

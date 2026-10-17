@@ -3,23 +3,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
+using Tintelo.iOS.Models.AddEntry;
 using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Utils;
 
-namespace Tintelo.iOS.ViewModels.Add;
+namespace Tintelo.iOS.ViewModels.AddEntry;
 
-public partial class AddViewModel(
-	INavigator navigator) : ObservableObject
+public partial class AddMoodViewModel(
+	INavigator navigator,
+	AddEntryViewModelFactory addEntry,
+	EntryDraft draft) : ObservableObject
 {
-	public record MoodOption(
-		Mood Mood,
-		bool IsSelected);
-
-
-	public DateOnly Date { get; set; }
-
-	public string Title => Date.ToString(Texts.DateTime_Format_yMMMMd, CultureInfo.CurrentCulture);
+	public DateOnly Date => draft.Date;
 	
+	public string Title => Date.ToString(Texts.DateTime_Format_yMMMMd, CultureInfo.CurrentCulture);
+
 	public ObservableRangeCollection<MoodOption> Moods { get; } = new()
 	{
 		new(Mood.ExtremelyBad, false),
@@ -32,6 +30,7 @@ public partial class AddViewModel(
 	};
 
 	public Mood? SelectedMood => Moods.FirstOrDefault(o => o.IsSelected)?.Mood;
+
 
 	[RelayCommand]
 	async Task CloseAsync()
@@ -48,6 +47,10 @@ public partial class AddViewModel(
 	}
 
 	[RelayCommand]
+	Task ContinueAsync() =>
+		addEntry.ContinueWithCategoriesAsync();
+	
+	[RelayCommand]
 	void SelectMood(
 		MoodOption option)
 	{
@@ -60,12 +63,7 @@ public partial class AddViewModel(
 				Moods[index] = current with { IsSelected = selected };
 		}
 
+		draft.Mood = option.Mood;
 		OnPropertyChanged(nameof(SelectedMood));
-	}
-
-	[RelayCommand]
-	Task ContinueAsync()
-	{
-		return navigator.PushAsync<AddViewModel>();
 	}
 }

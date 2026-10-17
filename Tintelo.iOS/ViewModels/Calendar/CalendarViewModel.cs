@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Services;
-using Tintelo.iOS.ViewModels.Add;
+using Tintelo.iOS.ViewModels.AddEntry;
 using Tintelo.iOS.ViewModels.Settings;
 
 namespace Tintelo.iOS.ViewModels.Calendar;
@@ -32,7 +32,7 @@ public partial class CalendarViewModel(
 			return Task.CompletedTask;
 
 		if (summary.Mood is null)
-			return addEntry.ShowDayAsync(summary.Key);
+			return addEntry.ShowAsync(summary.Key);
 
 		details.Date = summary.Key;
 		

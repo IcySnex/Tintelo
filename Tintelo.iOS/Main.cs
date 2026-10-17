@@ -10,7 +10,7 @@ using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 using Tintelo.iOS.ViewModels.About;
-using Tintelo.iOS.ViewModels.Add;
+using Tintelo.iOS.ViewModels.AddEntry;
 using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views;
@@ -46,7 +46,6 @@ SkeleApplication.CreateBuilder()
 		
 		services.AddSingleton<AnalyticsViewModel>();
 		
-		services.AddTransient<AddViewModel>();
 		services.AddSingleton<AddEntryViewModelFactory>();
 		
 		services.AddSingleton<SettingsViewModel>();

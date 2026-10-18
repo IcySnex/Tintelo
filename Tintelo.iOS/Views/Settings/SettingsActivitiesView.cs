@@ -1,70 +1,62 @@
-using System.ComponentModel;
 using SkeleKit;
 using Tintelo.iOS.Localization;
-using Tintelo.iOS.Utils;
+using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.ViewModels.Settings;
+using Tintelo.iOS.Views.Settings.Cells;
 
 namespace Tintelo.iOS.Views.Settings;
 
 [Page]
 public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 {
-	readonly ToolbarButton archiveButton;
-	readonly ToolbarButton editButton;
-	readonly ToolbarButton addButton;
-
 	public SettingsActivitiesView(SettingsActivitiesViewModel viewModel) : base(viewModel)
 	{
-		viewModel.PropertyChanged += OnViewModelPropertyChanged;
-
 		Title = Texts.Settings_Entries_Activities;
+		Background = Colors.GroupedBackground;
 		
 		ToolbarItems.Add(new ToolbarGroup
 		{
 			Items =
 			{
-				(addButton = new ToolbarButton
+				new ToolbarButton
 				{
+					IsVisible = Bind(vm => vm.IsEditing)
+						.ConvertTo(isEditing => !isEditing),
+					
 					Command = viewModel.AddCommand,
 
 					Icon = ImageSource.Symbol("plus", weight: FontWeight.Semibold),
 					Text = Texts.Settings_Entries_Activities_Add,
-				}),
-				(editButton = new ToolbarButton
+				},
+				new ToolbarButton
 				{
 					Command = Command.From(() => viewModel.IsEditing = !viewModel.IsEditing),
 
-					Icon = ImageSource.Symbol("pencil", weight: FontWeight.Semibold),
-					Text = Texts.Settings_Entries_Activities_Edit,
-				})
+					Icon = Bind(vm => vm.IsEditing)
+						.ConvertTo(isEditing => ImageSource.Symbol(isEditing ? "checkmark" : "pencil", weight: FontWeight.Semibold)),
+					Text = Bind(vm => vm.IsEditing)
+						.ConvertTo(isEditing => isEditing ? Texts.Settings_Entries_Activities_Done : Texts.Settings_Entries_Activities_Edit),
+				}
 			}
 		});
-		ToolbarItems.Add(archiveButton = new ToolbarButton
+		
+		Content = new CollectionView<Activity>
 		{
-			Command = viewModel.ShowArchiveCommand,
+			Layout = CollectionLayout.List(true),
+			SeparatorInsets = new(64, 0, 12, 0),
+			
+			IsEditing =  Bind(vm => vm.IsEditing)
+				.TwoWay((vm, val) => vm.IsEditing = val),
+			SelectsOnlyWhileEditing = true,
 
-			Icon = ImageSource.Symbol("archivebox", weight: FontWeight.Semibold),
-			Text = Texts.Settings_Entries_Activities_Archive,
-		});
-	}
+			ItemTemplate = static () => new ActivityCell(),
 
-	
-	void OnViewModelPropertyChanged(object? _, PropertyChangedEventArgs e)
-	{
-		switch (e.PropertyName)
-		{
-			case nameof(SettingsActivitiesViewModel.IsEditing):
-				bool isEditing = ViewModel.IsEditing;
-
-				editButton.Icon = ImageSource.Symbol(
-					isEditing ? "checkmark" : "pencil",
-					weight: FontWeight.Semibold);
-				editButton.Text = isEditing
-					? Texts.Settings_Entries_Activities_Done
-					: Texts.Settings_Entries_Activities_Edit;
-				archiveButton.IsVisible = !isEditing;
-				addButton.IsVisible = !isEditing;
-				break;
-		}
+			ItemsSource =
+			[
+				new(Guid.Empty, "Family", "🏠", "#F4A261", false),
+				new(Guid.Empty, "Work", "💼", "#2A9D8F", false),
+				new(Guid.Empty, "Health", "❤️", "#E76F51", false)
+			]
+		};
 	}
 }

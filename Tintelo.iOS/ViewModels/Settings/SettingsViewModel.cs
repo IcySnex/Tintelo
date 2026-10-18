@@ -33,6 +33,14 @@ public partial class SettingsViewModel : ObservableObject
 		
 		Sections  =
 		[
+			new(Texts.Settings_Entries,
+			[
+				new SettingsNavigationEntry(
+					Texts.Settings_Entries_Activities,
+					"tag",
+					typeof(SettingsActivitiesViewModel))
+			]),
+			
 			new(Texts.Settings_Calendar,
 			[
 				new SettingsPickerEntry(

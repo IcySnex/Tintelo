@@ -13,28 +13,28 @@ public class AddActivityView : ContentView<AddActivityViewModel>
 	{
 		Title = Texts.AddEntry_Activities;
 		
-		ToolbarItems.Add(new ToolbarItem
+		ToolbarItems.Add(new ToolbarGroup
 		{
 			Side = ToolbarSide.Leading,
-			
-			Command = viewModel.PreviousCommand,
-			
-			Icon = ImageSource.Symbol("chevron.backward", weight: FontWeight.Semibold),
-			Text = Texts.AddEntry_Previous,
-			Tint = Colors.ToolbarButton
+			Items =
+			{
+				new ToolbarButton
+				{
+					Command = viewModel.PreviousCommand,
+				
+					Icon = ImageSource.Symbol("chevron.backward", weight: FontWeight.Semibold),
+					Text = Texts.AddEntry_Previous,
+				},
+				new ToolbarButton
+				{
+					Command = viewModel.CloseCommand,
+				
+					Icon = ImageSource.Symbol("xmark", weight: FontWeight.Semibold),
+					Text = Texts.AddEntry_Close,
+				}
+			}
 		});
-		ToolbarItems.Add(new ToolbarItem
-		{
-			Side = ToolbarSide.Leading,
-			
-			Command = viewModel.CloseCommand,
-			
-			Icon = ImageSource.Symbol("xmark", weight: FontWeight.Semibold),
-			Text = Texts.AddEntry_Close,
-			Tint = Colors.ToolbarButton
-		});
-		
-		ToolbarItems.Add(new ToolbarItem
+		ToolbarItems.Add(new ToolbarButton
 		{
 			Command = viewModel.ContinueCommand,
 

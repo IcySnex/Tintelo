@@ -49,7 +49,7 @@ public class SquareRowPanel : Panel
 					continue;
 
 				child.Measure(Size.Infinity);
-				side = Math.Max(side, child.DesiredSize.Width);
+				side = Math.Max(side, Math.Max(child.DesiredSize.Width, child.DesiredSize.Height));
 			}
 
 			side = Math.Min(side, MaxItemSize);

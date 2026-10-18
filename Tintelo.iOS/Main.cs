@@ -50,6 +50,7 @@ SkeleApplication.CreateBuilder()
 		
 		services.AddSingleton<SettingsViewModel>();
 		services.AddSingleton<SettingsMoodPaletteViewModel>();
+		services.AddSingleton<SettingsActivitiesViewModel>();
 		
 		services.AddSingleton<AboutViewModel>();
 		services.AddSingleton<AboutTermsViewModel>();

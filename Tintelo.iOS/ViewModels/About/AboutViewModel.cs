@@ -61,7 +61,7 @@ public partial class AboutViewModel(
 		catch (Exception ex)
 		{
 			logger.LogError(ex, "Failed to compose mail.");
-			await navigator.AlertAsync(Texts.Error, Texts.Error_Description_Mail);
+			await navigator.AlertAsync(Texts.Error, Texts.About_Contact_MailUnavailable, Texts.Error_Confirm_Okay);
 		}
 	}
 }

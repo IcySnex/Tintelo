@@ -162,7 +162,7 @@
 	<data name="Error" xml:space="preserve">
 		<value>Something went wrong!</value>
 	</data>
-	<data name="Error_Description_Mail" xml:space="preserve">
+	<data name="About_Contact_MailUnavailable" xml:space="preserve">
 		<value>It looks like mail services are not available on this device.</value>
 	</data>
 	<data name="About_Contact_Mail_Subject" xml:space="preserve">
@@ -231,7 +231,7 @@
 	<data name="Question" xml:space="preserve">
 		<value>Are you sure?</value>
 	</data>
-	<data name="Question_Description_DataDiscard" xml:space="preserve">
+	<data name="AddEntry_Close_Description" xml:space="preserve">
 		<value>All entered data will be discarded. This action cannot be undone. Uh-oh- careful!</value>
 	</data>
 	<data name="Question_Confirm_Discard" xml:space="preserve">
@@ -263,5 +263,20 @@
 	</data>
 	<data name="Settings_Entries_Activities_Done" xml:space="preserve">
 		<value>Done</value>
+	</data>
+	<data name="Settings_Entries_Activities_Delete" xml:space="preserve">
+		<value>Delete</value>
+	</data>
+	<data name="Question_Confirm_Delete" xml:space="preserve">
+		<value>Delete</value>
+	</data>
+	<data name="Question_Confirm_Keep" xml:space="preserve">
+		<value>Keep</value>
+	</data>
+	<data name="Settings_Entries_Activities_Delete_Description" xml:space="preserve">
+		<value>All selected activities will be deleted, including retroactively from all existing entries. This action cannot be undone. OwO, scary!</value>
+	</data>
+	<data name="Error_Confirm_Okay" xml:space="preserve">
+		<value>Okay</value>
 	</data>
 </root>

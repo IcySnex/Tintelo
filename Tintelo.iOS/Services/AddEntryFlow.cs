@@ -28,7 +28,7 @@ public partial class AddEntryFlow(
 	{
 		if (showWarning && !await navigator.ConfirmAsync(
 			Texts.Question,
-			Texts.Question_Description_DataDiscard,
+			Texts.AddEntry_Close_Description,
 			Texts.Question_Confirm_Discard,
 			Texts.Question_Confirm_Stay,
 			true))

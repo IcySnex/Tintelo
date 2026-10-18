@@ -78,7 +78,7 @@ public class AddMoodView : ContentView<AddMoodViewModel>
 					continueButton.IsVisible = true;
 					ConfirmLeave = () => Navigator.ConfirmAsync(
 						Texts.Question,
-						Texts.Question_Description_DataDiscard,
+						Texts.AddEntry_Close_Description,
 						Texts.Question_Confirm_Discard,
 						Texts.Question_Confirm_Stay,
 						true);

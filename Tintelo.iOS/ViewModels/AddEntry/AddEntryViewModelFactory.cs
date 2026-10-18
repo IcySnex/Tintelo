@@ -22,12 +22,12 @@ public partial class AddEntryViewModelFactory(
 		return navigator.PresentAsync(vm, ModalStyle.Sheet(Detent.Content));
 	}
 
-	public Task ContinueWithCategoriesAsync()
+	public Task ContinueWithActivitiesAsync()
 	{
 		if (draft is null)
 			throw new InvalidOperationException("Start the add flow before pushing its steps.");
 		
-		AddCategoryViewModel vm = new(navigator, draft);
+		AddActivityViewModel vm = new(navigator, draft);
 		return navigator.PushAsync(vm);
 	}
 

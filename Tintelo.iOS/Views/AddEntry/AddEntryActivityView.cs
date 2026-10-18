@@ -7,11 +7,11 @@ using Tintelo.iOS.ViewModels.AddEntry;
 namespace Tintelo.iOS.Views.AddEntry;
 
 [Page]
-public class AddCategoryView : ContentView<AddCategoryViewModel>
+public class AddActivityView : ContentView<AddActivityViewModel>
 {
-	public AddCategoryView(AddCategoryViewModel viewModel) : base(viewModel)
+	public AddActivityView(AddActivityViewModel viewModel) : base(viewModel)
 	{
-		Title = Texts.AddEntry_Categories;
+		Title = Texts.AddEntry_Activities;
 		
 		ToolbarItems.Add(new ToolbarItem
 		{
@@ -43,25 +43,25 @@ public class AddCategoryView : ContentView<AddCategoryViewModel>
 			IsPrimary = true
 		});
 		
-		StackPanel categories = new()
+		StackPanel activities = new()
 		{
 			Padding = 16,
 			Spacing = 12
 		};
 
-		foreach (Category category in viewModel.Categories)
+		foreach (Activity activity in viewModel.Activities)
 		{
-			categories.Children.Add(new Label
+			activities.Children.Add(new Label
 			{
-				Text = category.Emoji is null
-					? category.Name
-					: $"{category.Emoji} {category.Name}"
+				Text = activity.Emoji is null
+					? activity.Name
+					: $"{activity.Emoji} {activity.Name}"
 			});
 		}
 
 		Content = new ScrollView
 		{
-			Content = categories
+			Content = activities
 		};
 	}
 

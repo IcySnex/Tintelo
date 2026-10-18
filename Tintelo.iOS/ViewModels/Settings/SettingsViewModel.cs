@@ -163,7 +163,7 @@ public partial class SettingsViewModel : ObservableObject
 		const int entryChance = 98;
 		const int noteChance = 38;
 
-		(string Name, string Emoji, string Color)[] sampleCategories =
+		(string Name, string Emoji, string Color)[] sampleActivities =
 		[
 			("Work", "💼", "#3B82F6"),
 			("Family", "🏠", "#F97316"),
@@ -197,30 +197,30 @@ public partial class SettingsViewModel : ObservableObject
 			using (SqliteCommand clearEntries = connection.CreateCommand(transaction, "DELETE FROM Entry;"))
 				clearEntries.ExecuteNonQuery();
 
-			using (SqliteCommand clearCategories = connection.CreateCommand(transaction, "DELETE FROM Category;"))
-				clearCategories.ExecuteNonQuery();
+			using (SqliteCommand clearActivities = connection.CreateCommand(transaction, "DELETE FROM Activity;"))
+				clearActivities.ExecuteNonQuery();
 
-			List<Guid> categoryIds = [];
-			using (SqliteCommand insertCategory = connection.CreateCommand(
+			List<Guid> activityIds = [];
+			using (SqliteCommand insertActivity = connection.CreateCommand(
 				transaction,
-				"INSERT INTO Category (Id, Name, Emoji, Color, IsArchived) VALUES ($id, $name, $emoji, $color, 0);"))
+				"INSERT INTO Activity (Id, Name, Emoji, Color, IsArchived) VALUES ($id, $name, $emoji, $color, 0);"))
 			{
-				SqliteParameter id = insertCategory.Parameters.Add("$id", SqliteType.Text);
-				SqliteParameter name = insertCategory.Parameters.Add("$name", SqliteType.Text);
-				SqliteParameter emoji = insertCategory.Parameters.Add("$emoji", SqliteType.Text);
-				SqliteParameter color = insertCategory.Parameters.Add("$color", SqliteType.Text);
+				SqliteParameter id = insertActivity.Parameters.Add("$id", SqliteType.Text);
+				SqliteParameter name = insertActivity.Parameters.Add("$name", SqliteType.Text);
+				SqliteParameter emoji = insertActivity.Parameters.Add("$emoji", SqliteType.Text);
+				SqliteParameter color = insertActivity.Parameters.Add("$color", SqliteType.Text);
 
-				foreach ((string categoryName, string categoryEmoji, string categoryColor) in sampleCategories)
+				foreach ((string activityName, string activityEmoji, string activityColor) in sampleActivities)
 				{
-					Guid categoryId = Guid.CreateVersion7();
+					Guid activityId = Guid.CreateVersion7();
 
-					id.Value = categoryId.ToString("D");
-					name.Value = categoryName;
-					emoji.Value = categoryEmoji;
-					color.Value = categoryColor;
-					insertCategory.ExecuteNonQuery();
+					id.Value = activityId.ToString("D");
+					name.Value = activityName;
+					emoji.Value = activityEmoji;
+					color.Value = activityColor;
+					insertActivity.ExecuteNonQuery();
 
-					categoryIds.Add(categoryId);
+					activityIds.Add(activityId);
 				}
 			}
 
@@ -243,11 +243,11 @@ public partial class SettingsViewModel : ObservableObject
 
 			using SqliteCommand insertLink = connection.CreateCommand(
 				transaction,
-				"INSERT INTO EntryCategory (EntryId, CategoryId) VALUES ($entryId, $categoryId);");
+				"INSERT INTO EntryActivity (EntryId, ActivityId) VALUES ($entryId, $activityId);");
 			SqliteParameter linkEntry = insertLink.Parameters.Add("$entryId", SqliteType.Text);
-			SqliteParameter linkCategory = insertLink.Parameters.Add("$categoryId", SqliteType.Text);
+			SqliteParameter linkActivity = insertLink.Parameters.Add("$activityId", SqliteType.Text);
 
-			Guid[] categoryPool = [.. categoryIds];
+			Guid[] activityPool = [.. activityIds];
 
 			for (DateOnly date = first; date <= today; date = date.AddDays(1))
 			{
@@ -272,20 +272,20 @@ public partial class SettingsViewModel : ObservableObject
 				updated.Value = timestampText;
 				insertEntry.ExecuteNonQuery();
 
-				Random.Shared.Shuffle(categoryPool);
+				Random.Shared.Shuffle(activityPool);
 				int linkCount = Random.Shared.Next(4);
 				linkEntry.Value = id.ToString("D");
 
 				for (int index = 0; index < linkCount; index++)
 				{
-					linkCategory.Value = categoryPool[index].ToString("D");
+					linkActivity.Value = activityPool[index].ToString("D");
 					insertLink.ExecuteNonQuery();
 				}
 
 				entryCount++;
 			}
 
-			logger.LogInformation("Loaded {Entries} sample entries in {Categories} categories.", entryCount, categoryIds.Count);
+			logger.LogInformation("Loaded {Entries} sample entries in {Activities} activities.", entryCount, activityIds.Count);
 			return true;
 		});
 		

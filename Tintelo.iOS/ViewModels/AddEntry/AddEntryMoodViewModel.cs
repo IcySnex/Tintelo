@@ -48,7 +48,7 @@ public partial class AddMoodViewModel(
 
 	[RelayCommand]
 	Task ContinueAsync() =>
-		addEntry.ContinueWithCategoriesAsync();
+		addEntry.ContinueWithActivitiesAsync();
 	
 	[RelayCommand]
 	void SelectMood(

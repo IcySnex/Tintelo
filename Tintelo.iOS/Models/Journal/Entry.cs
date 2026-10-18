@@ -5,6 +5,6 @@ public sealed record Entry(
 	DateOnly Date,
 	Mood Mood,
 	string? Note,
-	IReadOnlyList<Category> Categories,
+	IReadOnlyList<Activity> Activities,
 	DateTime CreatedUtc,
 	DateTime UpdatedUtc);

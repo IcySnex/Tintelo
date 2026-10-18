@@ -4,14 +4,14 @@ using Tintelo.iOS.Utils;
 
 namespace Tintelo.iOS.Services;
 
-public sealed class CategoryRepository(
+public sealed class ActivityRepository(
 	Database database)
 {
-	const string SelectAll = "SELECT Id, Name, Emoji, Color, IsArchived FROM Category;";
-	const string SelectActive = "SELECT Id, Name, Emoji, Color, IsArchived FROM Category WHERE IsArchived = 0;";
+	const string SelectAll = "SELECT Id, Name, Emoji, Color, IsArchived FROM Activity;";
+	const string SelectActive = "SELECT Id, Name, Emoji, Color, IsArchived FROM Activity WHERE IsArchived = 0;";
 
 
-	internal static Category ReadCategory(
+	internal static Activity ReadActivity(
 		SqliteDataReader reader) =>
 		new(
 			reader.GetGuid(0),
@@ -21,7 +21,7 @@ public sealed class CategoryRepository(
 			reader.GetBoolean(4));
 
 
-	public Task<IReadOnlyList<Category>> GetAsync(
+	public Task<IReadOnlyList<Activity>> GetAsync(
 		bool includeArchived = false,
 		CancellationToken cancellationToken = default) =>
 		database.ReadAsync((connection, transaction) =>
@@ -32,14 +32,14 @@ public sealed class CategoryRepository(
 
 			using SqliteDataReader reader = command.ExecuteReader();
 
-			List<Category> categories = [];
+			List<Activity> activities = [];
 			while (reader.Read())
-				categories.Add(ReadCategory(reader));
+				activities.Add(ReadActivity(reader));
 
-			return (IReadOnlyList<Category>)categories;
+			return (IReadOnlyList<Activity>)activities;
 		}, cancellationToken);
 
-	public Task<Category> CreateAsync(
+	public Task<Activity> CreateAsync(
 		string name,
 		string? emoji,
 		string color,
@@ -54,7 +54,7 @@ public sealed class CategoryRepository(
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
 				"""
-				INSERT INTO Category (Id, Name, Emoji, Color, IsArchived)
+				INSERT INTO Activity (Id, Name, Emoji, Color, IsArchived)
 				VALUES ($id, $name, $emoji, $color, 0);
 				""",
 				("$id", id.ToString("D")),
@@ -64,7 +64,7 @@ public sealed class CategoryRepository(
 
 			command.ExecuteNonQuery();
 
-			return new Category(id, trimmedName, trimmedEmoji, trimmedColor, false);
+			return new Activity(id, trimmedName, trimmedEmoji, trimmedColor, false);
 		}, cancellationToken);
 
 	public Task<bool> UpdateAsync(
@@ -79,7 +79,7 @@ public sealed class CategoryRepository(
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
 				"""
-				UPDATE Category
+				UPDATE Activity
 				SET Name = $name, Emoji = $emoji, Color = $color, IsArchived = $isArchived
 				WHERE Id = $id;
 				""",
@@ -99,7 +99,7 @@ public sealed class CategoryRepository(
 		{
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
-				"DELETE FROM Category WHERE Id = $id;",
+				"DELETE FROM Activity WHERE Id = $id;",
 				("$id", id.ToString("D")));
 
 			return command.ExecuteNonQuery() == 1;

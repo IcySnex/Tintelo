@@ -7,11 +7,11 @@ using Tintelo.iOS.Models.Journal;
 
 namespace Tintelo.iOS.ViewModels.AddEntry;
 
-public partial class AddCategoryViewModel(
+public partial class AddActivityViewModel(
 	INavigator navigator,
 	EntryDraft draft) : ObservableObject
 {
-	public IReadOnlyList<Category> Categories { get; } =
+	public IReadOnlyList<Activity> Activities { get; } =
 	[
 		new(Guid.Empty, "Family", "🏠", "#F4A261", false),
 		new(Guid.Empty, "Work", "💼", "#2A9D8F", false),

@@ -47,7 +47,7 @@ public sealed class Database(
 				CREATE UNIQUE INDEX UX_Entry_Date
 				ON Entry (Date);
 	
-				CREATE TABLE Category (
+				CREATE TABLE Activity (
 					Id TEXT NOT NULL PRIMARY KEY,
 					Name TEXT NOT NULL CHECK (length(trim(Name)) > 0),
 					Emoji TEXT,
@@ -58,14 +58,14 @@ public sealed class Database(
 					IsArchived INTEGER NOT NULL DEFAULT 0 CHECK (IsArchived IN (0, 1))
 				) STRICT;
 	
-				CREATE TABLE EntryCategory (
+				CREATE TABLE EntryActivity (
 					EntryId TEXT NOT NULL REFERENCES Entry(Id) ON DELETE CASCADE,
-					CategoryId TEXT NOT NULL REFERENCES Category(Id) ON DELETE RESTRICT,
-					PRIMARY KEY (EntryId, CategoryId)
+					ActivityId TEXT NOT NULL REFERENCES Activity(Id) ON DELETE RESTRICT,
+					PRIMARY KEY (EntryId, ActivityId)
 				) STRICT, WITHOUT ROWID;
 	
-				CREATE INDEX IX_EntryCategory_CategoryId_EntryId
-				ON EntryCategory (CategoryId, EntryId);
+				CREATE INDEX IX_EntryActivity_ActivityId_EntryId
+				ON EntryActivity (ActivityId, EntryId);
 	
 				CREATE TABLE Library (
 					Id TEXT NOT NULL PRIMARY KEY,

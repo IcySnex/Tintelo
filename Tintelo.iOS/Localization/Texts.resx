@@ -100,7 +100,7 @@
 		<value>2. Privacy and Data Storage</value>
 	</data>
 	<data name="About_Terms_2_Privacy_Content" xml:space="preserve">
-		<value>Tintelo does not require any account or login.&#xD;&#xD;Your moods, categories, notes, activities, images, and other personal content are stored locally on your device. Tintelo does not operate its own server or backend and does not transmit this content to the developer or third parties.&#xD;&#xD;Tintelo does not use advertising, tracking services, third-party analytics, or artificial intelligence to analyze your personal content.&#xD;&#xD;Depending on your device and iCloud settings, Tintelo data may also be included in backups provided through Apple's iCloud services. These backups are managed by Apple and your personal iCloud settings.</value>
+		<value>Tintelo does not require any account or login.&#xD;&#xD;Your moods, notes, activities, images, and other personal content are stored locally on your device. Tintelo does not operate its own server or backend and does not transmit this content to the developer or third parties.&#xD;&#xD;Tintelo does not use advertising, tracking services, third-party analytics, or artificial intelligence to analyze your personal content.&#xD;&#xD;Depending on your device and iCloud settings, Tintelo data may also be included in backups provided through Apple's iCloud services. These backups are managed by Apple and your personal iCloud settings.</value>
 	</data>
 	<data name="About_Terms_3_Trends" xml:space="preserve">
 		<value>3. Trends and Statistics</value>
@@ -243,7 +243,7 @@
 	<data name="AddEntry_Close" xml:space="preserve">
 		<value>Close</value>
 	</data>
-	<data name="AddEntry_Categories" xml:space="preserve">
-		<value>Categories</value>
+	<data name="AddEntry_Activities" xml:space="preserve">
+		<value>Activities</value>
 	</data>
 </root>

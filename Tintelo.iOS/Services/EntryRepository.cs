@@ -27,10 +27,10 @@ public sealed class EntryRepository(
 
 		reader.Close();
 
-		return new Entry(id, date, mood, note, ReadCategories(connection, transaction, id), createdUtc, updatedUtc);
+		return new Entry(id, date, mood, note, ReadActivities(connection, transaction, id), createdUtc, updatedUtc);
 	}
 
-	static IReadOnlyList<Category> ReadCategories(
+	static IReadOnlyList<Activity> ReadActivities(
 		SqliteConnection connection,
 		SqliteTransaction transaction,
 		Guid entryId)
@@ -38,20 +38,20 @@ public sealed class EntryRepository(
 		using SqliteCommand command = connection.CreateCommand(
 			transaction,
 			"""
-			SELECT c.Id, c.Name, c.Emoji, c.Color, c.IsArchived
-			FROM EntryCategory ec
-			JOIN Category c ON c.Id = ec.CategoryId
-			WHERE ec.EntryId = $entryId;
+			SELECT a.Id, a.Name, a.Emoji, a.Color, a.IsArchived
+			FROM EntryActivity ea
+			JOIN Activity a ON a.Id = ea.ActivityId
+			WHERE ea.EntryId = $entryId;
 			""",
 			("$entryId", entryId.ToString("D")));
 
 		using SqliteDataReader reader = command.ExecuteReader();
 
-		List<Category> categories = [];
+		List<Activity> activities = [];
 		while (reader.Read())
-			categories.Add(CategoryRepository.ReadCategory(reader));
+			activities.Add(ActivityRepository.ReadActivity(reader));
 
-		return categories;
+		return activities;
 	}
 
 	static IReadOnlyList<EntrySummary> ReadSummaries(
@@ -75,15 +75,15 @@ public sealed class EntryRepository(
 		return summaries;
 	}
 	
-	static void ReplaceCategories(
+	static void ReplaceActivities(
 		SqliteConnection connection,
 		SqliteTransaction transaction,
 		Guid entryId,
-		IReadOnlyList<Guid> categoryIds)
+		IReadOnlyList<Guid> activityIds)
 	{
 		using (SqliteCommand delete = connection.CreateCommand(
 			transaction,
-			"DELETE FROM EntryCategory WHERE EntryId = $entryId;",
+			"DELETE FROM EntryActivity WHERE EntryId = $entryId;",
 			("$entryId", entryId.ToString("D"))))
 		{
 			delete.ExecuteNonQuery();
@@ -91,14 +91,14 @@ public sealed class EntryRepository(
 
 		using SqliteCommand insert = connection.CreateCommand(
 			transaction,
-			"INSERT INTO EntryCategory (EntryId, CategoryId) VALUES ($entryId, $categoryId);",
+			"INSERT INTO EntryActivity (EntryId, ActivityId) VALUES ($entryId, $activityId);",
 			("$entryId", entryId.ToString("D")));
 
-		SqliteParameter categoryParameter = insert.Parameters.Add("$categoryId", SqliteType.Text);
+		SqliteParameter activityParameter = insert.Parameters.Add("$activityId", SqliteType.Text);
 
-		foreach (Guid categoryId in categoryIds.Distinct())
+		foreach (Guid activityId in activityIds.Distinct())
 		{
-			categoryParameter.Value = categoryId.ToString("D");
+			activityParameter.Value = activityId.ToString("D");
 			insert.ExecuteNonQuery();
 		}
 	}
@@ -159,7 +159,7 @@ public sealed class EntryRepository(
 		DateOnly date,
 		Mood mood,
 		string? note,
-		IReadOnlyList<Guid> categoryIds,
+		IReadOnlyList<Guid> activityIds,
 		CancellationToken cancellationToken = default) =>
 		database.WriteAsync((connection, transaction) =>
 		{
@@ -180,9 +180,9 @@ public sealed class EntryRepository(
 				("$now", SqliteValues.ToUtcText(now)));
 
 			command.ExecuteNonQuery();
-			ReplaceCategories(connection, transaction, id, categoryIds);
+			ReplaceActivities(connection, transaction, id, activityIds);
 
-			return new Entry(id, date, mood, normalizedNote, ReadCategories(connection, transaction, id), now, now);
+			return new Entry(id, date, mood, normalizedNote, ReadActivities(connection, transaction, id), now, now);
 		}, cancellationToken);
 
 	public Task<bool> UpdateAsync(
@@ -190,7 +190,7 @@ public sealed class EntryRepository(
 		DateOnly date,
 		Mood mood,
 		string? note,
-		IReadOnlyList<Guid> categoryIds,
+		IReadOnlyList<Guid> activityIds,
 		CancellationToken cancellationToken = default) =>
 		database.WriteAsync((connection, transaction) =>
 		{
@@ -210,7 +210,7 @@ public sealed class EntryRepository(
 			if (command.ExecuteNonQuery() != 1)
 				return false;
 
-			ReplaceCategories(connection, transaction, id, categoryIds);
+			ReplaceActivities(connection, transaction, id, activityIds);
 			return true;
 		}, cancellationToken);
 

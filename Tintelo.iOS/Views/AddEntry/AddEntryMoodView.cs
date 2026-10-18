@@ -77,10 +77,10 @@ public class AddMoodView : ContentView<AddMoodViewModel>
 					closeButton.IsVisible = true;
 					continueButton.IsVisible = true;
 					ConfirmLeave = () => Navigator.ConfirmAsync(
-						Texts.AddEntry_ConfirmLeave,
-						Texts.AddEntry_ConfirmLeave_Description,
-						Texts.AddEntry_ConfirmLeave_Yes,
-						Texts.AddEntry_ConfirmLeave_No,
+						Texts.Question,
+						Texts.Question_Description_DataDiscard,
+						Texts.Question_Confirm_Discard,
+						Texts.Question_Confirm_Stay,
 						true);
 				}
 				else

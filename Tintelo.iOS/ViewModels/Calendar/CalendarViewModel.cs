@@ -5,6 +5,7 @@ using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.ViewModels.AddEntry;
 using Tintelo.iOS.ViewModels.Settings;
+using AddEntryFlow = Tintelo.iOS.Services.AddEntryFlow;
 
 namespace Tintelo.iOS.ViewModels.Calendar;
 
@@ -14,7 +15,7 @@ public partial class CalendarViewModel(
 	CurrentDay currentDay,
 	CalendarProvider calendar,
 	CalendarDetailsViewModel details,
-	AddEntryViewModelFactory addEntry) : ObservableObject
+	AddEntryFlow addEntry) : ObservableObject
 {
 	public CalendarProvider Calendar { get; } = calendar;
 

@@ -1,15 +1,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SkeleKit;
-using Tintelo.iOS.Localization;
-using Tintelo.iOS.Models.AddEntry;
 using Tintelo.iOS.Models.Journal;
+using Tintelo.iOS.Services;
 
 namespace Tintelo.iOS.ViewModels.AddEntry;
 
 public partial class AddActivityViewModel(
-	INavigator navigator,
-	EntryDraft draft) : ObservableObject
+	AddEntryFlow addEntry) : ObservableObject
 {
 	public IReadOnlyList<Activity> Activities { get; } =
 	[
@@ -19,25 +16,15 @@ public partial class AddActivityViewModel(
 		new(Guid.Empty, "Friends", ActivityIcon.Friends, "#457B9D", false),
 		new(Guid.Empty, "Hobbies", ActivityIcon.Hobbies, "#8A7AA5", false)
 	];
-	
-	
+
+
 	[RelayCommand]
-	async Task CloseAsync()
-	{
-		if (!await navigator.ConfirmAsync(
-			Texts.AddEntry_ConfirmLeave,
-			Texts.AddEntry_ConfirmLeave_Description,
-			Texts.AddEntry_ConfirmLeave_Yes,
-			Texts.AddEntry_ConfirmLeave_No,
-			true))
-			return;
-		
-		await navigator.DismissAsync();
-	}
+	Task CloseAsync() =>
+		addEntry.CloseAsync(true);
 
 	[RelayCommand]
 	Task PreviousAsync() =>
-		navigator.PopAsync();
+		addEntry.PreviousAsync();
 
 	[RelayCommand]
 	Task ContinueAsync() =>

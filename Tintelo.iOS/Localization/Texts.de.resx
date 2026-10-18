@@ -228,16 +228,16 @@
 	<data name="AddEntry_Previous" xml:space="preserve">
 		<value>Zurück</value>
 	</data>
-	<data name="AddEntry_ConfirmLeave" xml:space="preserve">
+	<data name="Question" xml:space="preserve">
 		<value>Bist du sicher?</value>
 	</data>
-	<data name="AddEntry_ConfirmLeave_Description" xml:space="preserve">
+	<data name="Question_Description_DataDiscard" xml:space="preserve">
 		<value>Alle eingetragenen Daten werden verworfen. Diese Aktion kann nicht rückgängig gemacht werden. Oho- Vorsicht!</value>
 	</data>
-	<data name="AddEntry_ConfirmLeave_Yes" xml:space="preserve">
+	<data name="Question_Confirm_Discard" xml:space="preserve">
 		<value>Verwerfen</value>
 	</data>
-	<data name="AddEntry_ConfirmLeave_No" xml:space="preserve">
+	<data name="Question_Confirm_Stay" xml:space="preserve">
 		<value>Bleiben</value>
 	</data>
 	<data name="AddEntry_Close" xml:space="preserve">

@@ -38,7 +38,7 @@ public sealed class EntryRepository(
 		using SqliteCommand command = connection.CreateCommand(
 			transaction,
 			"""
-			SELECT a.Id, a.Name, a.Emoji, a.Color, a.IsArchived
+			SELECT a.Id, a.Name, a.Icon, a.Color, a.IsArchived
 			FROM EntryActivity ea
 			JOIN Activity a ON a.Id = ea.ActivityId
 			WHERE ea.EntryId = $entryId;

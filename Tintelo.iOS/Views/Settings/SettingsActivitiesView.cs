@@ -53,9 +53,10 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 
 			ItemsSource =
 			[
-				new(Guid.Empty, "Family", "🏠", "#F4A261", false),
-				new(Guid.Empty, "Work", "💼", "#2A9D8F", false),
-				new(Guid.Empty, "Health", "❤️", "#E76F51", false)
+				new(Guid.Empty, "Family", ActivityIcon.Family, "#F4A261", false),
+				new(Guid.Empty, "Work", ActivityIcon.Work, "#2A9D8F", false),
+				new(Guid.Empty, "Health", ActivityIcon.Health, "#E76F51", false),
+				new(Guid.Empty, "Reading", null, "#8A7AA5", false)
 			]
 		};
 	}

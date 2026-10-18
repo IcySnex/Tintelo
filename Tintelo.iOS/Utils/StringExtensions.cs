@@ -1,5 +1,6 @@
 using System.Globalization;
 using SkeleKit;
+using Tintelo.iOS.Models.Journal;
 
 namespace Tintelo.iOS.Utils;
 
@@ -20,6 +21,24 @@ public static class StringExtensions
 				(hex >> 8 & 0xFF) / 255.0,
 				(hex >> 0 & 0xFF) / 255.0,
 				alpha);
+		}
+	}
+
+	extension(string? value)
+	{
+		public ActivityIcon? ToActivityIcon()
+		{
+			if (string.IsNullOrWhiteSpace(value))
+				return null;
+
+			string key = value.Trim();
+
+			if (int.TryParse(key, out _))
+				return null;
+
+			return Enum.TryParse(key, true, out ActivityIcon icon) && Enum.IsDefined(icon)
+				? icon
+				: null;
 		}
 	}
 }

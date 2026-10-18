@@ -6,6 +6,8 @@ namespace Tintelo.iOS.Views.Settings.Cells;
 
 public sealed class ActivityCell : ItemView<Activity>
 {
+	readonly Image icon;
+
 	public ActivityCell()
 	{
 		Background = Colors.SecondaryGroupedBackground;
@@ -40,14 +42,10 @@ public sealed class ActivityCell : ItemView<Activity>
 							]
 						}),
 					
-					Child = new Image
+					Child = icon = new Image
 					{
 						Width = 32,
-						Height = 32,
-								
-						Source = ImageSource.Symbol("gamecontroller.fill"),
-						Tint = Bind(item => item.Color)
-							.ConvertTo<Color?>(color => color.ToColor())
+						Height = 32
 					}
 				},
 				
@@ -58,5 +56,16 @@ public sealed class ActivityCell : ItemView<Activity>
 				}.Column(1)
 			}
 		};
+	}
+
+
+	protected override void OnItemChanged(
+		Activity item)
+	{
+		icon.Source = ImageSource.Symbol(
+			item.Icon?.ToSymbol() ?? "x.circle",
+			size: 20,
+			weight: FontWeight.Semibold,
+			colors: item.Color.ToColor(item.Icon.HasValue ? 1 : 0.5));
 	}
 }

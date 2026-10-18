@@ -3,6 +3,6 @@ namespace Tintelo.iOS.Models.Journal;
 public sealed record Activity(
 	Guid Id,
 	string Name,
-	string? Emoji,
+	ActivityIcon? Icon,
 	string Color,
 	bool IsArchived);

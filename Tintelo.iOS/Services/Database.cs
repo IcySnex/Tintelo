@@ -50,7 +50,7 @@ public sealed class Database(
 				CREATE TABLE Activity (
 					Id TEXT NOT NULL PRIMARY KEY,
 					Name TEXT NOT NULL CHECK (length(trim(Name)) > 0),
-					Emoji TEXT,
+					Icon TEXT NULL,
 					Color TEXT NOT NULL CHECK (
 						length(Color) = 7
 						AND Color GLOB '#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]'

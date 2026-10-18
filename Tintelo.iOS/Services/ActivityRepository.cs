@@ -7,8 +7,8 @@ namespace Tintelo.iOS.Services;
 public sealed class ActivityRepository(
 	Database database)
 {
-	const string SelectAll = "SELECT Id, Name, Emoji, Color, IsArchived FROM Activity;";
-	const string SelectActive = "SELECT Id, Name, Emoji, Color, IsArchived FROM Activity WHERE IsArchived = 0;";
+	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity;";
+	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0;";
 
 
 	internal static Activity ReadActivity(
@@ -16,7 +16,7 @@ public sealed class ActivityRepository(
 		new(
 			reader.GetGuid(0),
 			reader.GetString(1),
-			reader.IsDBNull(2) ? null : reader.GetString(2),
+			reader.IsDBNull(2) ? null : reader.GetString(2).ToActivityIcon(),
 			reader.GetString(3),
 			reader.GetBoolean(4));
 
@@ -41,36 +41,35 @@ public sealed class ActivityRepository(
 
 	public Task<Activity> CreateAsync(
 		string name,
-		string? emoji,
+		ActivityIcon? icon,
 		string color,
 		CancellationToken cancellationToken = default) =>
 		database.WriteAsync((connection, transaction) =>
 		{
 			Guid id = Guid.CreateVersion7();
 			string trimmedName = name.Trim();
-			string? trimmedEmoji = string.IsNullOrWhiteSpace(emoji) ? null : emoji.Trim();
 			string trimmedColor = color.Trim();
 
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
 				"""
-				INSERT INTO Activity (Id, Name, Emoji, Color, IsArchived)
-				VALUES ($id, $name, $emoji, $color, 0);
+				INSERT INTO Activity (Id, Name, Icon, Color, IsArchived)
+				VALUES ($id, $name, $icon, $color, 0);
 				""",
 				("$id", id.ToString("D")),
 				("$name", trimmedName),
-				("$emoji", trimmedEmoji),
+				("$icon", icon?.ToString()),
 				("$color", trimmedColor));
 
 			command.ExecuteNonQuery();
 
-			return new Activity(id, trimmedName, trimmedEmoji, trimmedColor, false);
+			return new Activity(id, trimmedName, icon, trimmedColor, false);
 		}, cancellationToken);
 
 	public Task<bool> UpdateAsync(
 		Guid id,
 		string name,
-		string? emoji,
+		ActivityIcon? icon,
 		string color,
 		bool isArchived,
 		CancellationToken cancellationToken = default) =>
@@ -80,12 +79,12 @@ public sealed class ActivityRepository(
 				transaction,
 				"""
 				UPDATE Activity
-				SET Name = $name, Emoji = $emoji, Color = $color, IsArchived = $isArchived
+				SET Name = $name, Icon = $icon, Color = $color, IsArchived = $isArchived
 				WHERE Id = $id;
 				""",
 				("$id", id.ToString("D")),
 				("$name", name.Trim()),
-				("$emoji", string.IsNullOrWhiteSpace(emoji) ? null : emoji.Trim()),
+				("$icon", icon?.ToString()),
 				("$color", color.Trim()),
 				("$isArchived", isArchived ? 1 : 0));
 

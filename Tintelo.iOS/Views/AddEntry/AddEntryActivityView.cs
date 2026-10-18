@@ -51,11 +51,31 @@ public class AddActivityView : ContentView<AddActivityViewModel>
 
 		foreach (Activity activity in viewModel.Activities)
 		{
-			activities.Children.Add(new Label
+			activities.Children.Add(new StackPanel
 			{
-				Text = activity.Emoji is null
-					? activity.Name
-					: $"{activity.Emoji} {activity.Name}"
+				Orientation = Orientation.Horizontal,
+				Spacing = 12,
+
+				Children =
+				{
+					new Image
+					{
+						Width = 20,
+						Height = 20,
+
+						Source = ImageSource.Symbol(
+							activity.Icon?.ToSymbol() ?? "x.circle",
+							size: 20,
+							weight: FontWeight.Semibold,
+							colors: activity.Color.ToColor()),
+						Opacity = activity.Icon.HasValue ? 1 : 0.25
+					},
+					new Label
+					{
+						Text = activity.Name,
+						VerticalAlignment = VerticalAlignment.Center
+					}
+				}
 			});
 		}
 

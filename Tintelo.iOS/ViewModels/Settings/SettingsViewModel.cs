@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Config;
+using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
@@ -171,16 +172,16 @@ public partial class SettingsViewModel : ObservableObject
 		const int entryChance = 98;
 		const int noteChance = 38;
 
-		(string Name, string Emoji, string Color)[] sampleActivities =
+		(string Name, ActivityIcon Icon, string Color)[] sampleActivities =
 		[
-			("Work", "💼", "#3B82F6"),
-			("Family", "🏠", "#F97316"),
-			("Sport", "🏃", "#22C55E"),
-			("Friends", "🍻", "#A855F7"),
-			("Health", "🩺", "#EF4444"),
-			("Travel", "✈️", "#06B6D4"),
-			("Creative", "🎨", "#EC4899"),
-			("Food", "🍜", "#EAB308")
+			("Work", ActivityIcon.Work, "#3B82F6"),
+			("Family", ActivityIcon.Family, "#F97316"),
+			("Sport", ActivityIcon.Sport, "#22C55E"),
+			("Friends", ActivityIcon.Friends, "#A855F7"),
+			("Health", ActivityIcon.Health, "#EF4444"),
+			("Travel", ActivityIcon.Travel, "#06B6D4"),
+			("Creative", ActivityIcon.Creative, "#EC4899"),
+			("Food", ActivityIcon.Food, "#EAB308")
 		];
 
 		string[] sampleNotes =
@@ -211,20 +212,20 @@ public partial class SettingsViewModel : ObservableObject
 			List<Guid> activityIds = [];
 			using (SqliteCommand insertActivity = connection.CreateCommand(
 				transaction,
-				"INSERT INTO Activity (Id, Name, Emoji, Color, IsArchived) VALUES ($id, $name, $emoji, $color, 0);"))
+				"INSERT INTO Activity (Id, Name, Icon, Color, IsArchived) VALUES ($id, $name, $icon, $color, 0);"))
 			{
 				SqliteParameter id = insertActivity.Parameters.Add("$id", SqliteType.Text);
 				SqliteParameter name = insertActivity.Parameters.Add("$name", SqliteType.Text);
-				SqliteParameter emoji = insertActivity.Parameters.Add("$emoji", SqliteType.Text);
+				SqliteParameter icon = insertActivity.Parameters.Add("$icon", SqliteType.Text);
 				SqliteParameter color = insertActivity.Parameters.Add("$color", SqliteType.Text);
 
-				foreach ((string activityName, string activityEmoji, string activityColor) in sampleActivities)
+				foreach ((string activityName, ActivityIcon activityIcon, string activityColor) in sampleActivities)
 				{
 					Guid activityId = Guid.CreateVersion7();
 
 					id.Value = activityId.ToString("D");
 					name.Value = activityName;
-					emoji.Value = activityEmoji;
+					icon.Value = activityIcon.ToString();
 					color.Value = activityColor;
 					insertActivity.ExecuteNonQuery();
 

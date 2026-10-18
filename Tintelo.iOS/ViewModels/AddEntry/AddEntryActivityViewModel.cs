@@ -13,11 +13,11 @@ public partial class AddActivityViewModel(
 {
 	public IReadOnlyList<Activity> Activities { get; } =
 	[
-		new(Guid.Empty, "Family", "🏠", "#F4A261", false),
-		new(Guid.Empty, "Work", "💼", "#2A9D8F", false),
-		new(Guid.Empty, "Health", "❤️", "#E76F51", false),
-		new(Guid.Empty, "Friends", "👥", "#457B9D", false),
-		new(Guid.Empty, "Hobbies", "⚽", "#8A7AA5", false)
+		new(Guid.Empty, "Family", ActivityIcon.Family, "#F4A261", false),
+		new(Guid.Empty, "Work", ActivityIcon.Work, "#2A9D8F", false),
+		new(Guid.Empty, "Health", ActivityIcon.Health, "#E76F51", false),
+		new(Guid.Empty, "Friends", ActivityIcon.Friends, "#457B9D", false),
+		new(Guid.Empty, "Hobbies", ActivityIcon.Hobbies, "#8A7AA5", false)
 	];
 	
 	

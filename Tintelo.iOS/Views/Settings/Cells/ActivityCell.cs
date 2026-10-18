@@ -6,49 +6,58 @@ namespace Tintelo.iOS.Views.Settings.Cells;
 
 public sealed class ActivityCell : ItemView<Activity>
 {
-	readonly Image icon;
+	readonly Image iconView;
 
 	public ActivityCell()
 	{
-		Background = Colors.SecondaryGroupedBackground;
+		Background = Bind(item => item.Color)
+			.ConvertTo(color => new LinearGradient
+			{
+				Units = GradientUnits.Points,
+				Start = new(0, 0),
+				End = new(16 + 24 + 32, 0),
+				
+				Underlay = Colors.SecondaryGroupedBackground,
+				Stops =
+				[
+					new(color.ToColor(0.15), 0),
+					new(color.ToColor(0), 1)
+				]
+			});
+		HighlightBackground = Bind(item => item.Color)
+			.ConvertTo(color => new LinearGradient
+			{
+				Units = GradientUnits.Points,
+				Start = new(0, 0),
+				End = new(16 + 24 + 32, 0),
+				
+				Underlay = Colors.TertiaryGroupedBackground,
+				Stops =
+				[
+					new(color.ToColor(0.15), 0),
+					new(color.ToColor(0), 1)
+				]
+			});
 
 		Content = new Grid
 		{
 			Margin = new(16, 0),
-			
+
 			ColumnSpacing = 16,
 			Columns =
 			{
-				32,
+				24,
 				GridLength.Star
 			},
-			
+
 			Children =
 			{
-				new Border
+				(iconView = new Image
 				{
-					Margin = new(-16, 0, -32, 0),
-					Padding = new(16, 0, 32, 0),
-					
-					Background = Bind(item => item.Color)
-						.ConvertTo(color => new LinearGradient
-						{
-							Start = new(0, 0.5),
-							End = new(1, 0.5),
-							Stops =
-							[
-								new(color.ToColor(0.15), 0),
-								new(color.ToColor(0.0), 1)
-							]
-						}),
-					
-					Child = icon = new Image
-					{
-						Width = 32,
-						Height = 32
-					}
-				},
-				
+					Width = 24,
+					Height = 24
+				}),
+
 				new Label
 				{
 					Text = Bind(activity => activity.Name),
@@ -62,10 +71,15 @@ public sealed class ActivityCell : ItemView<Activity>
 	protected override void OnItemChanged(
 		Activity item)
 	{
-		icon.Source = ImageSource.Symbol(
-			item.Icon?.ToSymbol() ?? "x.circle",
+		string symbol = item.Icon is ActivityIcon icon
+			? icon.ToSymbol()
+			: "x.circle";
+
+		iconView.Source = ImageSource.Symbol(
+			symbol,
 			size: 20,
 			weight: FontWeight.Semibold,
-			colors: item.Color.ToColor(item.Icon.HasValue ? 1 : 0.5));
+			colors: item.Color.ToColor());
+		iconView.Opacity = item.Icon.HasValue ? 1 : 0.25;
 	}
 }

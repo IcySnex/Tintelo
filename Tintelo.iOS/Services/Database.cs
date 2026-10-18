@@ -60,7 +60,7 @@ public sealed class Database(
 	
 				CREATE TABLE EntryActivity (
 					EntryId TEXT NOT NULL REFERENCES Entry(Id) ON DELETE CASCADE,
-					ActivityId TEXT NOT NULL REFERENCES Activity(Id) ON DELETE RESTRICT,
+					ActivityId TEXT NOT NULL REFERENCES Activity(Id) ON DELETE CASCADE,
 					PRIMARY KEY (EntryId, ActivityId)
 				) STRICT, WITHOUT ROWID;
 	
@@ -81,7 +81,6 @@ public sealed class Database(
 			command.ExecuteNonQuery();
 		}
 	
-		
 		public static void Apply(
 			SqliteConnection connection,
 			CancellationToken cancellationToken = default)

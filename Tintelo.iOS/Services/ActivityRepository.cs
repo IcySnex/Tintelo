@@ -7,8 +7,13 @@ namespace Tintelo.iOS.Services;
 public sealed class ActivityRepository(
 	Database database)
 {
-	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity;";
-	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0;";
+	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity ORDER BY Name;";
+	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0 ORDER BY Name;";
+
+	
+	static string SerializeIds(
+		IReadOnlyCollection<Guid> ids) =>
+		$"[{string.Join(",", ids.Select(id => $"\"{id:D}\""))}]";
 
 
 	internal static Activity ReadActivity(
@@ -21,6 +26,7 @@ public sealed class ActivityRepository(
 			reader.GetBoolean(4));
 
 
+	// actions
 	public Task<IReadOnlyList<Activity>> GetAsync(
 		bool includeArchived = false,
 		CancellationToken cancellationToken = default) =>
@@ -39,6 +45,7 @@ public sealed class ActivityRepository(
 			return (IReadOnlyList<Activity>)activities;
 		}, cancellationToken);
 
+	
 	public Task<Activity> CreateAsync(
 		string name,
 		ActivityIcon? icon,
@@ -66,6 +73,7 @@ public sealed class ActivityRepository(
 			return new Activity(id, trimmedName, icon, trimmedColor, false);
 		}, cancellationToken);
 
+	
 	public Task<bool> UpdateAsync(
 		Guid id,
 		string name,
@@ -91,16 +99,48 @@ public sealed class ActivityRepository(
 			return command.ExecuteNonQuery() == 1;
 		}, cancellationToken);
 
-	public Task<bool> DeleteAsync(
-		Guid id,
+	
+	public Task<int> SetArchivedAsync(
+		IReadOnlyCollection<Guid> ids,
+		bool isArchived,
 		CancellationToken cancellationToken = default) =>
 		database.WriteAsync((connection, transaction) =>
 		{
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
-				"DELETE FROM Activity WHERE Id = $id;",
-				("$id", id.ToString("D")));
+				"""
+				UPDATE Activity
+				SET IsArchived = $isArchived
+				WHERE Id IN (SELECT value FROM json_each($ids));
+				""",
+				("$isArchived", isArchived ? 1 : 0),
+				("$ids", SerializeIds(ids)));
 
-			return command.ExecuteNonQuery() == 1;
+			return command.ExecuteNonQuery();
 		}, cancellationToken);
+
+	public async Task<bool> SetArchivedAsync(
+		Guid id,
+		bool isArchived,
+		CancellationToken cancellationToken = default) =>
+		await SetArchivedAsync([id], isArchived, cancellationToken).ConfigureAwait(false) == 1;
+	
+	
+	public Task<int> DeleteAsync(
+		IReadOnlyCollection<Guid> ids,
+		CancellationToken cancellationToken = default) =>
+		database.WriteAsync((connection, transaction) =>
+		{
+			using SqliteCommand command = connection.CreateCommand(
+				transaction,
+				"DELETE FROM Activity WHERE Id IN (SELECT value FROM json_each($ids));",
+				("$ids", SerializeIds(ids)));
+
+			return command.ExecuteNonQuery();
+		}, cancellationToken);
+
+	public async Task<bool> DeleteAsync(
+		Guid id,
+		CancellationToken cancellationToken = default) =>
+		await DeleteAsync([id], cancellationToken).ConfigureAwait(false) == 1;
 }

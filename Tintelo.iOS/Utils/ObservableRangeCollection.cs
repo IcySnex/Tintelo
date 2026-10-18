@@ -90,6 +90,31 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
 	}
 
 	public void RemoveRange(
+		IEnumerable<T> items)
+	{
+		ArgumentNullException.ThrowIfNull(items);
+		CheckReentrancy();
+
+		List<T> itemsToRemove = items.ToList();
+		if (itemsToRemove.Count == 0)
+			return;
+
+		bool removedAny = false;
+		foreach (T item in itemsToRemove)
+		{
+			if (Items.Remove(item))
+				removedAny = true;
+		}
+
+		if (removedAny)
+		{
+			OnPropertyChanged(CountPropertyChanged);
+			OnPropertyChanged(IndexerPropertyChanged);
+			OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
+		}
+	}
+	
+	public void RemoveRange(
 		int index,
 		int count)
 	{

@@ -252,8 +252,8 @@
 	<data name="Settings_Entries_Activities" xml:space="preserve">
 		<value>Aktivitäten</value>
 	</data>
-	<data name="Settings_Entries_Activities_Archived" xml:space="preserve">
-		<value>Archiviert</value>
+	<data name="Settings_Entries_Activities_Archive" xml:space="preserve">
+		<value>Archivieren</value>
 	</data>
 	<data name="Settings_Entries_Activities_Add" xml:space="preserve">
 		<value>Hinzufügen</value>
@@ -278,5 +278,11 @@
 	</data>
 	<data name="Error_Confirm_Okay" xml:space="preserve">
 		<value>Okay</value>
+	</data>
+	<data name="Settings_Entries_Activities_Empty" xml:space="preserve">
+		<value>Uff, ziemlich leer hier :( Es sieht so aus, als hättest du noch keine Aktivitäten.</value>
+	</data>
+	<data name="Settings_Entries_Activities_Empty_CallToAction" xml:space="preserve">
+		<value>Aktivität hinzufügen</value>
 	</data>
 </root>

@@ -1,5 +1,6 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -11,11 +12,13 @@ public class AnalyticsView : ContentView<AnalyticsViewModel>
 	{
 		Title = Texts.Analytics;
 		
-		ToolbarItems.Add(new()
+		ToolbarItems.Add(new ToolbarButton
 		{
-			Icon = "switch.2",
+			Command = viewModel.OpenSettingsCommand,
+			
+			Icon = ImageSource.Symbol("switch.2"),
 			Text = Texts.Settings,
-			Command = viewModel.OpenSettingsCommand
+			Tint = BindingFactory.Bind(SkeleApplication.Current!.Theme, theme => theme.Tint)
 		});
 	}
 }

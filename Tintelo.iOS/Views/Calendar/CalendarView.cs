@@ -1,6 +1,7 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Calendar;
+using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.Views.Calendar.Cells;
 
@@ -16,13 +17,15 @@ public class CalendarView : ContentView<CalendarViewModel>
 		
 		NavigationAccessory = new WeekdaysHeader(viewModel.Calendar);
 
-		ToolbarItems.Add(new()
+		ToolbarItems.Add(new ToolbarButton
 		{
-			Icon = "switch.2",
+			Command = viewModel.OpenSettingsCommand,
+			
+			Icon = ImageSource.Symbol("switch.2"),
 			Text = Texts.Settings,
-			Command = viewModel.OpenSettingsCommand
+			Tint = BindingFactory.Bind(SkeleApplication.Current!.Theme, theme => theme.Tint)
 		});
-		
+
 		Content = new CollectionView<ICalendarDaySummary, CalendarMonthSummary>
 		{
 			DefaultScrollPosition = ScrollPosition.Bottom,

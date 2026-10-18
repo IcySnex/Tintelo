@@ -2,7 +2,6 @@ using System.ComponentModel;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.AddEntry;
-using Tintelo.iOS.Utils;
 using Tintelo.iOS.ViewModels.AddEntry;
 using Tintelo.iOS.Views.AddEntry.Cells;
 
@@ -11,18 +10,18 @@ namespace Tintelo.iOS.Views.AddEntry;
 [Page]
 public class AddMoodView : ContentView<AddMoodViewModel>
 {
-	readonly ToolbarItem closeButton;
-	readonly ToolbarItem continueButton;
+	readonly ToolbarButton closeButton;
+	readonly ToolbarButton continueButton;
 	
 	public AddMoodView(AddMoodViewModel viewModel) : base(viewModel)
 	{
 		viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
 		Title = Bind(vm => vm.Title);
-
+		
 		BackButtonStyle = BackButtonStyle.None;
 
-		ToolbarItems.Add(closeButton = new ToolbarItem
+		ToolbarItems.Add(closeButton = new ToolbarButton
 		{
 			IsVisible = viewModel.SelectedMood.HasValue,
 			Side = ToolbarSide.Leading,
@@ -31,9 +30,8 @@ public class AddMoodView : ContentView<AddMoodViewModel>
 			
 			Icon = ImageSource.Symbol("xmark", weight: FontWeight.Semibold),
 			Text = Texts.AddEntry_Close,
-			Tint = Colors.ToolbarButton
 		});
-		ToolbarItems.Add(continueButton = new ToolbarItem
+		ToolbarItems.Add(continueButton = new ToolbarButton
 		{
 			IsVisible = viewModel.SelectedMood.HasValue,
 

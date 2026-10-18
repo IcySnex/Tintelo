@@ -14,7 +14,7 @@
 		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
 		
 		<AppIcon>AppIcon</AppIcon>
-		<ValidateXcodeVersion>true</ValidateXcodeVersion>
+		<ValidateXcodeVersion>false</ValidateXcodeVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

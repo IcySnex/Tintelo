@@ -1,8 +1,10 @@
+using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Journal;
+using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
 
@@ -20,49 +22,97 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		this.navigator = navigator;
 		this.repository = repository;
 
-		SelectedActivities.CollectionChanged += (_, _) =>
-			OnPropertyChanged(nameof(HasSelection));
+		ActiveSection = new([]);
+		ArchivedSection = new([]);
+		Sections = [ActiveSection];
+
+		ArchivedSection.Items.CollectionChanged += OnArchivedItemsChanged;
+		SelectedActivities.CollectionChanged += OnSelectedActivitiesChanged;
+	}
+
+	
+	void OnArchivedItemsChanged(
+		object? _,
+		NotifyCollectionChangedEventArgs e)
+	{
+		bool hasItems = ArchivedSection.Items.Count > 0;
+		if (hasItems == Sections.Contains(ArchivedSection))
+			return;
+
+		if (hasItems)
+		{
+			Sections.Add(ArchivedSection);
+		}
+		else
+		{
+			Sections.Remove(ArchivedSection);
+			ArchivedSection.IsExpanded = false;
+		}
 	}
 	
-	
-	bool CanDeleteRightNow() =>
-		!DeleteCommand.IsRunning && !DeleteSelectedCommand.IsRunning && !ArchiveCommand.IsRunning && !ArchiveSelectedCommand.IsRunning;
-	
+	void OnSelectedActivitiesChanged(
+		object? _,
+		NotifyCollectionChangedEventArgs e)
+	{
+		OnPropertyChanged(nameof(HasSelection));
+		OnPropertyChanged(nameof(SelectionIsArchived));
+		ToggleArchiveSelectedCommand.NotifyCanExecuteChanged();
+	}
 
-	public ObservableRangeCollection<Activity> Activities { get; } = [];
+	
+	public ObservableRangeCollection<ActivitySection> Sections { get; }
+	public ActivitySection ActiveSection { get; }
+	public ActivityArchiveSection ArchivedSection { get; }
 
 	public ObservableRangeCollection<Activity> SelectedActivities { get; } = [];
-
 	public bool HasSelection => SelectedActivities.Count > 0;
+	public bool SelectionIsArchived => SelectedActivities.Count > 0 && SelectedActivities.All(activity => activity.IsArchived);
+	
+	[ObservableProperty]
+	public partial bool IsEditing { get; set; }
+	
 
-    [ObservableProperty]
-    public partial bool IsEditing { get; set; }
+	public async Task LoadAsync()
+	{
+		IReadOnlyList<Activity> activities = await repository.GetAsync(includeArchived: true);
+		ActiveSection.Items.ReplaceAll(activities.Where(activity => !activity.IsArchived));
+		ArchivedSection.Items.ReplaceAll(activities.Where(activity => activity.IsArchived));
+	}
 
 
-    [RelayCommand]
-    void ToggleEditing() =>
-	    IsEditing = !IsEditing;
+	// Commands
+	bool CanRunActions() =>
+		!DeleteCommand.IsRunning
+		&& !DeleteSelectedCommand.IsRunning
+		&& !ToggleArchiveCommand.IsRunning
+		&& !ToggleArchiveSelectedCommand.IsRunning;
 
+	bool CanToggleArchiveSelection() =>
+		SelectedActivities.Count > 0
+		&& (SelectedActivities.All(activity => activity.IsArchived) || SelectedActivities.All(activity => !activity.IsArchived))
+		&& CanRunActions();
 
-    public async Task LoadAsync()
-    {
-	    IReadOnlyList<Activity> activities = await repository.GetAsync();
-	    Activities.ReplaceAll(activities);
-    }
-    
-    
+	
 	[RelayCommand]
 	Task AddAsync() =>
 		Task.CompletedTask;
-	
-	
-	[RelayCommand]
-	Task ReorderAsync(
-		ItemMove<Activity> move) =>
-		Task.CompletedTask;
 
-	
-	[RelayCommand(CanExecute = nameof(CanDeleteRightNow))]
+
+	[RelayCommand]
+	async Task ReorderAsync(
+		ItemMove<Activity> move)
+	{
+		if (move.FromSection == move.ToSection)
+			return;
+
+		await repository.SetArchivedAsync(move.Item.Id, move.ToSection > 0);
+
+		SelectedActivities.Clear();
+		await LoadAsync();
+	}
+
+
+	[RelayCommand(CanExecute = nameof(CanRunActions))]
 	async Task DeleteSelectedAsync()
 	{
 		Activity[] selected = [.. SelectedActivities];
@@ -74,16 +124,18 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 			true))
 			return;
 
-		Guid[] ids = [.. selected.Select(activity => activity.Id)];
+		Guid[] ids = selected
+			.Select(activity => activity.Id)
+			.ToArray();
 		await repository.DeleteAsync(ids);
 
 		SelectedActivities.Clear();
-		Activities.RemoveRange(selected);
+		await LoadAsync();
 	}
 
-	[RelayCommand(CanExecute = nameof(CanDeleteRightNow))]
+	[RelayCommand(CanExecute = nameof(CanRunActions))]
 	async Task DeleteAsync(
-		Activity delete)
+		Activity activity)
 	{
 		if (!await navigator.ConfirmAsync(
 			Texts.Question,
@@ -93,35 +145,45 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 			true))
 			return;
 
-		await repository.DeleteAsync(delete.Id);
+		await repository.DeleteAsync(activity.Id);
 
-		SelectedActivities.Remove(delete);
-		Activities.Remove(delete);
+		SelectedActivities.Clear();
+		await LoadAsync();
 	}
-	
-	
-	[RelayCommand(CanExecute = nameof(CanDeleteRightNow))]
-	async Task ArchiveSelectedAsync()
+
+
+	[RelayCommand(CanExecute = nameof(CanToggleArchiveSelection))]
+	async Task ToggleArchiveSelectedAsync()
 	{
 		Activity[] selected = [.. SelectedActivities];
 		if (selected.Length == 0)
 			return;
 
-		Guid[] ids = [.. selected.Select(activity => activity.Id)];
-		await repository.SetArchivedAsync(ids, true);
+		Guid[] archiveIds = selected
+			.Where(activity => !activity.IsArchived)
+			.Select(activity => activity.Id)
+			.ToArray();
+		if (archiveIds.Length > 0)
+			await repository.SetArchivedAsync(archiveIds, true);
+		
+		Guid[] unarchiveIds = selected
+			.Where(activity => activity.IsArchived)
+			.Select(activity => activity.Id)
+			.ToArray();
+		if (unarchiveIds.Length > 0)
+			await repository.SetArchivedAsync(unarchiveIds, false);
 
 		SelectedActivities.Clear();
-		Activities.RemoveRange(selected);
-	}
-
-	[RelayCommand(CanExecute = nameof(CanDeleteRightNow))]
-	async Task ArchiveAsync(
-		Activity archive)
-	{
-		await repository.SetArchivedAsync(archive.Id, true);
-
-		SelectedActivities.Remove(archive);
-		Activities.Remove(archive);
+		await LoadAsync();
 	}
 	
+	[RelayCommand(CanExecute = nameof(CanRunActions))]
+	async Task ToggleArchiveAsync(
+		Activity activity)
+	{
+		await repository.SetArchivedAsync(activity.Id, !activity.IsArchived);
+
+		SelectedActivities.Clear();
+		await LoadAsync();
+	}
 }

@@ -255,6 +255,12 @@
 	<data name="Settings_Entries_Activities_Archive" xml:space="preserve">
 		<value>Archive</value>
 	</data>
+	<data name="Settings_Entries_Activities_Archived" xml:space="preserve">
+		<value>Archived</value>
+	</data>
+	<data name="Settings_Entries_Activities_Unarchive" xml:space="preserve">
+		<value>Unarchive</value>
+	</data>
 	<data name="Settings_Entries_Activities_Add" xml:space="preserve">
 		<value>Add</value>
 	</data>

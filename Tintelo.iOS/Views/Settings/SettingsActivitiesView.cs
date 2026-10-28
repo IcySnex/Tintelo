@@ -1,6 +1,7 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Journal;
+using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views.Settings.Cells;
 
@@ -30,33 +31,37 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 				},
 				new ToolbarButton
 				{
-					Command = viewModel.ToggleEditingCommand,
+					Command = Command.From(() => viewModel.IsEditing = !viewModel.IsEditing),
 
 					Text = Bind(vm => vm.IsEditing)
-						.ConvertTo(isEditing => isEditing ? Texts.Settings_Entries_Activities_Done : Texts.Settings_Entries_Activities_Edit),
+						.ConvertTo(isEditing => isEditing
+							? Texts.Settings_Entries_Activities_Done
+							: Texts.Settings_Entries_Activities_Edit),
 					Icon = Bind(vm => vm.IsEditing)
-						.ConvertTo(isEditing => ImageSource.Symbol(isEditing ? "checkmark" : "pencil")),
+						.ConvertTo(isEditing => ImageSource.Symbol(isEditing
+							? "checkmark"
+							: "pencil")),
 					IsPrimary = Bind(vm => vm.IsEditing)
 				}
 			}
 		});
 		ToolbarItems.Add(new ToolbarGroup
 		{
+			IsVisible = Bind(vm => vm.IsEditing),
 			Items =
 			{
 				new ToolbarButton
 				{
-					IsVisible = Bind(vm => vm.IsEditing),
-					IsEnabled = Bind(vm => vm.HasSelection),
-			
-					Command = viewModel.ArchiveSelectedCommand,
+					Command = viewModel.ToggleArchiveSelectedCommand,
 
-					Text = Texts.Settings_Entries_Activities_Archive,
+					Text = Bind(vm => vm.SelectionIsArchived)
+						.ConvertTo(isArchived => isArchived
+							? Texts.Settings_Entries_Activities_Unarchive
+							: Texts.Settings_Entries_Activities_Archive),
 					Icon = ImageSource.Symbol("archivebox")
 				},
 				new ToolbarButton
 				{
-					IsVisible = Bind(vm => vm.IsEditing),
 					IsEnabled = Bind(vm => vm.HasSelection),
 			
 					Command = viewModel.DeleteSelectedCommand,
@@ -67,7 +72,7 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 			}
 		});
 		
-		Content = new CollectionView<Activity>
+		Content = new CollectionView<Activity, ActivitySection>
 		{
 			Layout = CollectionLayout.List(true),
 			SeparatorInsets = new(64, 0, 12, 0),
@@ -108,8 +113,9 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 			},
 			
 			ItemTemplate = static () => new ActivityCell(),
+			SectionHeaderTemplate = static () => new ActivitySectionHeaderCell(),
 
-			ItemsSource = viewModel.Activities,
+			GroupedItemsSource = viewModel.Sections,
 			SelectedItems = viewModel.SelectedActivities,
 			ReorderCommand = viewModel.ReorderCommand,
 			
@@ -124,7 +130,7 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 				},
 				new SwipeAction
 				{
-					Command = viewModel.ArchiveCommand,
+					Command = viewModel.ToggleArchiveCommand,
 					
 					Icon = ImageSource.Symbol("archivebox")
 				}
@@ -137,8 +143,7 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 	{
 		_ = ViewModel.LoadAsync();
 	}
-
-
+	
 	protected override void OnDisappeared()
 	{
 		ViewModel.IsEditing = false;

@@ -102,13 +102,34 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 	async Task ReorderAsync(
 		ItemMove<Activity> move)
 	{
+		ActivitySection destination = move.ToSection == 0
+			? ActiveSection
+			: ArchivedSection;
+
+		Guid? previousId = move.ToIndex > 0
+			? destination.Items[move.ToIndex - 1].Id
+			: null;
+
+		Guid? nextId = move.ToIndex < destination.Items.Count - 1
+			? destination.Items[move.ToIndex + 1].Id
+			: null;
+
+		bool isArchived = destination is ActivityArchiveSection;
+
+		await repository.MoveAsync(
+			move.Item.Id,
+			previousId,
+			nextId,
+			isArchived);
+
 		if (move.FromSection == move.ToSection)
 			return;
 
-		await repository.SetArchivedAsync(move.Item.Id, move.ToSection > 0);
+		int index = destination.Items.IndexOf(move.Item);
+		if (index >= 0)
+			destination.Items[index] = move.Item with { IsArchived = isArchived };
 
 		SelectedActivities.Clear();
-		await LoadAsync();
 	}
 
 

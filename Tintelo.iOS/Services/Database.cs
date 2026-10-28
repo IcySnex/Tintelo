@@ -55,9 +55,16 @@ public sealed class Database(
 						length(Color) = 7
 						AND Color GLOB '#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]'
 					),
-					IsArchived INTEGER NOT NULL DEFAULT 0 CHECK (IsArchived IN (0, 1))
+					IsArchived INTEGER NOT NULL DEFAULT 0 CHECK (IsArchived IN (0, 1)),
+					SortOrder TEXT NOT NULL
 				) STRICT;
-	
+
+				CREATE INDEX IX_Activity_IsArchived_SortOrder
+				ON Activity (IsArchived, SortOrder);
+
+				CREATE INDEX IX_Activity_SortOrder
+				ON Activity (SortOrder);
+
 				CREATE TABLE EntryActivity (
 					EntryId TEXT NOT NULL REFERENCES Entry(Id) ON DELETE CASCADE,
 					ActivityId TEXT NOT NULL REFERENCES Activity(Id) ON DELETE CASCADE,

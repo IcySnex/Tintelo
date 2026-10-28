@@ -212,21 +212,25 @@ public partial class SettingsViewModel : ObservableObject
 			List<Guid> activityIds = [];
 			using (SqliteCommand insertActivity = connection.CreateCommand(
 				transaction,
-				"INSERT INTO Activity (Id, Name, Icon, Color, IsArchived) VALUES ($id, $name, $icon, $color, 0);"))
+				"INSERT INTO Activity (Id, Name, Icon, Color, IsArchived, SortOrder) VALUES ($id, $name, $icon, $color, 0, $sortOrder);"))
 			{
 				SqliteParameter id = insertActivity.Parameters.Add("$id", SqliteType.Text);
 				SqliteParameter name = insertActivity.Parameters.Add("$name", SqliteType.Text);
 				SqliteParameter icon = insertActivity.Parameters.Add("$icon", SqliteType.Text);
 				SqliteParameter color = insertActivity.Parameters.Add("$color", SqliteType.Text);
+				SqliteParameter sortOrder = insertActivity.Parameters.Add("$sortOrder", SqliteType.Text);
 
-				foreach ((string activityName, ActivityIcon activityIcon, string activityColor) in sampleActivities)
+				string? previousSortOrder = null;
+				foreach ((string activityName, ActivityIcon activityIcon, string activityColor) in sampleActivities.OrderBy(activity => activity.Name, StringComparer.Ordinal))
 				{
 					Guid activityId = Guid.CreateVersion7();
+					previousSortOrder = FractionalIndex.Between(previousSortOrder, null);
 
 					id.Value = activityId.ToString("D");
 					name.Value = activityName;
 					icon.Value = activityIcon.ToString();
 					color.Value = activityColor;
+					sortOrder.Value = previousSortOrder;
 					insertActivity.ExecuteNonQuery();
 
 					activityIds.Add(activityId);

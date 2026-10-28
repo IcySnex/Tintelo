@@ -7,13 +7,37 @@ namespace Tintelo.iOS.Services;
 public sealed class ActivityRepository(
 	Database database)
 {
-	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity ORDER BY Name;";
-	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0 ORDER BY Name;";
+	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity ORDER BY IsArchived, SortOrder, Name;";
+	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0 ORDER BY SortOrder, Name;";
 
 	
 	static string SerializeIds(
 		IReadOnlyCollection<Guid> ids) =>
 		$"[{string.Join(",", ids.Select(id => $"\"{id:D}\""))}]";
+
+	static string? ReadSortOrder(
+		SqliteConnection connection,
+		SqliteTransaction transaction,
+		Guid id)
+	{
+		using SqliteCommand command = connection.CreateCommand(
+			transaction,
+			"SELECT SortOrder FROM Activity WHERE Id = $id;",
+			("$id", id.ToString("D")));
+
+		return command.ExecuteScalar() as string;
+	}
+
+	static string? ReadLastSortOrder(
+		SqliteConnection connection,
+		SqliteTransaction transaction)
+	{
+		using SqliteCommand command = connection.CreateCommand(
+			transaction,
+			"SELECT SortOrder FROM Activity ORDER BY SortOrder DESC LIMIT 1;");
+
+		return command.ExecuteScalar() as string;
+	}
 
 
 	internal static Activity ReadActivity(
@@ -56,17 +80,19 @@ public sealed class ActivityRepository(
 			Guid id = Guid.CreateVersion7();
 			string trimmedName = name.Trim();
 			string trimmedColor = color.Trim();
+			string sortOrder = FractionalIndex.Between(ReadLastSortOrder(connection, transaction), null);
 
 			using SqliteCommand command = connection.CreateCommand(
 				transaction,
 				"""
-				INSERT INTO Activity (Id, Name, Icon, Color, IsArchived)
-				VALUES ($id, $name, $icon, $color, 0);
+				INSERT INTO Activity (Id, Name, Icon, Color, IsArchived, SortOrder)
+				VALUES ($id, $name, $icon, $color, 0, $sortOrder);
 				""",
 				("$id", id.ToString("D")),
 				("$name", trimmedName),
 				("$icon", icon?.ToString()),
-				("$color", trimmedColor));
+				("$color", trimmedColor),
+				("$sortOrder", sortOrder));
 
 			command.ExecuteNonQuery();
 
@@ -100,6 +126,47 @@ public sealed class ActivityRepository(
 		}, cancellationToken);
 
 	
+	public Task<bool> MoveAsync(
+		Guid id,
+		Guid? previousId,
+		Guid? nextId,
+		bool isArchived,
+		CancellationToken cancellationToken = default) =>
+		database.WriteAsync((connection, transaction) =>
+		{
+			string? previous = previousId is Guid previousKey
+				? ReadSortOrder(connection, transaction, previousKey)
+				: null;
+
+			string? next = nextId is Guid nextKey
+				? ReadSortOrder(connection, transaction, nextKey)
+				: null;
+
+			if (previousId is not null && previous is null)
+				throw new InvalidOperationException("The previous activity no longer exists.");
+
+			if (nextId is not null && next is null)
+				throw new InvalidOperationException("The next activity no longer exists.");
+
+			string sortOrder = previous is null && next is null
+				? FractionalIndex.Between(ReadLastSortOrder(connection, transaction), null)
+				: FractionalIndex.Between(previous, next);
+
+			using SqliteCommand command = connection.CreateCommand(
+				transaction,
+				"""
+				UPDATE Activity
+				SET IsArchived = $isArchived, SortOrder = $sortOrder
+				WHERE Id = $id;
+				""",
+				("$id", id.ToString("D")),
+				("$isArchived", isArchived ? 1 : 0),
+				("$sortOrder", sortOrder));
+
+			return command.ExecuteNonQuery() == 1;
+		}, cancellationToken);
+
+
 	public Task<int> SetArchivedAsync(
 		IReadOnlyCollection<Guid> ids,
 		bool isArchived,

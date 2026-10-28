@@ -5,4 +5,5 @@ public sealed record Activity(
 	string Name,
 	ActivityIcon? Icon,
 	string Color,
-	bool IsArchived);
+	bool IsArchived,
+	string SortOrder);

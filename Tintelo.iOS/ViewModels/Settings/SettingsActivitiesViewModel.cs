@@ -85,7 +85,8 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		!DeleteCommand.IsRunning
 		&& !DeleteSelectedCommand.IsRunning
 		&& !ToggleArchiveCommand.IsRunning
-		&& !ToggleArchiveSelectedCommand.IsRunning;
+		&& !ToggleArchiveSelectedCommand.IsRunning
+		&& !ReorderCommand.IsRunning;
 
 	bool CanToggleArchiveSelection() =>
 		SelectedActivities.Count > 0
@@ -109,27 +110,26 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		Guid? previousId = move.ToIndex > 0
 			? destination.Items[move.ToIndex - 1].Id
 			: null;
-
 		Guid? nextId = move.ToIndex < destination.Items.Count - 1
 			? destination.Items[move.ToIndex + 1].Id
 			: null;
 
 		bool isArchived = destination is ActivityArchiveSection;
-
-		await repository.MoveAsync(
+		string sortOrder = await repository.MoveAsync(
 			move.Item.Id,
 			previousId,
 			nextId,
 			isArchived);
-
-		if (move.FromSection == move.ToSection)
-			return;
+		
+		Activity updated = move.Item with { IsArchived = isArchived, SortOrder = sortOrder };
 
 		int index = destination.Items.IndexOf(move.Item);
 		if (index >= 0)
-			destination.Items[index] = move.Item with { IsArchived = isArchived };
+			destination.Items[index] = updated;
 
-		SelectedActivities.Clear();
+		int selectedIndex = SelectedActivities.IndexOf(move.Item);
+		if (selectedIndex >= 0)
+			SelectedActivities[selectedIndex] = updated;
 	}
 
 
@@ -151,7 +151,8 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		await repository.DeleteAsync(ids);
 
 		SelectedActivities.Clear();
-		await LoadAsync();
+		foreach (Activity activity in selected)
+			Remove(activity);
 	}
 
 	[RelayCommand(CanExecute = nameof(CanRunActions))]
@@ -169,7 +170,7 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		await repository.DeleteAsync(activity.Id);
 
 		SelectedActivities.Clear();
-		await LoadAsync();
+		Remove(activity);
 	}
 
 
@@ -180,31 +181,62 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		if (selected.Length == 0)
 			return;
 
-		Guid[] archiveIds = selected
-			.Where(activity => !activity.IsArchived)
+		bool isArchived = !selected[0].IsArchived;
+		Guid[] ids = selected
 			.Select(activity => activity.Id)
 			.ToArray();
-		if (archiveIds.Length > 0)
-			await repository.SetArchivedAsync(archiveIds, true);
-		
-		Guid[] unarchiveIds = selected
-			.Where(activity => activity.IsArchived)
-			.Select(activity => activity.Id)
-			.ToArray();
-		if (unarchiveIds.Length > 0)
-			await repository.SetArchivedAsync(unarchiveIds, false);
+
+		await repository.SetArchivedAsync(ids, isArchived);
 
 		SelectedActivities.Clear();
-		await LoadAsync();
+		foreach (Activity activity in selected)
+			Move(activity, isArchived);
 	}
 	
 	[RelayCommand(CanExecute = nameof(CanRunActions))]
 	async Task ToggleArchiveAsync(
 		Activity activity)
 	{
-		await repository.SetArchivedAsync(activity.Id, !activity.IsArchived);
+		bool isArchived = !activity.IsArchived;
+		await repository.SetArchivedAsync(activity.Id, isArchived);
 
 		SelectedActivities.Clear();
-		await LoadAsync();
+		Move(activity, isArchived);
+	}
+
+
+	static int Compare(
+		Activity left,
+		Activity right)
+	{
+		int result = string.CompareOrdinal(left.SortOrder, right.SortOrder);
+		if (result != 0)
+			return result;
+
+		result = string.CompareOrdinal(left.Name, right.Name);
+		return result != 0 ? result : left.Id.CompareTo(right.Id);
+	}
+
+	void Move(
+		Activity activity,
+		bool isArchived)
+	{
+		Remove(activity);
+
+		Activity updated = activity with { IsArchived = isArchived };
+		ActivitySection destination = isArchived ? ArchivedSection : ActiveSection;
+
+		int index = 0;
+		while (index < destination.Items.Count && Compare(destination.Items[index], updated) <= 0)
+			index++;
+
+		destination.Items.Insert(index, updated);
+	}
+
+	void Remove(
+		Activity activity)
+	{
+		ActiveSection.Items.Remove(activity);
+		ArchivedSection.Items.Remove(activity);
 	}
 }

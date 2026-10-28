@@ -7,8 +7,8 @@ namespace Tintelo.iOS.Services;
 public sealed class ActivityRepository(
 	Database database)
 {
-	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity ORDER BY IsArchived, SortOrder, Name;";
-	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived FROM Activity WHERE IsArchived = 0 ORDER BY SortOrder, Name;";
+	const string SelectAll = "SELECT Id, Name, Icon, Color, IsArchived, SortOrder FROM Activity ORDER BY IsArchived, SortOrder, Name, Id;";
+	const string SelectActive = "SELECT Id, Name, Icon, Color, IsArchived, SortOrder FROM Activity WHERE IsArchived = 0 ORDER BY SortOrder, Name, Id;";
 
 	
 	static string SerializeIds(
@@ -47,7 +47,8 @@ public sealed class ActivityRepository(
 			reader.GetString(1),
 			reader.IsDBNull(2) ? null : reader.GetString(2).ToActivityIcon(),
 			reader.GetString(3),
-			reader.GetBoolean(4));
+			reader.GetBoolean(4),
+			reader.GetString(5));
 
 
 	// actions
@@ -96,7 +97,7 @@ public sealed class ActivityRepository(
 
 			command.ExecuteNonQuery();
 
-			return new Activity(id, trimmedName, icon, trimmedColor, false);
+			return new Activity(id, trimmedName, icon, trimmedColor, false, sortOrder);
 		}, cancellationToken);
 
 	
@@ -126,7 +127,7 @@ public sealed class ActivityRepository(
 		}, cancellationToken);
 
 	
-	public Task<bool> MoveAsync(
+	public Task<string> MoveAsync(
 		Guid id,
 		Guid? previousId,
 		Guid? nextId,
@@ -163,7 +164,10 @@ public sealed class ActivityRepository(
 				("$isArchived", isArchived ? 1 : 0),
 				("$sortOrder", sortOrder));
 
-			return command.ExecuteNonQuery() == 1;
+			if (command.ExecuteNonQuery() != 1)
+				throw new InvalidOperationException("The activity could not be moved.");
+
+			return sortOrder;
 		}, cancellationToken);
 
 

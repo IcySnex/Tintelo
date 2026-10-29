@@ -14,7 +14,7 @@ public class AboutHeader : Grid
 
 		Padding = 16;
 		Background = Colors.SecondaryGroupedBackground;
-		CornerRadius = SystemCornerRadius.GroupedList;
+		CornerRadius = OperatingSystem.IsIOSVersionAtLeast(26) ? 26 : 10;
 		CornerCurve = CornerCurve.Continuous;
 
 		ColumnSpacing = 8;

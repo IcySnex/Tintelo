@@ -69,7 +69,6 @@ SkeleApplication.CreateBuilder()
 				.Display(SplitViewDisplay.TwoColumns)
 				.NavigationColumn(SplitViewColumn.Secondary))
 		.Tab<AnalyticsView>(Texts.Analytics, ImageSource.Symbol("chart.bar.xaxis"))
-		.Bubble<AddEntryFlow>(Texts.AddEntry, ImageSource.Symbol("plus"), vm => vm.ShowCurrentDayCommand)
-		.Sidebar())
+		.Bubble<AddEntryFlow>(Texts.AddEntry, ImageSource.Symbol("plus"), vm => vm.ShowCurrentDayCommand))
 	.Build()
 	.Run(args);

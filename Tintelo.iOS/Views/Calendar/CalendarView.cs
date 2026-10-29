@@ -2,6 +2,7 @@ using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.Views.Calendar.Cells;
 
@@ -19,7 +20,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 
 		ToolbarItems.Add(new ToolbarButton
 		{
-			Command = viewModel.OpenSettingsCommand,
+			Command = viewModel.OpenSettingsCommand.SilentCanExecute(),
 			
 			Icon = ImageSource.Symbol("switch.2"),
 			Text = Texts.Settings,

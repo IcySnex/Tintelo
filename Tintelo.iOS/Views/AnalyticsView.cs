@@ -1,6 +1,7 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels;
 
 namespace Tintelo.iOS.Views;
@@ -14,7 +15,7 @@ public class AnalyticsView : ContentView<AnalyticsViewModel>
 		
 		ToolbarItems.Add(new ToolbarButton
 		{
-			Command = viewModel.OpenSettingsCommand,
+			Command = viewModel.OpenSettingsCommand.SilentCanExecute(),
 			
 			Icon = ImageSource.Symbol("switch.2"),
 			Text = Texts.Settings,

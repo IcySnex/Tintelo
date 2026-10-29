@@ -2,6 +2,7 @@ using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.AddEntry;
 
 namespace Tintelo.iOS.Views.AddEntry;

@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace Tintelo.iOS.Utils;
+namespace Tintelo.iOS.Utils.Extensions;
 
 public static class SqliteCommandExtensions
 {

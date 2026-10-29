@@ -9,6 +9,7 @@ using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Models.Settings;
 using Tintelo.iOS.Services;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.About;
 
 namespace Tintelo.iOS.ViewModels.Settings;

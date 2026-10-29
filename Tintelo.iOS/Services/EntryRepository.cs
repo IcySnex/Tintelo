@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 
 namespace Tintelo.iOS.Services;
 

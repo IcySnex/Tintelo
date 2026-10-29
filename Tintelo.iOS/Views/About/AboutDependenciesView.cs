@@ -1,7 +1,7 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.About;
-using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.About;
 
 namespace Tintelo.iOS.Views.About;

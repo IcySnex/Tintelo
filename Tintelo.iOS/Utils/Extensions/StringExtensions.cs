@@ -2,7 +2,7 @@ using System.Globalization;
 using SkeleKit;
 using Tintelo.iOS.Models.Journal;
 
-namespace Tintelo.iOS.Utils;
+namespace Tintelo.iOS.Utils.Extensions;
 
 public static class StringExtensions
 {

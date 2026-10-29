@@ -5,7 +5,7 @@ using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Logging;
 using Tintelo.iOS.Services;
-using Tintelo.iOS.Utils;
+using Tintelo.iOS.Utils.Extensions;
 
 namespace Tintelo.iOS.ViewModels.About;
 

@@ -12,7 +12,7 @@ public class SettingsView : ContentView<SettingsViewModel>
 {
 	public SettingsView(SettingsViewModel viewModel) : base(viewModel)
 	{
-		viewModel.PropertyChanged += OnViewModelPropertyChanged;
+		viewModel.ActivateCommand.PropertyChanged += OnActivateCommandPropertyChanged;
 		
 		Title = Texts.Settings;
 		Background = Colors.GroupedBackground;
@@ -27,7 +27,10 @@ public class SettingsView : ContentView<SettingsViewModel>
 			{
 				Margin = new(0, 0, 0, 20),
 				
-				TapCommand = viewModel.ShowAboutCommand
+				TapCommand = viewModel.ShowAboutCommand,
+				IsEnabled = Bind(vm => vm.ActivateCommand)
+					.Path(command => command.IsRunning)
+					.ConvertTo(isRunning => !isRunning)
 			},
 			
 			SectionHeaderTemplate = static () => new SettingsSectionHeaderCell(),
@@ -45,12 +48,12 @@ public class SettingsView : ContentView<SettingsViewModel>
 	}
 
 	
-	void OnViewModelPropertyChanged(object? _, PropertyChangedEventArgs e)
+	void OnActivateCommandPropertyChanged(object? _, PropertyChangedEventArgs e)
 	{
 		switch (e.PropertyName)
 		{
-			case nameof(SettingsViewModel.RunningActions):
-				ConfirmLeave = ViewModel.RunningActions == 0 ? null : () => Task.FromResult(false);
+			case nameof(SettingsViewModel.ActivateCommand.IsRunning):
+				ConfirmLeave = ViewModel.ActivateCommand.IsRunning ? () => Task.FromResult(false) : null;
 				break;
 		}
 	}

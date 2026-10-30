@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using SkeleKit;
 using Tintelo.iOS.Models.AddEntry;
@@ -19,22 +20,24 @@ public class MoodOptionCell : ItemView<MoodOption>
 			.ConvertTo<Color?>(current => Item is null
 				? null
 				: MoodPalette.Get(current, Item.Mood).Background);
-		HighlightBackground = BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
-			.ConvertTo<Color?>(current => Item is null
-				? null
-				: MoodPalette.Get(current, Item.Mood).Background.Map(
-					light => light with
-					{
-						Red = Math.Clamp(light.Red * 0.95, 0, 1),
-						Green = Math.Clamp(light.Green * 0.95, 0, 1),
-						Blue = Math.Clamp(light.Blue * 0.95, 0, 1)
-					},
-					dark => dark with
-					{
-						Red = Math.Clamp(dark.Red * 0.85, 0, 1),
-						Green = Math.Clamp(dark.Green * 0.85, 0, 1),
-						Blue = Math.Clamp(dark.Blue * 0.85, 0, 1)
-					}));
+		HighlightBackground = OperatingSystem.IsIOSVersionAtLeast(26)
+			? null
+			: (BindableBrush)BindingFactory.Bind(MoodPaletteCatalog, catalog => catalog.Current)
+				.ConvertTo<Color?>(current => Item is null
+					? null
+					: MoodPalette.Get(current, Item.Mood).Background.Map(
+						light => light with
+						{
+							Red = Math.Clamp(light.Red * 0.95, 0, 1),
+							Green = Math.Clamp(light.Green * 0.95, 0, 1),
+							Blue = Math.Clamp(light.Blue * 0.95, 0, 1)
+						},
+						dark => dark with
+						{
+							Red = Math.Clamp(dark.Red * 0.85, 0, 1),
+							Green = Math.Clamp(dark.Green * 0.85, 0, 1),
+							Blue = Math.Clamp(dark.Blue * 0.85, 0, 1)
+						}));
 
 		CornerRadius = double.PositiveInfinity;
 

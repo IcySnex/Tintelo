@@ -1,4 +1,6 @@
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using SkeleKit;
 
 namespace Tintelo.iOS.Utils.Extensions;
 
@@ -25,5 +27,14 @@ public static class CommandExtensions
 	{
 		public ICommand SilentCanExecute() =>
 			new SilentCommand(command);
+	}
+
+	extension(Command)
+	{
+		public static ICommand FromAsync(Func<Task> execute) =>
+			new AsyncRelayCommand(execute);
+		
+		public static ICommand FromAsync<T>(Func<T?, Task> execute) =>
+			new AsyncRelayCommand<T>(execute);
 	}
 }

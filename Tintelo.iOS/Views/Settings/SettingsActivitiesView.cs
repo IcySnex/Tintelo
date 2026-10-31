@@ -1,7 +1,9 @@
+using CommunityToolkit.Mvvm.Input;
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Models.Settings;
+using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.Settings;
 using Tintelo.iOS.Views.Settings.Cells;
 
@@ -10,6 +12,8 @@ namespace Tintelo.iOS.Views.Settings;
 [Page]
 public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 {
+	readonly CollectionView<Activity, ActivitySection> collectionView;
+	
 	public SettingsActivitiesView(SettingsActivitiesViewModel viewModel) : base(viewModel)
 	{
 		Title = Texts.Settings_Entries_Activities;
@@ -72,23 +76,23 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 			}
 		});
 		
-		Content = new CollectionView<Activity, ActivitySection>
+		Content = collectionView = new CollectionView<Activity, ActivitySection>
 		{
 			Layout = CollectionLayout.List(true),
 			SeparatorInsets = new(64, 0, 12, 0),
 			SelectsOnlyWhileEditing = true,
 			ReordersOnlyWhileEditing = true,
-			
-			IsEditing =  Bind(vm => vm.IsEditing)
+
+			IsEditing = Bind(vm => vm.IsEditing)
 				.TwoWay((vm, val) => vm.IsEditing = val),
-			
+
 			EmptyView = new StackPanel
 			{
 				SystemInsetEdges = LayoutEdges.All,
 				VerticalAlignment = VerticalAlignment.Center,
-				
+
 				Spacing = 12,
-				
+
 				Children =
 				{
 					new Label
@@ -97,13 +101,13 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 						TextColor = Colors.SecondaryLabel,
 						TextAlignment = TextAlignment.Center,
 					},
-					
+
 					new Button
 					{
 						HorizontalAlignment = HorizontalAlignment.Center,
-						
+
 						Command = viewModel.AddCommand,
-						
+
 						Text = Texts.Settings_Entries_Activities_Empty_CallToAction,
 						Icon = ImageSource.Symbol("plus"),
 						Kind = ButtonStyle.Tinted,
@@ -111,27 +115,49 @@ public class SettingsActivitiesView : ContentView<SettingsActivitiesViewModel>
 					}
 				}
 			},
-			
+
 			ItemTemplate = static () => new ActivityCell(),
 			SectionHeaderTemplate = static () => new ActivitySectionHeaderCell(),
 
 			GroupedItemsSource = viewModel.Sections,
 			SelectedItems = viewModel.SelectedActivities,
 			ReorderCommand = viewModel.ReorderCommand,
-			
+
 			SwipeActions =
 			{
 				new SwipeAction
 				{
-					Command = viewModel.DeleteCommand,
-					
+					Command = Command.From<Activity>(async activity =>
+					{
+						if (activity is null)
+							return;
+						
+						if (collectionView!.ItemViewFor(activity) is View anchor)
+							await Navigator.PresentViewAsync(new ConfirmView(
+								Texts.Settings_Entries_Activities_Delete_Description,
+								Texts.Question_Confirm_Delete,
+								true,
+								Command.FromAsync(async () =>
+								{
+									await viewModel.DeleteCommand.ExecuteAsync(activity);
+									await Navigator.TryDismissViewAsync<ConfirmView>();
+								})), ModalStyle.Popover(anchor, PopoverArrow.Up | PopoverArrow.Down));
+						else if (!await Navigator.ConfirmAsync(
+							Texts.Question,
+							Texts.Settings_Entries_Activities_Delete_Description,
+							Texts.Question_Confirm_Delete,
+							Texts.Question_Confirm_Keep,
+							true))
+							await viewModel.DeleteCommand.ExecuteAsync(activity);
+					}),
+
 					Icon = ImageSource.Symbol("trash"),
 					IsDestructive = true
 				},
 				new SwipeAction
 				{
 					Command = viewModel.ToggleArchiveCommand,
-					
+
 					Icon = ImageSource.Symbol("archivebox")
 				}
 			}

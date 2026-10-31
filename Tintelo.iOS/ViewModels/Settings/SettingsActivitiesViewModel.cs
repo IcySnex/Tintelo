@@ -139,7 +139,7 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 		Activity[] selected = [.. SelectedActivities];
 		if (selected.Length == 0 || !await navigator.ConfirmAsync(
 			Texts.Question,
-			Texts.Settings_Entries_Activities_Delete_Description,
+			Texts.Settings_Entries_Activities_DeleteSelection_Description,
 			Texts.Question_Confirm_Delete,
 			Texts.Question_Confirm_Keep,
 			true))
@@ -159,14 +159,6 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 	async Task DeleteAsync(
 		Activity activity)
 	{
-		if (!await navigator.ConfirmAsync(
-			Texts.Question,
-			Texts.Settings_Entries_Activities_Delete_Description,
-			Texts.Question_Confirm_Delete,
-			Texts.Question_Confirm_Keep,
-			true))
-			return;
-
 		await repository.DeleteAsync(activity.Id);
 
 		SelectedActivities.Clear();

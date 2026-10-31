@@ -279,7 +279,7 @@
 	<data name="Question_Confirm_Keep" xml:space="preserve">
 		<value>Keep</value>
 	</data>
-	<data name="Settings_Entries_Activities_Delete_Description" xml:space="preserve">
+	<data name="Settings_Entries_Activities_DeleteSelection_Description" xml:space="preserve">
 		<value>All selected activities will be deleted, including retroactively from all existing entries. This action cannot be undone. OwO, scary!</value>
 	</data>
 	<data name="Error_Confirm_Okay" xml:space="preserve">
@@ -290,5 +290,8 @@
 	</data>
 	<data name="Settings_Entries_Activities_Empty_CallToAction" xml:space="preserve">
 		<value>Add Activity</value>
+	</data>
+	<data name="Settings_Entries_Activities_Delete_Description" xml:space="preserve">
+		<value>This deletes the activity from all past entries forever. OwO, scary!</value>
 	</data>
 </root>

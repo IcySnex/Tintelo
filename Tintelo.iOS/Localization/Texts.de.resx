@@ -279,7 +279,7 @@
 	<data name="Settings_Entries_Activities_Delete" xml:space="preserve">
 		<value>Löschen</value>
 	</data>
-	<data name="Settings_Entries_Activities_Delete_Description" xml:space="preserve">
+	<data name="Settings_Entries_Activities_DeleteSelection_Description" xml:space="preserve">
 		<value>Alle ausgewählten Elemente werden gelöscht, auch rückwirkend aus allen bestehenden Einträgen. Diese Aktion kann nicht rückgängig gemacht werden. OwO, gruselig!</value>
 	</data>
 	<data name="Error_Confirm_Okay" xml:space="preserve">
@@ -290,5 +290,8 @@
 	</data>
 	<data name="Settings_Entries_Activities_Empty_CallToAction" xml:space="preserve">
 		<value>Aktivität hinzufügen</value>
+	</data>
+	<data name="Settings_Entries_Activities_Delete_Description" xml:space="preserve">
+		<value>Das löscht das Element für immer aus allen alten Einträgen. OwO, gruselig!</value>
 	</data>
 </root>

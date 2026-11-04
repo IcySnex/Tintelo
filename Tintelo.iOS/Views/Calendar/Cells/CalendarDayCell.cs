@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using SkeleKit;
-using Tintelo.iOS.Models;
 using Tintelo.iOS.Models.Calendar;
 using Tintelo.iOS.Models.Journal;
 using Tintelo.iOS.Models.Palette;
@@ -12,8 +11,6 @@ namespace Tintelo.iOS.Views.Calendar.Cells;
 
 public class CalendarDayCell: ItemView<CalendarDaySummary>
 {
-	const double MaxVisualSize = 52;
-	
 	static readonly Color EmptyBackgroundColor = Color.Dynamic(Color.FromHex(0xf5f5f5), Color.FromHex(0x262626));
 	static readonly Color EmptyStrokeColor = Color.Dynamic(Color.FromHex(0xdbdbdb), Color.FromHex(0x636363));
 	static readonly Color EmptyTextColor = Color.Dynamic(Color.FromHex(0x646464), Color.FromHex(0xdadada));
@@ -26,7 +23,7 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 		.ToArray();
 	
 	static readonly MoodPaletteCatalog MoodPaletteCatalog = SkeleApplication.Current!.Services.GetRequiredService<MoodPaletteCatalog>();
-	static readonly CurrentDay CurrentDay = SkeleApplication.Current!.Services.GetRequiredService<CurrentDay>();
+	static readonly CurrentDay CurrentDay = SkeleApplication.Current.Services.GetRequiredService<CurrentDay>();
 	
 	
 	readonly Border contentBorder;
@@ -35,17 +32,17 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 	
 	public CalendarDayCell()
 	{
-		MaxHeight = 60;
-		MaxWidth = 60;
+		MaxHeight = CalendarView.CellWideRowHeight;
+		MaxWidth = CalendarView.CellWideRowHeight;
 		HighlightBackground = null;
 
 		Content = contentBorder = new Border
 		{
-			MaxWidth = MaxVisualSize,
-			MaxHeight = MaxVisualSize,
+			MaxWidth = CalendarView.CellMaxVisualSize,
+			MaxHeight = CalendarView.CellMaxVisualSize,
 			Margin = 2,
 			
-			CornerRadius = MaxVisualSize / 2,
+			CornerRadius = double.PositiveInfinity,
 			StrokeLineCap = StrokeLineCap.Round,
 
 			Child = new Overlay
@@ -104,6 +101,26 @@ public class CalendarDayCell: ItemView<CalendarDaySummary>
 			: EmptyTextColor;
 	
 	
+	protected override Size MeasureOverride(
+		Size availableSize)
+	{
+		Size measured = base.MeasureOverride(availableSize);
+
+		return new(measured.Width, CalendarView.CellRowHeight(availableSize.Width));
+	}
+
+	protected override Size ArrangeOverride(
+		Size finalSize)
+	{
+		double size = Math.Max(0, Math.Min(CalendarView.CellMaxVisualSize, Math.Min(finalSize.Width, finalSize.Height) - contentBorder.Margin.Horizontal));
+
+		contentBorder.Width = size;
+		contentBorder.Height = size;
+		contentBorder.CornerRadius = size / 2;
+
+		return base.ArrangeOverride(finalSize);
+	}
+
 	protected override void OnItemChanged(
 		CalendarDaySummary item) =>
 		ApplyItem();

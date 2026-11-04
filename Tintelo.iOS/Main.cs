@@ -1,4 +1,4 @@
-// dotnet publish Tintelo.iOS/Tintelo.iOS.csproj -f net10.0-ios27.0 -c Release -p:RuntimeIdentifier=ios-arm64 -p:BuildIpa=true
+// dotnet publish Tintelo.iOS/Tintelo.iOS.csproj -f net10.0-ios27.1 -c Release -p:RuntimeIdentifier=ios-arm64 -p:BuildIpa=true
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -67,6 +67,7 @@ SkeleApplication.CreateBuilder()
 				.PrimaryEdge(SplitViewEdge.Trailing)
 				.Behavior(SplitViewBehavior.SideBySide)
 				.Display(SplitViewDisplay.TwoColumns)
+				.CollapseBelow(720)
 				.NavigationColumn(SplitViewColumn.Secondary))
 		.Tab<AnalyticsView>(Texts.Analytics, ImageSource.Symbol("chart.bar.xaxis"))
 		.Bubble<AddEntryFlow>(Texts.AddEntry, ImageSource.Symbol("plus"), vm => vm.ShowCurrentDayCommand))

@@ -1,7 +1,6 @@
 using SkeleKit;
 using Tintelo.iOS.Localization;
 using Tintelo.iOS.Models.Calendar;
-using Tintelo.iOS.Utils;
 using Tintelo.iOS.Utils.Extensions;
 using Tintelo.iOS.ViewModels.Calendar;
 using Tintelo.iOS.Views.Calendar.Cells;
@@ -11,6 +10,14 @@ namespace Tintelo.iOS.Views.Calendar;
 [Page(Singleton = true)]
 public class CalendarView : ContentView<CalendarViewModel>
 {
+	public const double CellMaxVisualSize = 52;
+	public const double CellWideRowHeight = 60;
+	
+	public static double CellRowHeight(
+		double columnWidth) =>
+		columnWidth >= CellMaxVisualSize ? CellWideRowHeight : Math.Max(0, columnWidth);
+	
+	
 	public CalendarView(CalendarViewModel viewModel) : base(viewModel)
 	{
 		Title = Texts.Calendar;
@@ -35,8 +42,7 @@ public class CalendarView : ContentView<CalendarViewModel>
 			
 			Layout = CollectionLayout.FixedGrid(
 				columns: 7,
-				spacing: 6,
-				itemAspectRatio: 1),
+				spacing: 6),
 			ShowsSeparators = false,
 			ShowsIndicator = false,
 			RetainsHighlight = false,

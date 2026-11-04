@@ -12,12 +12,11 @@ public sealed class ActivitySectionHeaderCell : ItemView<ActivitySection>
 
 		Content = new Label
 		{
+			IsVisible = Bind(section => section.IsArchive),
+			
 			Margin = new(16, 12, 16, 8),
 
-			Text = Bind(section => section.IsArchive)
-				.ConvertTo(isArchive => isArchive
-					? Texts.Settings_Entries_Activities_Archived
-					: string.Empty),
+			Text = Texts.Settings_Entries_Activities_Archived,
 			TextColor = Colors.SecondaryLabel,
 			FontWeight = FontWeight.Semibold,
 

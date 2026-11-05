@@ -96,7 +96,7 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 	
 	[RelayCommand]
 	Task AddAsync() =>
-		Task.CompletedTask;
+		navigator.PushAsync<SettingsAddActivityViewModel>();
 
 
 	[RelayCommand]
@@ -197,22 +197,23 @@ public partial class SettingsActivitiesViewModel : ObservableObject
 	}
 
 
-	static int Compare(
-		Activity left,
-		Activity right)
-	{
-		int result = string.CompareOrdinal(left.SortOrder, right.SortOrder);
-		if (result != 0)
-			return result;
-
-		result = string.CompareOrdinal(left.Name, right.Name);
-		return result != 0 ? result : left.Id.CompareTo(right.Id);
-	}
-
 	void Move(
 		Activity activity,
 		bool isArchived)
 	{
+		static int Compare(
+			Activity left,
+			Activity right)
+		{
+			int result = string.CompareOrdinal(left.SortOrder, right.SortOrder);
+			if (result != 0)
+				return result;
+
+			result = string.CompareOrdinal(left.Name, right.Name);
+			return result != 0 ? result : left.Id.CompareTo(right.Id);
+		}
+
+		
 		Remove(activity);
 
 		Activity updated = activity with { IsArchived = isArchived };

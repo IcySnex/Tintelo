@@ -4,7 +4,7 @@ namespace Tintelo.iOS.Utils.Extensions;
 
 public static class ActivityIconExtensions
 {
-	extension(ActivityIcon icon)
+	extension(ActivityIcon? icon)
 	{
 		public string ToSymbol() =>
 			icon switch

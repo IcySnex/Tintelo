@@ -54,6 +54,9 @@ public sealed class ActivityCell : ItemView<Activity>
 			{
 				(iconView = new Image
 				{
+					Opacity = Bind(item => item.Icon)
+						.ConvertTo(icon => icon.HasValue ? 1 : 0.25),
+
 					Width = 24,
 					Height = 24
 				}),
@@ -71,15 +74,10 @@ public sealed class ActivityCell : ItemView<Activity>
 	protected override void OnItemChanged(
 		Activity item)
 	{
-		string symbol = item.Icon is ActivityIcon icon
-			? icon.ToSymbol()
-			: "x.circle";
-
 		iconView.Source = ImageSource.Symbol(
-			symbol,
+			item.Icon.ToSymbol(),
 			size: 20,
 			weight: FontWeight.Semibold,
 			colors: item.Color.ToColor());
-		iconView.Opacity = item.Icon.HasValue ? 1 : 0.25;
 	}
 }

@@ -65,7 +65,7 @@ public class AddActivityView : ContentView<AddActivityViewModel>
 						Height = 20,
 
 						Source = ImageSource.Symbol(
-							activity.Icon?.ToSymbol() ?? "x.circle",
+							activity.Icon.ToSymbol(),
 							size: 20,
 							weight: FontWeight.Semibold,
 							colors: activity.Color.ToColor()),
